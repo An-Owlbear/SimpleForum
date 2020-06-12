@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - SimpleForum.Web</title>
+    <link rel="stylesheet" href="~/css/site.css"/>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">About</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">Privacy</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">Terms</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="javascript:void(0)">Account</a>
+                <ul class="dropdown-items">
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="/Login">Login</a>
+                    </li>
+
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="/Signup">Signup</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</header>
+
+@RenderBody()
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+@RenderSection("Scripts", required: false)
+</body>
+</html>

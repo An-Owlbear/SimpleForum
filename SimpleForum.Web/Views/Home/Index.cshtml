@@ -1,0 +1,18 @@
+﻿@using SimpleForum.Models
+@{
+    ViewData["Title"] = "SimpleForum";
+}
+
+<div class="content-container">
+    <span class="content-container-title">Threads</span>
+    <ul class="content-list">
+        @foreach ((Thread thread, int replies) in (IEnumerable<(Thread, int)>)ViewData["Threads"])
+        {
+            <li class="list-item">
+                <a class="list-item-title list-item-property" href="/Thread?id=@thread.ThreadID">@thread.Title</a>
+                <span class="list-item-property">@replies replies</span>
+                <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
+            </li>
+        }
+    </ul>
+</div>

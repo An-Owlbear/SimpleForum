@@ -1,0 +1,27 @@
+@using SimpleForum.Models
+
+<div class="content-container">
+    <span class="content-container-title">@ViewData["ThreadTitle"]</span>
+    <ul class="thread-posts">
+        @foreach (Comment comment in (IEnumerable<Comment>)ViewData["Comments"])
+        {
+            <li class="thread-post">
+                <div class="post-user">
+                    <a class="post-username" href="/User/@comment.UserID">@comment.User.Username</a>
+                    <img class="post-profile-img" src="~/img/defaultprofile.png">
+                    <span class="post-date">@comment.DatePosted.ToShortDateString()</span>
+                </div>
+                <span class="post-contents">@comment.Content</span>
+                <div class="post-footer">
+                    <a class="footer-link" href="javascript:void(0)">Reply</a>
+                    <a class="footer-link" href="javascript:void(0)">Share</a>
+                </div>
+            </li>
+        }
+    </ul>
+
+    <form class="post-form" action="javascript:void(0)">
+        <textarea class="post-input" placeholder="Post"></textarea>
+        <button class="post-button" type="submit">Post</button>
+    </form>
+</div>

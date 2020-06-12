@@ -1,0 +1,430 @@
+﻿:root {
+  font-size: 16px;
+  font-family: 'Open Sans';
+  --navbar-text-primary: #b6b6b6;
+  --navbar-text-secondary: #ececec;
+  /* --text-primary: #5C728A; */
+  --text-primary: #404E5C;
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #E5EBF1;
+  --text-primary-light: #FFFFFF;
+  /* --bg-secondary: #EDF1F5; */
+  --navbar-primary: #23232e;
+  --navbar-secondary: #141418;
+  --button-primary: 3DB4F2;
+}
+
+a:focus {
+  outline: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-secondary)
+}
+
+.navbar {
+  width: 100%;
+  height: 3rem;
+  background-color: var(--navbar-primary);
+  top: 0;
+  position: sticky;
+}
+
+.navbar-nav {
+  height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.nav-item {
+  height: 100%;
+  line-height: 3rem;
+  text-align: center;
+  transition: 200ms ease;
+}
+
+.nav-item:first-child {
+  margin-left: 1rem;
+}
+
+.nav-item:last-child {
+  margin: 0 2rem 0 auto;
+  text-align: right;
+}
+
+.nav-item:hover {
+  background: var(--navbar-secondary);
+}
+
+.nav-link {
+  display: inline-block;
+  height: 100%;
+  color: var(--navbar-text-primary);
+  text-decoration: none;
+  padding: 0 1rem 0 1rem;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-clicked {
+  background-color: var(--navbar-secondary);
+}
+
+.dropdown-items {
+  z-index: 1;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown-items-visible {
+  display: flex;
+}
+
+.dropdown-item {
+  width: 100%;
+  transition: 200ms ease;
+  text-align: center;
+  background-color: var(--navbar-primary);
+}
+
+.dropdown-item:last-child {
+  border-radius: 0 0 7.5px 7.5px;
+}
+
+.dropdown-item:hover {
+  background-color: var(--navbar-secondary);
+}
+
+.dropdown-link {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  color: var(--navbar-text-primary);
+  text-decoration: none;
+}
+
+.content-container {
+  width: 80vw;
+  margin: 2.5rem 10vw 2.5rem 10vw;
+  background: var(--bg-primary);
+  border-radius: 10px;
+  padding-bottom: 2rem;
+}
+
+.content-container-title {
+  display: block;
+  padding: 1rem 2rem 1rem 2rem;
+  font-size: 2rem;
+  color: var(--text-primary);
+}
+
+.content-container-title:hover {
+  cursor: text;
+}
+
+.content-list {
+  margin: 0 2rem 0 2rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: row;
+  height: 4rem;
+  margin: 0.5rem 0 0.5rem 0;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.list-item:first-child {
+  margin-top: 0;
+}
+
+.list-item:last-child {
+  margin-bottom: 0;
+}
+
+.list-item-property {
+  font-size: 1rem;
+  line-height: 4rem;
+  text-align: center;
+  margin: 0 1rem 0 1rem;
+}
+
+.list-item-title {
+  font-size: 1.25rem;
+  color: royalblue;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.variable-container {
+  margin: 2.5rem auto 0 auto;
+  background: var(--bg-primary);
+  border-radius: 10px;
+  padding-bottom: 2rem;
+  width: min-content;
+  max-width: 80vw;
+}
+
+.login-form-title {
+  display: block;
+  padding: 2rem 2rem 1rem 2rem;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.login-form-title:hover {
+  cursor: text;
+}
+
+.login-form {
+  margin: 0 2rem 0 2rem;
+  display: block;
+  width: 400px;
+}
+
+.login-input {
+  display: inline-block;
+  width: 80%;
+  margin: 0.5rem 10% 0.5rem 10%;
+  border: 0;
+  background: var(--bg-secondary);
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  color: var(--text-primary);
+}
+
+.login-button {
+  display: inline-block;
+  width: 50%;
+  margin: 1.5rem 1% 0.5rem 0;
+  color: var(--text-primary-light);
+  border: 0;
+  padding: 1rem;
+  background-color: royalblue;
+  border-radius: 7.5px;
+  line-height: 19px;
+}
+
+.login-button:hover {
+  cursor: pointer;
+}
+
+.login-link {
+  display: inline-block;
+  width: 28%;
+  margin: 1.5rem 1% 0.5rem 10%;
+  color: var(--text-primary);
+  border: 0;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 7.5px;
+  text-decoration: none;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 19px;
+}
+
+.thread-posts {
+  margin: 0 2rem 0 2rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.thread-post {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 0.5rem 0;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+}
+
+.post-user {
+  display: inline;
+  max-width: calc(100px + 2rem);
+  flex: 0 0 calc(100px + 2rem);
+  text-align: center;
+}
+
+.post-username {
+  display: inline-block;
+  margin: 1rem auto 0 auto;
+  text-align: center;
+  text-decoration: none;
+  color: royalblue;
+}
+
+.post-profile-img {
+  display: block;
+  height: 100px;
+  margin: 0.5rem 1rem 0 1rem;
+  border-radius: 75px;
+}
+
+.post-date {
+  display: inline-block;
+  margin: 0.5rem 1rem 1rem 1rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.post-date:hover {
+  cursor: text;
+}
+
+.post-contents {
+  margin: 1rem;
+  color: var(--text-primary);
+  flex: 0 0 calc(100% - (100px + 4rem));
+}
+
+.post-contents:hover {
+  cursor: text;
+}
+
+.post-footer {
+  flex: 0 1 100%;
+  margin: 0 1rem 1rem 1rem;
+}
+
+.footer-link {
+  margin: 0 0.5rem 0 0.5rem;
+  text-decoration: none;
+  color: royalblue;
+  float: right;
+}
+
+.post-form {
+  margin: 1rem 2rem 0 2rem;
+}
+
+.post-input {
+  resize: none;
+  color: var(--text-primary);
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: 0;
+  padding: 1rem;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.post-button {
+  border: 0;
+  padding: 1rem;
+  background-color: royalblue;
+  color: var(--text-primary-light);
+  margin: 1rem 0 0 75%;
+  border-radius: 5px;
+  width: 25%;
+}
+
+.post-button:hover {
+  cursor: pointer;
+}
+
+.main-profile-container {
+  padding-top: 1rem;
+}
+
+.profile-container {
+  width: 50vw;
+  min-width: 400px;
+}
+
+.profile-info {
+  margin: 0 1rem 1rem 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profile-img {
+  margin: 0.5rem;
+  height: 50px;
+  border-radius: 75px;
+}
+
+.profile-property {
+  display: inline-block;
+  margin: 0 1rem 0 1rem;
+  color: var(--text-primary);
+  line-height: 100%;
+}
+
+.profile-property:hover {
+  cursor: text;
+}
+
+.profile-property:first-of-type {
+  margin-right: auto;
+}
+
+@media only screen and (max-width:800px) {
+  .navbar-nav {
+    overflow: hidden;
+  }
+
+  .content-container {
+    width: 100vw;
+    margin: 0;
+  }
+
+  .small-container {
+    width: initial;
+    max-width: initial;
+    margin: 0;
+  }
+
+  .login-form {
+    width: 100vw;
+    margin: 0;
+  }
+
+  .post-user {
+    flex: 0 0 100%;
+  }
+
+  .post-contents {
+    flex: 0 0 calc(100% - 2rem);
+  }
+
+  .post-button {
+    width: 100%;
+    margin: 1rem 0 0 0;
+  }
+}
