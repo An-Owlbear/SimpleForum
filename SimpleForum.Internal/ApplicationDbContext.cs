@@ -10,5 +10,6 @@ namespace SimpleForum.Internal
         public DbSet<User> Users { get; set; }
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserComment> UserComments { get; set; }
     }
 }
