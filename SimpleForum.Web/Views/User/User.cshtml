@@ -1,3 +1,5 @@
+@using SimpleForum.Models
+
 <div class="variable-container main-profile-container">
     <div class="profile-container">
         <div class="profile-info">
@@ -9,22 +11,22 @@
 
         <span class="content-container-title">Comments</span>
         <ul class="thread-posts">
-            
-            
-            @* <li class="thread-post"> *@
-            @*     <div class="post-user"> *@
-            @*         <a class="post-username" href="profile.html">User 1</a> *@
-            @*         <img class="post-profile-img" src="img/profile1.jpg"> *@
-            @*         <span class="post-date">10/10/2020</span> *@
-            @*     </div> *@
-            @*     <span class="post-contents">This is the post contents.</span> *@
-            @* *@
-            @*     <div class="post-footer"> *@
-            @*         <a class="footer-link" href="javascript:void(0)">#1</a> *@
-            @*         <a class="footer-link" href="javascript:void(0)">Reply</a> *@
-            @*         <a class="footer-link" href="javascript:void(0)">Share</a> *@
-            @*     </div> *@
-            @* </li> *@
+            @foreach (UserComment comment in ViewBag.User.UserPageComments)
+            {
+                <li class="thread-post">
+                    <div class="post-user">
+                        <a class="post-username" href="/User?id=@comment.UserID">@comment.User.Username</a>
+                        <img class="post-profile-img" src="~/img/defaultprofile.png">
+                        <span class="post-date">@comment.DatePosted.ToShortDateString()</span>
+                    </div>
+                    <span class="post-contents">@comment.Content</span>
+                    
+                    <div class="post-footer">
+                        <a class="footer-link" href="javascript:void(0)">Reply</a>
+                        <a class="footer-link" href="javascript:void(0)">Share</a>
+                    </div>
+                </li>
+            }
         </ul>
     </div>
 </div>
