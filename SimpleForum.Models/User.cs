@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleForum.Models
 {
@@ -12,5 +13,10 @@ namespace SimpleForum.Models
         
         public virtual ICollection<Thread> Threads { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        
+        [InverseProperty("User")]
+        public virtual ICollection<UserComment> UserComments { get; set; }
+        [InverseProperty("UserPage")]
+        public virtual ICollection<UserComment> UserPageComments { get; set; }
     }
 }
