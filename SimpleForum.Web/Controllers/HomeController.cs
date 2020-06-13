@@ -19,16 +19,8 @@ namespace SimpleForum.Web.Controllers
 
         public IActionResult Index()
         {
-            // Finds the replies for a given thread
-            int replies(Thread thread)
-            {
-                return (from comment in _context.Comments
-                    where comment.ThreadID == thread.ThreadID
-                    select comment).Count();
-            }
-
             // Creates a list of threads and replies and returns the view
-            IEnumerable<(Thread, int)> threads = _context.Threads.ToList().Select(x => (x, replies(x)));
+            IEnumerable<(Thread, int)> threads = _context.Threads.ToList().Select(x => (x, x.Comments.Count));
             ViewData["Threads"] = threads;
             return View();
         }
