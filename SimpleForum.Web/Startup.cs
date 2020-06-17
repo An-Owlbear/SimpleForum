@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,8 @@ namespace SimpleForum.Web
         {
             string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
             if (connectionString == null) throw new NullReferenceException();
-            
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(connectionString).UseLazyLoadingProxies());
@@ -48,6 +50,8 @@ namespace SimpleForum.Web
 
             app.UseRouting();
 
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

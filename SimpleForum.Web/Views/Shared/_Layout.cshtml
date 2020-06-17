@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -31,13 +32,24 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" href="javascript:void(0)">Account</a>
                 <ul class="dropdown-items">
-                    <li class="dropdown-item">
-                        <a class="dropdown-link" href="/Login">Login</a>
-                    </li>
-
-                    <li class="dropdown-item">
-                        <a class="dropdown-link" href="/Signup">Signup</a>
-                    </li>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown-item">
+                            <a class="dropdown-link" href="/Login">Login</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="dropdown-link" href="/Signup">Signup</a>
+                        </li>
+                    }
+                    else if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="dropdown-item">
+                            <a class="dropdown-link" href="/User?id=@User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value">Profile</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a class="dropdown-link" href="/Login/Logout">Logout</a>
+                        </li>
+                    }
                 </ul>
             </li>
         </ul>
