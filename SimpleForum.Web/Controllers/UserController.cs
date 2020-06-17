@@ -1,5 +1,5 @@
+using System;
 using System.Linq;
-using System.Numerics;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
@@ -18,9 +18,18 @@ namespace SimpleForum.Web.Controllers
         // GET
         public IActionResult Index(int? id)
         {
-            if (id == null) Redirect("/");
+            if (id == null) return Redirect("/");
+            User user;
 
-            User user = _context.Users.First(x => x.UserID == id);
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch (InvalidOperationException)
+            {
+                return Redirect("/");
+            }
+
             ViewData["PostCount"] = user.Comments.Count;
             ViewData["Title"] = user.Username;
             ViewData["User"] = user;

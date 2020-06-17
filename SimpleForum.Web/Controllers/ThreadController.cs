@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
@@ -17,9 +18,18 @@ namespace SimpleForum.Web.Controllers
         // GET
         public IActionResult Index(int? id)
         {
-            if (id == null) Redirect("/");
+            if (id == null) return Redirect("/");
+            Thread thread;
 
-            Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            try
+            {
+                thread = _context.Threads.First(x => x.ThreadID == id);
+            }
+            catch (InvalidOperationException)
+            {
+                return Redirect("/");
+            }
+
             ViewData["Title"] = thread.Title;
             ViewData["ThreadTitle"] = thread.Title;
             ViewData["Comments"] = thread.Comments;
