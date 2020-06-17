@@ -1,8 +1,6 @@
 using System;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace SimpleForum.Internal
@@ -11,12 +9,11 @@ namespace SimpleForum.Internal
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configurationRoot = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(@Directory.GetCurrentDirectory() + "/../SimpleForum.Web/appsettings.json").Build();
-            
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            string connectionString = configurationRoot.GetConnectionString("DatabaseConnection");
+            string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
+            
+            if (connectionString == null) throw new NullReferenceException();
+            
             builder.UseMySql(connectionString, x => x.ServerVersion(new Version(10, 4, 12), ServerType.MariaDb));
             builder.UseLazyLoadingProxies();
             return new ApplicationDbContext(builder.Options);

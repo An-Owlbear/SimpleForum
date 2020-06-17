@@ -220,6 +220,7 @@ body {
   padding: 1rem;
   border-radius: 10px;
   color: var(--text-primary);
+  box-sizing: border-box;
 }
 
 .login-button {
@@ -339,6 +340,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
+  
 }
 
 .post-button {
