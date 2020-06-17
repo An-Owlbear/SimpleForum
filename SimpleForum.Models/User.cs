@@ -8,9 +8,11 @@ namespace SimpleForum.Models
     {
         public int UserID { get; set; }
         public string Username { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
         public DateTime SignupDate { get; set; }
-        
+        public bool Admin { get; set; } = false;
+
         public virtual ICollection<Thread> Threads { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         
