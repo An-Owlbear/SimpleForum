@@ -20,8 +20,9 @@
         }
     </ul>
 
-    <form class="post-form" action="javascript:void(0)">
-        <textarea class="post-input" placeholder="Post"></textarea>
+    <form class="post-form" action="/Thread/PostComment" method="post">
+        <textarea class="post-input" placeholder="Post" name="content"></textarea>
+        <input type="hidden" name="threadID" value="@ViewData["ThreadID"]">
         <button class="post-button" type="submit">Post</button>
     </form>
 </div>

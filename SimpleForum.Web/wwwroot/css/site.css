@@ -340,7 +340,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
-  
+  height: 10rem;
 }
 
 .post-button {
