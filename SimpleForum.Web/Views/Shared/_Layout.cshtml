@@ -44,7 +44,7 @@
                     else if (User.Identity.IsAuthenticated)
                     {
                         <li class="dropdown-item">
-                            <a class="dropdown-link" href="/User?id=@User.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value">Profile</a>
+                            <a class="dropdown-link" href="/User?id=@User.FindFirst(ClaimTypes.NameIdentifier).Value">Profile</a>
                         </li>
                         <li class="dropdown-item">
                             <a class="dropdown-link" href="/Login/Logout">Logout</a>

@@ -47,8 +47,17 @@ namespace SimpleForum.Web.Controllers
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
             if (user.Admin) identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
+            
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),
+                    IsPersistent = true,
+                    AllowRefresh = false
+                });
+            
             return Redirect("/");
         }
 
