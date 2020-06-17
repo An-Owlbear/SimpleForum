@@ -11,5 +11,6 @@ namespace SimpleForum.Internal
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserComment> UserComments { get; set; }
+        public DbSet<AuthToken> AuthTokens { get; set; }
     }
 }
