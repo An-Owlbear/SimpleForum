@@ -25,7 +25,7 @@ namespace SimpleForum.Web.Controllers
             List<string> errors = new List<string>()
             {
                 "Enter both username and password",
-                "Username or password is incorrect"
+                "Username or password is incorrect",
             };
 
             if (error != null) ViewData["error"] = errors[(int)error];
@@ -35,7 +35,9 @@ namespace SimpleForum.Web.Controllers
 
         public async Task<IActionResult> SendLogin(string username, string password)
         {
-            if (username == null || password == null || User.Identity.IsAuthenticated) return Redirect("/Login?error=0");
+            if (User.Identity.IsAuthenticated) return Redirect("/");
+            if (username == null || password == null) return Redirect("/Login?error=0");
+            
             User user;
 
             try
