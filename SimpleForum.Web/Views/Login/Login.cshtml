@@ -7,6 +7,12 @@
     <form class="login-form" action="/Login/SendLogin" method="post">
         <input class="login-input" type="text" placeholder="Username/Email" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
+        
+        @if (ViewData["error"] != null)
+        {
+            <span class="form-error">@ViewData["error"]</span>
+        }
+        
         <a class="login-link" href="/Signup">Signup</a>
         <button class="login-button" type="submit">Login</button>
     </form>

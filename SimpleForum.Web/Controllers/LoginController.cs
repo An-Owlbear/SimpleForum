@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,14 +20,22 @@ namespace SimpleForum.Web.Controllers
             _context = context;
         }
         
-        public IActionResult Index()
+        public IActionResult Index(int? error)
         {
+            List<string> errors = new List<string>()
+            {
+                "Enter both username and password",
+                "Username or password is incorrect"
+            };
+
+            if (error != null) ViewData["error"] = errors[(int)error];
+            
             return View("Login");
         }
 
         public async Task<IActionResult> SendLogin(string username, string password)
         {
-            if (username == null || password == null || User.Identity.IsAuthenticated) return Redirect("/");
+            if (username == null || password == null || User.Identity.IsAuthenticated) return Redirect("/Login?error=0");
             User user;
 
             try
@@ -40,8 +49,10 @@ namespace SimpleForum.Web.Controllers
             }
             catch (InvalidOperationException)
             {
-                return Redirect("/");
+                return Redirect("/Login?error=1");
             }
+
+            if (user.Password != password) return Redirect("/Login?error=1");
 
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));

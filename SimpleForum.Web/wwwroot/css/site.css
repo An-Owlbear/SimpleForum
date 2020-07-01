@@ -1,6 +1,6 @@
 ﻿:root {
   font-size: 16px;
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', serif;
   --navbar-text-primary: #b6b6b6;
   --navbar-text-secondary: #ececec;
   /* --text-primary: #5C728A; */
@@ -12,6 +12,7 @@
   --navbar-primary: #23232e;
   --navbar-secondary: #141418;
   --button-primary: 3DB4F2;
+  --error-background: #F56C6C;
 }
 
 a:focus {
@@ -341,6 +342,18 @@ body {
   font-size: 16px;
   box-sizing: border-box;
   height: 10rem;
+}
+
+.form-error {
+  width: 80%;
+  margin: 0.5rem 10% 0.5rem 10%;
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  color: var(--navbar-text-secondary);
+  display: inline-block;
+  background-color: var(--error-background);
 }
 
 .post-button {
