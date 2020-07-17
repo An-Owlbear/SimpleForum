@@ -15,4 +15,31 @@
             </li>
         }
     </ul>
+    
+    @if (ViewBag.PageCount != 1)
+    {
+        <div class="page-links">
+            @if (ViewBag.Page > 1)
+            {
+                <a class="page-link" href="/">&lt;</a>
+            }
+            else if (ViewBag.Page > 2)
+            {
+                <a class="page-link" href="/">&lt;&lt;</a>
+                <a class="page-link" href="/?page=@(ViewBag.Page - 1)">&lt;</a>
+            }
+            
+            <p class="page-link">@ViewData["Page"]</p>
+            
+            @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
+            {
+                <a class="page-link" href="/?page=@ViewData["PageCount"]">&gt;</a>
+            }
+            else if (ViewBag.PageCount - ViewBag.Page > 2)
+            {
+                <a class="page-link" href="/?page=@(ViewBag.PageCount + 1)">&gt;</a>
+                <a class="page-link" href="/?page=@ViewData["PageCount"]">&gt;&gt;</a>
+            }
+        </div>
+    }
 </div>

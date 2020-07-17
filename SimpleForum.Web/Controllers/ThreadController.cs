@@ -11,6 +11,7 @@ namespace SimpleForum.Web.Controllers
     public class ThreadController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private int PostsPerPage = 30;
 
         public ThreadController(ApplicationDbContext context)
         {
@@ -18,7 +19,7 @@ namespace SimpleForum.Web.Controllers
         }
         
         // GET
-        public IActionResult Index(int? id)
+        public IActionResult Index(int? id, int page = 1)
         {
             if (id == null) return Redirect("/");
             Thread thread;
@@ -35,7 +36,9 @@ namespace SimpleForum.Web.Controllers
             ViewData["Title"] = thread.Title;
             ViewData["ThreadTitle"] = thread.Title;
             ViewData["ThreadID"] = thread.ThreadID;
-            ViewData["Comments"] = thread.Comments;
+            ViewData["Comments"] = thread.Comments.Skip((page - 1) * PostsPerPage).Take(PostsPerPage);
+            ViewData["Page"] = page;
+            ViewData["PageCount"] = (thread.Comments.Count + (PostsPerPage - 1)) / PostsPerPage;
 
             return View("Thread");
         }

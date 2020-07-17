@@ -145,7 +145,7 @@ body {
 }
 
 .content-list {
-  margin: 0 2rem 0 2rem;
+  margin: 0 2rem 2rem 2rem;
   padding: 0;
   list-style: none;
   display: flex;
@@ -407,6 +407,21 @@ body {
 
 .profile-property:first-of-type {
   margin-right: auto;
+}
+
+.page-links {
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.page-link {
+  color: royalblue;
+  text-decoration: none;
+  margin: 0.25rem;
+  padding: 0.25rem;
+  display: inline;
 }
 
 @media only screen and (max-width:800px) {
