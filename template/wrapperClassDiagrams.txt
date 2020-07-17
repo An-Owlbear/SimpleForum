@@ -1,0 +1,41 @@
+classDiagram
+	class User {
+    +int UserID
+    +string Username
+    +DateTime DateJoined
+    +Role Role
+    +MessageSettings MessageSetting 
+  }
+
+  class Category {
+    +string Title
+    +string Description
+  }
+  
+  class PostBase {
+    +User User
+    +DateTime PostDate
+  }
+  <<abstract>> PostBase
+  PostBase o-- User
+
+  class Thread {
+    +string title
+    +PostSetting PostSetting
+    +List~string~ Tags
+    +Category Category
+  }
+  Thread <|-- PostBase
+  Thread o--Category
+
+  class Post {
+    +int PostID
+  }
+  Post <|-- PostBase
+
+  class UserPost {
+    +int UserPostID
+    +User UserPage
+  }
+  UserPost <|-- PostBase
+  UserPost o-- User

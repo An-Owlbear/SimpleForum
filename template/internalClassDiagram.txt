@@ -1,0 +1,52 @@
+classDiagram
+  class User {
+    +int UserID
+    +string Username
+    +string Email
+    +string Password
+    +DateTime SignupDate
+    +bool Admin
+
+    +ICollection~Threads~
+    +ICollection~Comments~
+    +ICollection~UserComments~
+    +ICollection~UserPageComments~
+  }
+  User o-- Thread
+  User o-- Comment
+  User o-- UserComment
+
+  class Thread {
+    +int ThreadID
+    +string Title
+    +DateTime DatePosted
+    +int UserID
+    +User User
+
+    +ICollection~Comment~ Comments
+  }
+  Thread o-- User
+  Thread o-- Comment
+
+	class Comment {
+    +int CommentID
+    +string Content
+    +DateTime DatePosted
+    +int UserID
+    +User User
+    +int ThreadID
+    +Thread Thread
+  }
+  Comment o-- User
+  Comment o-- Thread
+
+  class UserComment {
+    +int UserCommentID
+    +string Content
+    +DateTime DatePosted
+    +int UserID
+    +User User
+    +int UserPage
+    +User UserPage
+  }
+  UserComment o-- User
