@@ -43,6 +43,17 @@ namespace SimpleForum.Web.Controllers
             return View("Thread");
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+        
+        public async Task<IActionResult> CreateThread(string title, string content)
+        {
+            // TODO - complete create thread method
+            return Redirect("/");
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostComment([FromForm] string content, [FromForm] int threadID)
         {

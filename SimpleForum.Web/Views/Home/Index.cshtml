@@ -4,7 +4,10 @@
 }
 
 <div class="content-container">
-    <span class="content-container-title">Threads</span>
+    <div class="content-container-top">
+        <span class="content-container-title">Threads</span>
+        <a class="content-container-top-link" href="/Thread/Create">Create thread</a>
+    </div>
     <ul class="content-list">
         @foreach ((Thread thread, int replies) in (IEnumerable<(Thread, int)>)ViewData["Threads"])
         {

@@ -134,7 +134,7 @@ body {
 }
 
 .content-container-title {
-  display: block;
+  display: inline-block;
   padding: 1rem 2rem 1rem 2rem;
   font-size: 2rem;
   color: var(--text-primary);
@@ -422,6 +422,47 @@ body {
   margin: 0.25rem;
   padding: 0.25rem;
   display: inline;
+}
+
+.thread-create-form {
+  padding: 0 2rem 1rem 2rem;
+}
+
+.thread-create-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 0;
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+input.thread-create-input {
+  margin-bottom: 1rem;
+}
+
+textarea.thread-create-input {
+  resize: none;
+  height: 10rem;
+}
+
+.content-container-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content-container-top-link {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--text-primary-light);
+  font-size: 1.25rem;
+  margin: 1rem 2rem 1rem 2rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px;
+  background-color: royalblue;
 }
 
 @media only screen and (max-width:800px) {
