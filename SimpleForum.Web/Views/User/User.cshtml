@@ -13,9 +13,9 @@
         
         @if (User.Identity.IsAuthenticated)
         {
-            <form class="post-form profile-post-form" action="javascript:void(0)">
+            <form class="post-form profile-post-form" action="/User/PostUserComment" method="post">
                 <textarea class="post-input" placeholder="Comment" name="content"></textarea>
-                <input type="hidden" name="userPageID" value="0">
+                <input type="hidden" name="userPageID" value="@ViewBag.User.UserID">
                 <button class="post-button" type="submit">Post</button>
             </form>
         }
