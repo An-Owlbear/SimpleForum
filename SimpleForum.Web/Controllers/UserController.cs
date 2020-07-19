@@ -33,6 +33,7 @@ namespace SimpleForum.Web.Controllers
             ViewData["PostCount"] = user.Comments.Count;
             ViewData["Title"] = user.Username;
             ViewData["User"] = user;
+            ViewData["PageComments"] = user.UserPageComments.OrderByDescending(x => x.DatePosted);
             return View("User");
         }
     }
