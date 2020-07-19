@@ -114,7 +114,7 @@ textarea:focus, input:focus {
 }
 
 .dropdown-item:last-child {
-  border-radius: 0 0 7.5px 7.5px;
+  border-radius: 0 0 10px 10px;
 }
 
 .dropdown-item:hover {
@@ -139,7 +139,7 @@ textarea:focus, input:focus {
 
 .content-container-title {
   display: inline-block;
-  padding: 1rem 2rem 1rem 2rem;
+  padding: 2rem 2rem 2rem 2rem;
   font-size: 2rem;
   color: var(--text-primary);
 }
@@ -149,7 +149,7 @@ textarea:focus, input:focus {
 }
 
 .content-list {
-  margin: 0 2rem 2rem 2rem;
+  margin: 0 2rem 0 2rem;
   padding: 0;
   list-style: none;
   display: flex;
@@ -236,7 +236,7 @@ textarea:focus, input:focus {
   border: 0;
   padding: 1rem;
   background-color: royalblue;
-  border-radius: 7.5px;
+  border-radius: 10px;
   line-height: 19px;
 }
 
@@ -252,7 +252,7 @@ textarea:focus, input:focus {
   border: 0;
   padding: 1rem;
   background-color: var(--bg-secondary);
-  border-radius: 7.5px;
+  border-radius: 10px;
   text-decoration: none;
   box-sizing: border-box;
   text-align: center;
@@ -366,7 +366,7 @@ textarea:focus, input:focus {
   background-color: royalblue;
   color: var(--text-primary-light);
   margin: 1rem 0 0 75%;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 25%;
 }
 
@@ -438,7 +438,7 @@ textarea:focus, input:focus {
   padding: 1rem;
   background: var(--bg-secondary);
   border: 0;
-  border-radius: 10px;
+  border-radius: 5px;
   color: var(--text-primary);
   font-size: 1rem;
 }
