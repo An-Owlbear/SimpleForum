@@ -17,7 +17,8 @@
                     <div class="post-user">
                         <a class="post-username" href="/User?id=@comment.UserID">@comment.User.Username</a>
                         <img class="post-profile-img" src="~/img/defaultprofile.png">
-                        <span class="post-date">@comment.DatePosted.ToShortDateString()</span>
+                        <span class="post-date">@comment.DatePosted.ToShortDateString()
+                                                @comment.DatePosted.ToShortTimeString()</span>
                     </div>
                     <span class="post-contents">@comment.Content</span>
                     
