@@ -50,8 +50,36 @@ namespace SimpleForum.Web.Controllers
         
         public async Task<IActionResult> CreateThread(string title, string content)
         {
-            // TODO - complete create thread method
-            return Redirect("/");
+            if (!User.Identity.IsAuthenticated) return Redirect("/Login");
+            if (title == null || content == null) return Redirect("/Thread/Create");
+
+            DateTime time = DateTime.Now;
+            int userID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            Thread thread = new Thread()
+            {
+                Title = title,
+                DatePosted = time,
+                UserID = userID
+            };
+
+            await _context.Threads.AddAsync(thread);
+            await _context.SaveChangesAsync();
+
+            int threadID = _context.Threads.OrderByDescending(x => x.DatePosted).Where(x => x.UserID == userID).First().ThreadID;
+
+            Comment comment = new Comment()
+            {
+                Content = content,
+                DatePosted = time,
+                UserID = userID,
+                ThreadID = threadID
+            };
+
+            await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+
+            return Redirect("/Thread?id=" + threadID);
         }
 
         [HttpPost]
