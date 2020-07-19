@@ -335,6 +335,10 @@ textarea:focus, input:focus {
   margin: 1rem 2rem 0 2rem;
 }
 
+.post-form.profile-post-form {
+  margin: 0 2rem 1rem 2rem;
+}
+
 .post-input {
   resize: none;
   color: var(--text-primary);
@@ -380,7 +384,7 @@ textarea:focus, input:focus {
 
 .profile-container {
   width: 50vw;
-  min-width: 400px;
+  min-width: 1000px;
 }
 
 .profile-info {

@@ -10,6 +10,16 @@
         </div>
 
         <span class="content-container-title">Comments</span>
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form class="post-form profile-post-form" action="javascript:void(0)">
+                <textarea class="post-input" placeholder="Comment" name="content"></textarea>
+                <input type="hidden" name="userPageID" value="0">
+                <button class="post-button" type="submit">Post</button>
+            </form>
+        }
+        
         <ul class="thread-posts">
             @foreach (UserComment comment in ViewBag.PageComments)
             {
