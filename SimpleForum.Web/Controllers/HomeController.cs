@@ -21,8 +21,8 @@ namespace SimpleForum.Web.Controllers
         public IActionResult Index(int page = 1)
         {
             // Creates a list of threads and replies and returns the view
-            IEnumerable<(Thread, int)> threads = _context.Threads.ToList().Select(x => (x, x.Comments.Count))
-                .Skip((page - 1) * 30).Take(30);
+            IEnumerable<(Thread, int)> threads = _context.Threads.OrderByDescending(x => x.DatePosted).Skip((page - 1) * 30)
+                .Take(30).ToList().Select(x => (x, x.Comments.Count));
             
             ViewData["Threads"] = threads;
             ViewData["Page"] = page;
