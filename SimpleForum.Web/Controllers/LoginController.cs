@@ -26,6 +26,7 @@ namespace SimpleForum.Web.Controllers
             {
                 "Enter both username and password",
                 "Username or password is incorrect",
+                "Email is not verified"
             };
 
             if (error != null) ViewData["error"] = errors[(int)error];
@@ -55,6 +56,7 @@ namespace SimpleForum.Web.Controllers
             }
 
             if (user.Password != password) return Redirect("/Login?error=1");
+            if (!user.Activated) return Redirect("/Login?error=2");
 
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));

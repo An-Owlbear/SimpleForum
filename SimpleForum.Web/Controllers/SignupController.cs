@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 
@@ -36,11 +34,13 @@ namespace SimpleForum.Web.Controllers
 
         public async Task<IActionResult> SendSignup(string email, string username, string password)
         {
+            // Validates the user input and redirects them if necessary
             if (User.Identity.IsAuthenticated) return Redirect("/");
             if (email == null || username == null || password == null) return Redirect("/Signup?error=0");
             if (_context.Users.Any(x => x.Email == email)) return Redirect("/Signup?error=1");
             if (_context.Users.Any(x => x.Username == username)) return Redirect("/Signup?error=2");
 
+            // Creates a user object from user input and adds it to the database
             User user = new User()
             {
                 Email = email,
@@ -48,25 +48,28 @@ namespace SimpleForum.Web.Controllers
                 Password = password
             };
 
-            _context.Users.Add(user);
+            EntityEntry<User> userAdded = await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            
-            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString())); 
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-            if (user.Admin) identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-            
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                new AuthenticationProperties
-                {
-                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),
-                    IsPersistent = true,
-                    AllowRefresh = false
-                });
+            // Creates a random 32 character long string and adds to the email codes table
+            // TODO - Verify the generated code does not already exist
+            Random random = new Random();
+            string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+            string code = new string(Enumerable.Repeat(chars, 32).Select(s => s[random.Next(s.Length)]).ToArray());
 
-            return Redirect("/");
+            EmailCode emailCode = new EmailCode()
+            {
+                Code = code,
+                Type = "signup",
+                DateCreated = DateTime.Now,
+                ValidUntil = DateTime.Now.AddHours(24),
+                UserID = userAdded.Entity.UserID
+            };
+
+            await _context.EmailCodes.AddAsync(emailCode);
+            await _context.SaveChangesAsync();
+
+            return Redirect("/Login");
         }
     }
 }
