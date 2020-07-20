@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using SimpleForum.Internal;
 
 namespace SimpleForum.Web
@@ -22,13 +24,25 @@ namespace SimpleForum.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Environment.GetEnvironmentVariable("DbConnectionString");
-            if (connectionString == null) throw new NullReferenceException();
+            string dbConnectionString = Environment.GetEnvironmentVariable("DbConnectionString");
+            string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString").Split(";");
+            if (dbConnectionString == null) throw new NullReferenceException();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(connectionString).UseLazyLoadingProxies());
+                options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
+
+            services.AddMailKit(options => options.UseMailKit(new MailKitOptions()
+            {
+                Server = mailConnectionStrings[0].Trim(),
+                Port = int.Parse(mailConnectionStrings[1].Trim()),
+                SenderName = mailConnectionStrings[2].Trim(),
+                SenderEmail = mailConnectionStrings[3].Trim(),
+                Account = mailConnectionStrings[4].Trim(),
+                Password = mailConnectionStrings[5].Trim(),
+                Security = true
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

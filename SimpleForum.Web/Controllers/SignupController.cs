@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 
@@ -12,10 +13,12 @@ namespace SimpleForum.Web.Controllers
     public class SignupController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public SignupController(ApplicationDbContext context)
+        public SignupController(ApplicationDbContext context, IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
         
         public IActionResult Index(int? error)
@@ -70,6 +73,13 @@ namespace SimpleForum.Web.Controllers
             await _context.SaveChangesAsync();
 
             return Redirect("/Login");
+        }
+
+        // Temporary page for testing emails
+        public async Task<IActionResult> TestEmail()
+        {
+            await _emailService.SendAsync("user@owlbear.digital", "test email", "this is a test email");
+            return Redirect("/");
         }
     }
 }
