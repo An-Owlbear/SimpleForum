@@ -359,7 +359,7 @@ textarea:focus, input:focus {
   border-radius: 10px;
   box-sizing: border-box;
   text-align: center;
-  color: var(--navbar-text-secondary);
+  color: var(--text-primary-light);
   display: inline-block;
   background-color: var(--error-background);
 }
