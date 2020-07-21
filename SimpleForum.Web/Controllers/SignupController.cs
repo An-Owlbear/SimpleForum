@@ -72,13 +72,36 @@ namespace SimpleForum.Web.Controllers
             await _context.EmailCodes.AddAsync(emailCode);
             await _context.SaveChangesAsync();
 
+            await _emailService.SendAsync(
+                email,
+                "SimpleForum email confirmation",
+                "<p>please confirm your email by clicking the following link: <a href=\'https://example.com/Signup/VerifyEmail?code=" + code +
+                "'>https://example.com/Signup/VerifyEmail?code=" + code + "</a></p>",
+                true);
+
+            // TODO - Add to tell user about verification email
             return Redirect("/Login");
         }
 
-        // Temporary page for testing emails
-        public async Task<IActionResult> TestEmail()
+        public async Task<IActionResult> VerifyEmail(string code)
         {
-            await _emailService.SendAsync("user@owlbear.digital", "test email", "this is a test email");
+            // TODO - Create email verified view
+
+            EmailCode emailCode;
+            try
+            {
+                emailCode = _context.EmailCodes.First(x => x.Code == code);
+            }
+            catch (InvalidOperationException)
+            {
+                return Redirect("/");
+            }
+
+            if (emailCode.ValidUntil < DateTime.Now) return Redirect("/");
+
+            emailCode.User.Activated = true;
+            await _context.SaveChangesAsync();
+
             return Redirect("/");
         }
     }
