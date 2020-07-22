@@ -67,7 +67,7 @@ textarea:focus, input:focus {
 }
 
 .nav-item:last-child {
-  margin: 0 2rem 0 auto;
+  margin: 0 1rem 0 auto;
   text-align: right;
 }
 
@@ -189,7 +189,7 @@ textarea:focus, input:focus {
 }
 
 .variable-container {
-  margin: 2.5rem auto 0 auto;
+  margin: 2.5rem auto 2.5rem auto;
   background: var(--bg-primary);
   border-radius: 10px;
   padding-bottom: 2rem;
