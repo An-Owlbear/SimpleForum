@@ -29,7 +29,7 @@ namespace SimpleForum.Web
             if (dbConnectionString == null) throw new NullReferenceException();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
 
