@@ -1,0 +1,7 @@
+<div class="top-message">
+    <h1 class="top-message-text">@ViewData["MessageTitle"]</h1>
+    @if (ViewData["MessageContent"] != null)
+    {
+        <p class="top-message-text">@ViewData["MessageContent"]</p>
+    }
+</div>

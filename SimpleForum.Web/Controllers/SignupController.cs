@@ -75,18 +75,19 @@ namespace SimpleForum.Web.Controllers
             await _emailService.SendAsync(
                 email,
                 "SimpleForum email confirmation",
-                "<p>please confirm your email by clicking the following link: <a href=\'https://example.com/Signup/VerifyEmail?code=" + code +
+                "<p>please confirm your email by clicking the following link: <a href=\'https://example.com/Signup/VerifyEmail?code=" +
+                code +
                 "'>https://example.com/Signup/VerifyEmail?code=" + code + "</a></p>",
                 true);
 
-            // TODO - Add to tell user about verification email
-            return Redirect("/Login");
+            ViewData["MessageTitle"] = "Signup complete!";
+            ViewData["MessageContet"] = "Before you can use your account your email must be verified. " +
+                                        "We have sent a verification message to your email account";
+            return View("Message");
         }
 
         public async Task<IActionResult> VerifyEmail(string code)
         {
-            // TODO - Create email verified view
-
             EmailCode emailCode;
             try
             {
@@ -102,7 +103,8 @@ namespace SimpleForum.Web.Controllers
             emailCode.User.Activated = true;
             await _context.SaveChangesAsync();
 
-            return Redirect("/");
+            ViewData["MessageTitle"] = "Email verified sucessfully. You can now <a cla";
+            return View("Message");
         }
     }
 }
