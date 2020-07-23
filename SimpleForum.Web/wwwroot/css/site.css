@@ -1,5 +1,6 @@
 ﻿:root * {
   font-size: 16px;
+  font-weight: normal;
   font-family: 'Open Sans', sans-serif;
   --navbar-text-primary: #b6b6b6;
   --navbar-text-secondary: #ececec;
@@ -485,13 +486,13 @@ textarea.thread-create-input {
 .top-message-text {
   color: var(--text-primary);
   margin: 1rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .top-message-link {
   text-decoration: none;
   color: royalblue;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 @media only screen and (max-width:800px) {
