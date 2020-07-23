@@ -473,6 +473,27 @@ textarea.thread-create-input {
   background-color: royalblue;
 }
 
+.top-message {
+  width: 80vw;
+  margin: 2.5rem 10vw 2.5rem 10vw;
+  background: var(--bg-primary);
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.top-message-text {
+  color: var(--text-primary);
+  margin: 1rem;
+  font-size: 1.25rem;
+}
+
+.top-message-link {
+  text-decoration: none;
+  color: royalblue;
+  font-size: 1.25rem;
+}
+
 @media only screen and (max-width:800px) {
   .navbar-nav {
     overflow: hidden;
