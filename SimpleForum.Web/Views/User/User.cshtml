@@ -10,8 +10,8 @@
         </div>
 
         <span class="content-container-title">Comments</span>
-        
-        @if (User.Identity.IsAuthenticated)
+
+        @if (User.Identity.IsAuthenticated && ViewBag.Page == 1)
         {
             <form class="post-form profile-post-form" action="/User/PostUserComment" method="post">
                 <textarea class="post-input" placeholder="Comment" name="content"></textarea>
@@ -19,7 +19,7 @@
                 <button class="post-button" type="submit">Post</button>
             </form>
         }
-        
+
         <ul class="thread-posts">
             @foreach (UserComment comment in ViewBag.PageComments)
             {
@@ -27,17 +27,46 @@
                     <div class="post-user">
                         <a class="post-username" href="/User?id=@comment.UserID">@comment.User.Username</a>
                         <img class="post-profile-img" src="~/img/defaultprofile.png">
-                        <span class="post-date">@comment.DatePosted.ToShortDateString()
-                                                @comment.DatePosted.ToShortTimeString()</span>
-                    </div>
-                    <span class="post-contents">@comment.Content</span>
-                    
-                    <div class="post-footer">
-                        <a class="footer-link" href="javascript:void(0)">Reply</a>
-                        <a class="footer-link" href="javascript:void(0)">Share</a>
-                    </div>
-                </li>
-            }
+                        <span class="post-date">
+                            @comment.DatePosted.ToShortDateString()
+                        @comment.DatePosted.ToShortTimeString()
+                    </span>
+                </div>
+                <span class="post-contents">@comment.Content</span>
+
+                <div class="post-footer">
+                    <a class="footer-link" href="javascript:void(0)">Reply</a>
+                    <a class="footer-link" href="javascript:void(0)">Share</a>
+                </div>
+            </li>
+        }
         </ul>
+
+        @if (ViewBag.PageCount > 1)
+        {
+            <div class="page-links">
+                @if (ViewBag.Page > 1)
+                {
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID">&lt;</a>
+                }
+                else if (ViewBag.Page > 2)
+                {
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID">&lt;&lt;</a>
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@(ViewBag.Page - 1)">&lt;</a>
+                }
+
+                <p class="page-link">@ViewData["Page"]</p>
+
+                @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
+                {
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@ViewData["PageCount"]">&gt;</a>
+                }
+                else if (ViewBag.PageCount - ViewBag.Page > 2)
+                {
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@(ViewBag.PageCount + 1)">&gt;</a>
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@ViewData["PageCount"]">&gt;&gt;</a>
+                }
+            </div>
+        }
     </div>
 </div>

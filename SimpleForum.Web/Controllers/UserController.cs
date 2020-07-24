@@ -11,6 +11,7 @@ namespace SimpleForum.Web.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private int CommentsPerPage = 15;
 
         public UserController(ApplicationDbContext context)
         {
@@ -18,7 +19,7 @@ namespace SimpleForum.Web.Controllers
         }
         
         // GET
-        public IActionResult Index(int? id)
+        public IActionResult Index(int? id, int page = 1)
         {
             if (id == null) return Redirect("/");
             User user;
@@ -35,7 +36,10 @@ namespace SimpleForum.Web.Controllers
             ViewData["PostCount"] = user.Comments.Count;
             ViewData["Title"] = user.Username;
             ViewData["User"] = user;
-            ViewData["PageComments"] = user.UserPageComments.OrderByDescending(x => x.DatePosted);
+            ViewData["PageComments"] = user.UserPageComments.OrderByDescending(x => x.DatePosted).Skip((page - 1) * CommentsPerPage).Take(CommentsPerPage);
+            ViewData["Page"] = page;
+            ViewData["PageCount"] = (user.UserComments.Count + (CommentsPerPage - 1)) / CommentsPerPage;
+
             return View("User");
         }
 
