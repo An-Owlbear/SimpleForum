@@ -4,7 +4,15 @@
 }
 
 <div class="top-message">
-    <h1 class="top-message-text">Welcome to SimpleForum. <a class="top-message-link" href="/Signup">Signup</a> to get started</h1>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <h1 class="top-message-text">Welcome to SimpleForum.
+        <a class="top-message-link" href="/Signup">Signup</a> to get started</h1>
+    }
+    else
+    {
+        <h1 class="top-message-text">Welcome to SimpleForum</h1>
+    }
 </div>
 
 <div class="content-container">
