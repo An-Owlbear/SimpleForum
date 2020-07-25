@@ -103,5 +103,15 @@ namespace SimpleForum.Web.Controllers
 
             return Redirect("/Login");
         }
+
+        public async Task<IActionResult> AdminActions(int? id)
+        {
+            if (id == null) return Redirect("/");
+            if (User.FindFirst(ClaimTypes.Role).Value != "Admin") return Redirect("/");
+
+            // TODO - Add code for thread preview
+            
+            return View();
+        }
     }
 }

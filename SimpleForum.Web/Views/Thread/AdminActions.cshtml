@@ -1,0 +1,21 @@
+@using SimpleForum.Models
+
+<div class="content-container">
+    <span class="content-container-title">Admin actions</span>
+    <ul class="action-list">
+        <li class="action-list-item">
+            <span class="action-list-item-title">Delete the thread and its contents.</span>
+            <a class="action-list-item-button" href="/Thread/Delete?id=@ViewData["ThreadID"]">Delete thread</a>
+        </li>
+        <li class="action-list-item">
+            <span class="action-list-item-title">Pin the thread to the top of the list.</span>
+            <a class="action-list-item-button" href="/Thread/Pin?id=@ViewData["ThreadID"]">Pin thread</a>
+        </li>
+        <li class="action-list-item">
+            <span class="action-list-item-title">Lock the thread, preventing it from recieving further replies.</span>
+            <a class="action-list-item-button" href="/Thread/LockThread?id=@ViewData["ThreadID"]">Lock thread</a>
+        </li>
+    </ul>
+    
+    @*TODO - Add html for thread preview*@
+</div>

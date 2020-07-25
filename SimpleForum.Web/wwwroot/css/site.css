@@ -507,6 +507,38 @@ h1.top-message-text {
   font-size: inherit;
 }
 
+.action-list {
+  margin: 0 2rem 0 2rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+}
+
+.action-list-item-title {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+.action-list-item-button {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--text-primary-light);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px;
+  background: royalblue;
+}
+
 @media only screen and (max-width:800px) {
   .navbar-nav {
     overflow: hidden;
