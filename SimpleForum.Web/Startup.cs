@@ -28,6 +28,7 @@ namespace SimpleForum.Web
             string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString").Split(";");
             if (dbConnectionString == null) throw new NullReferenceException();
 
+            services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>

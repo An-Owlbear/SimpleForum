@@ -1,4 +1,6 @@
 ﻿@using System.Security.Claims
+@using Microsoft.Extensions.Options
+@inject IOptions<SimpleForumConfig> options;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +18,7 @@
     <div class="navbar">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/">@options.Value.InstanceName</a>
             </li>
 
             <li class="nav-item">

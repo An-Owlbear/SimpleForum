@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
 using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
@@ -14,11 +15,13 @@ namespace SimpleForum.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
+        private readonly SimpleForumConfig _config;
 
-        public SignupController(ApplicationDbContext context, IEmailService emailService)
+        public SignupController(ApplicationDbContext context, IEmailService emailService, IOptions<SimpleForumConfig> config)
         {
             _context = context;
             _emailService = emailService;
+            _config = config.Value;
         }
         
         public IActionResult Index(int? error)
@@ -72,16 +75,16 @@ namespace SimpleForum.Web.Controllers
             await _context.EmailCodes.AddAsync(emailCode);
             await _context.SaveChangesAsync();
 
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + code;
             await _emailService.SendAsync(
                 email,
                 "SimpleForum email confirmation",
-                "<p>please confirm your email by clicking the following link: <a href=\'https://example.com/Signup/VerifyEmail?code=" +
-                code +
-                "'>https://example.com/Signup/VerifyEmail?code=" + code + "</a></p>",
+                "<p>please confirm your email by clicking the following link: <a href='" + url +
+                "'>" + url + "</a></p>",
                 true);
 
             ViewData["MessageTitle"] = "Signup complete!";
-            ViewData["MessageContet"] = "Before you can use your account your email must be verified. " +
+            ViewData["MessageContent"] = "Before you can use your account your email must be verified. " +
                                         "We have sent a verification message to your email account";
             return View("Message");
         }
@@ -103,7 +106,7 @@ namespace SimpleForum.Web.Controllers
             emailCode.User.Activated = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Email verified sucessfully. You can now <a cla";
+            ViewData["MessageTitle"] = "Email verified sucessfully. You can now login.";
             return View("Message");
         }
     }
