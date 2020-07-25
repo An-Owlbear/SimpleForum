@@ -1,7 +1,14 @@
 @using SimpleForum.Models
+@using System.Security.Claims
 
 <div class="content-container">
-    <span class="content-container-title">@ViewData["ThreadTitle"]</span>
+    <div class="content-container-top">
+        <span class="content-container-title">@ViewData["ThreadTitle"]</span>
+        @if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
+        {
+            <a class="content-container-top-link" href="/Thread/AdminActions?id=@ViewData["ThreadID"]">Admin Actions</a>
+        }
+    </div>
     <ul class="thread-posts">
         @foreach (Comment comment in (IEnumerable<Comment>)ViewData["Comments"])
         {
