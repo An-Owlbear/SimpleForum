@@ -486,13 +486,17 @@ textarea.thread-create-input {
 .top-message-text {
   color: var(--text-primary);
   margin: 1rem;
+  font-size: 1.25rem;
+}
+
+h1.top-message-text {
   font-size: 1.5rem;
 }
 
 .top-message-link {
   text-decoration: none;
   color: royalblue;
-  font-size: 1.5rem;
+  font-size: inherit;
 }
 
 @media only screen and (max-width:800px) {
