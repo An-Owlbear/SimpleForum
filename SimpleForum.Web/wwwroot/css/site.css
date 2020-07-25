@@ -180,6 +180,14 @@ textarea:focus, input:focus {
   line-height: 4rem;
   text-align: center;
   margin: 0 1rem 0 1rem;
+  color: var(--text-primary);
+}
+
+.list-item-icon {
+  font-size: 1rem;
+  line-height: 1rem;
+  margin: 0 0 0 1rem;
+  color: var(--text-primary);
 }
 
 .list-item-title {
