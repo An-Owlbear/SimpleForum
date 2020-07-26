@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -46,14 +45,15 @@ namespace SimpleForum.Web.Controllers
             return View("Thread");
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
         
+        [Authorize]
         public async Task<IActionResult> CreateThread(string title, string content)
         {
-            if (!User.Identity.IsAuthenticated) return Redirect("/Login");
             if (title == null || content == null) return Redirect("/Thread/Create");
 
             DateTime time = DateTime.Now;
@@ -106,10 +106,10 @@ namespace SimpleForum.Web.Controllers
             return Redirect("/Login");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminActions(int? id)
         {
             if (id == null) return Redirect("/");
-            if (User.FindFirst(ClaimTypes.Role).Value != "Admin") return Redirect("/");
 
             // TODO - Add code for thread preview
 
@@ -119,6 +119,7 @@ namespace SimpleForum.Web.Controllers
         }
 
 
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return Redirect("/");
@@ -135,10 +136,10 @@ namespace SimpleForum.Web.Controllers
             return View("Message");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Pin(int? id)
         {
             if (id == null) return Redirect("/");
-            if (User.FindFirstValue(ClaimTypes.Role) != "Admin") return Redirect("/");
 
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Pinned = true;
@@ -148,6 +149,7 @@ namespace SimpleForum.Web.Controllers
             return View("Message");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Lock(int? id)
         {
             if (id == null) return Redirect("/");
@@ -160,7 +162,8 @@ namespace SimpleForum.Web.Controllers
             ViewData["MessageTitle"] = "Thread has been locked";
             return View("Message");
         }
-
+        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null) return Redirect("/");
@@ -174,10 +177,10 @@ namespace SimpleForum.Web.Controllers
             return View("Message");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Unpin(int? id)
         {
             if (id == null) return Redirect("/");
-            if (!User.IsInRole("Admin")) return Redirect("/");
 
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Pinned = false;
@@ -187,10 +190,10 @@ namespace SimpleForum.Web.Controllers
             return View("Message");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Unlock(int? id)
         {
             if (id == null) return Redirect("/");
-            if (!User.IsInRole("Admin")) return Redirect("/");
 
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Locked = false;
