@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleForum.Internal;
 
 namespace SimpleForum.Internal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200726160712_Added_pinned_and_locked")]
+    partial class Added_pinned_and_locked
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,9 +103,6 @@ namespace SimpleForum.Internal.Migrations
 
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Locked")
                         .HasColumnType("tinyint(1)");

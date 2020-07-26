@@ -8,6 +8,9 @@ namespace SimpleForum.Models
         public int ThreadID { get; set; }
         public string Title { get; set; }
         public DateTime DatePosted { get; set; }
+        public bool Pinned { get; set; }
+        public bool Locked { get; set; }
+        public bool Deleted { get; set; }
         
         public int UserID { get; set; }
         public virtual User User { get; set; }
