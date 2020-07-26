@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace SimpleForum.Web.Controllers
             await _context.Threads.AddAsync(thread);
             await _context.SaveChangesAsync();
 
-            int threadID = _context.Threads.OrderByDescending(x => x.DatePosted).Where(x => x.UserID == userID).First().ThreadID;
+            int threadID = _context.Threads.OrderByDescending(x => x.DatePosted).First(x => x.UserID == userID).ThreadID;
 
             Comment comment = new Comment()
             {
@@ -110,8 +111,49 @@ namespace SimpleForum.Web.Controllers
             if (User.FindFirst(ClaimTypes.Role).Value != "Admin") return Redirect("/");
 
             // TODO - Add code for thread preview
-            
+
+            ViewData["ThreadID"] = id;
             return View();
+        }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return Redirect("/");
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin") return Redirect("/");
+
+            Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            thread.Deleted = true;
+            await _context.SaveChangesAsync();
+
+            ViewData["MessageTitle"] = "Thread deleted sucessfully.";
+            return View("Message");
+        }
+
+        public async Task<IActionResult> Pin(int? id)
+        {
+            if (id == null) return Redirect("/");
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin") return Redirect("/");
+
+            Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            thread.Pinned = true;
+            await _context.SaveChangesAsync();
+
+            ViewData["MessageTitle"] = "Thread pinned.";
+            return View("Message");
+        }
+
+        public async Task<IActionResult> Lock(int? id)
+        {
+            if (id == null) return Redirect("/");
+            if (User.FindFirstValue(ClaimTypes.Role) != "Admin") return Redirect("/");
+
+            Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            thread.Locked = true;
+            await _context.SaveChangesAsync();
+
+            ViewData["MessageTitle"] = "Thread has been locked";
+            return View("Message");
         }
     }
 }
