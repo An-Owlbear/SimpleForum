@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,13 @@ namespace SimpleForum.Web
             if (dbConnectionString == null) throw new NullReferenceException();
 
             services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                {
+                    options.LoginPath = new PathString("/Login");
+                    options.AccessDeniedPath = new PathString("/Home/Forbidden");
+                });
+            
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
