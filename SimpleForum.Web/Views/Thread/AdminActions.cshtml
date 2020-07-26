@@ -4,16 +4,40 @@
     <span class="content-container-title">Admin actions</span>
     <ul class="action-list">
         <li class="action-list-item">
-            <span class="action-list-item-title">Delete the thread and its contents.</span>
-            <a class="action-list-item-button" href="/Thread/Delete?id=@ViewData["ThreadID"]">Delete thread</a>
+            @if (!ViewBag.Thread.Deleted)
+            {
+                <span class="action-list-item-title">Delete the thread and its contents.</span>
+                <a class="action-list-item-button" href="/Thread/Delete?id=@ViewData["ThreadID"]">Delete thread</a>
+            }
+            else
+            {
+                <span class="action-list-item-title">Restore the thread and its contents.</span>
+                <a class="action-list-item-button" asp-action="Restore" asp-route-id="@ViewData["ThreadID"]">Restore thread</a>
+            }
         </li>
         <li class="action-list-item">
-            <span class="action-list-item-title">Pin the thread to the top of the list.</span>
-            <a class="action-list-item-button" href="/Thread/Pin?id=@ViewData["ThreadID"]">Pin thread</a>
+            @if (!ViewBag.Thread.Pinned)
+            {
+                <span class="action-list-item-title">Pin the thread to the top of the list.</span>
+                <a class="action-list-item-button" href="/Thread/Pin?id=@ViewData["ThreadID"]">Pin thread</a>
+            }
+            else
+            {
+                <span class="action-list-item-title">Unpin the thread.</span>
+                <a class="action-list-item-button" asp-action="Unpin" asp-route-id="@ViewData["ThreadID"]">Unpin thread</a>
+            }
         </li>
         <li class="action-list-item">
-            <span class="action-list-item-title">Lock the thread, preventing it from recieving further replies.</span>
-            <a class="action-list-item-button" href="/Thread/Lock?id=@ViewData["ThreadID"]">Lock thread</a>
+            @if (!ViewBag.Thread.Locked)
+            {
+                <span class="action-list-item-title">Lock the thread, preventing it from recieving further replies.</span>
+                <a class="action-list-item-button" href="/Thread/Lock?id=@ViewData["ThreadID"]">Lock thread</a>
+            }
+            else
+            {
+                <span class="action-list-item-title">Unlock the thread, allowing it recieve replies again.</span>
+                <a class="action-list-item-button" asp-action="Unlock" asp-route-id="@ViewData["ThreadID"]">Unlock thread</a>
+            }
         </li>
     </ul>
     
