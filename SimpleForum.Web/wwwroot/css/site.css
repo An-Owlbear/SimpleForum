@@ -298,6 +298,8 @@ textarea:focus, input:focus {
   text-align: center;
   text-decoration: none;
   color: royalblue;
+  max-width: 80%;
+  word-break: break-word;
 }
 
 .post-profile-img {
