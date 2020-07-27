@@ -7,6 +7,7 @@
     <form class="login-form" action="/Login/SendLogin" method="post">
         <input class="login-input" type="text" placeholder="Username/Email" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
+        <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]">
         
         @if (ViewData["error"] != null)
         {

@@ -20,7 +20,7 @@ namespace SimpleForum.Web.Controllers
             _context = context;
         }
         
-        public IActionResult Index(int? error)
+        public IActionResult Index(int? error, string ReturnUrl)
         {
             List<string> errors = new List<string>()
             {
@@ -30,11 +30,12 @@ namespace SimpleForum.Web.Controllers
             };
 
             if (error != null) ViewData["error"] = errors[(int)error];
+            ViewData["ReturnUrl"] = ReturnUrl;
             
             return View("Login");
         }
 
-        public async Task<IActionResult> SendLogin(string username, string password)
+        public async Task<IActionResult> SendLogin(string username, string password, string ReturnUrl)
         {
             if (User.Identity.IsAuthenticated) return Redirect("/");
             if (username == null || password == null) return Redirect("/Login?error=0");
@@ -73,7 +74,7 @@ namespace SimpleForum.Web.Controllers
                     AllowRefresh = false
                 });
             
-            return Redirect("/");
+            return Redirect(ReturnUrl ?? "/");
         }
 
         public async Task<IActionResult> Logout()
