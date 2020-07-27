@@ -4,7 +4,7 @@
 
 <div class="variable-container">
     <span class="login-form-title">Login</span>
-    <form class="login-form" action="/Login/SendLogin" method="post">
+    <form class="login-form" asp-action="SendLogin" method="post">
         <input class="login-input" type="text" placeholder="Username/Email" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
         <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]">
@@ -14,7 +14,7 @@
             <span class="form-error">@ViewData["error"]</span>
         }
         
-        <a class="login-link" href="/Signup">Signup</a>
+        <a class="login-link" asp-controller="Signup">Signup</a>
         <button class="login-button" type="submit">Login</button>
     </form>
 </div>

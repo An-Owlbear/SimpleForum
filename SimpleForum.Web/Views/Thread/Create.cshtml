@@ -1,6 +1,6 @@
 <div class="content-container">
     <span class="content-container-title">Create thread</span>
-    <form class="thread-create-form" action="/Thread/CreateThread" method="post">
+    <form class="thread-create-form" asp-action="CreateThread" method="post">
         <input class="thread-create-input" type="text" placeholder="Thread title" name="title" data-com.bitwarden.browser.user-edited="yes">
         <textarea class="thread-create-input" placeholder="Thread contents" name="content"></textarea>
         <button class="post-button" type="submit">Post</button>

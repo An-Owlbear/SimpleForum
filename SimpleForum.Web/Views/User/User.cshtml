@@ -63,8 +63,8 @@
                 }
                 else if (ViewBag.PageCount - ViewBag.Page >= 2)
                 {
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@(ViewBag.Page + 1)">&gt;</a>
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@ViewData["PageCount"]">&gt;&gt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@(ViewBag.Page + 1)">&gt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@ViewData["PageCount"]">&gt;&gt;</a>
                 }
             </div>
         }

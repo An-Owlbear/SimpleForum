@@ -4,7 +4,7 @@
 
 <div class="variable-container">
     <span class="login-form-title">Signup</span>
-    <form class="login-form" action="/Signup/SendSignup" method="post">
+    <form class="login-form" asp-action="SendSignup" method="post">
         <input class="login-input" type="text" placeholder="Email" name="email">
         <input class="login-input" type="text" placeholder="Username" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
@@ -15,7 +15,7 @@
             <span class="form-error">@ViewData["error"]</span>
         }
         
-        <a class="login-link" href="/Login">Login</a>
+        <a class="login-link" asp-controller="Login">Login</a>
         <button class="login-button" type="submit">Signup</button>
     </form>
 </div>
