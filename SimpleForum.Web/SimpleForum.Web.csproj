@@ -62,4 +62,8 @@
       <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\lib" />
+    </ItemGroup>
+
 </Project>
