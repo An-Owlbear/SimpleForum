@@ -36,9 +36,10 @@ namespace SimpleForum.Web.Controllers
             ViewData["PostCount"] = user.Comments.Count;
             ViewData["Title"] = user.Username;
             ViewData["User"] = user;
-            ViewData["PageComments"] = user.UserPageComments.OrderByDescending(x => x.DatePosted).Skip((page - 1) * CommentsPerPage).Take(CommentsPerPage);
+            ViewData["PageComments"] = user.UserPageComments.OrderByDescending(x => x.DatePosted)
+                .Skip((page - 1) * CommentsPerPage).Take(CommentsPerPage);
             ViewData["Page"] = page;
-            ViewData["PageCount"] = (user.UserComments.Count + (CommentsPerPage - 1)) / CommentsPerPage;
+            ViewData["PageCount"] = (user.UserPageComments.Count + (CommentsPerPage - 1)) / CommentsPerPage;
 
             return View("User");
         }

@@ -6,7 +6,7 @@
         <span class="content-container-title">@ViewData["ThreadTitle"]</span>
         @if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
         {
-            <a class="content-container-top-link" href="/Thread/AdminActions?id=@ViewData["ThreadID"]">Admin Actions</a>
+            <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@ViewData["ThreadID"]">Admin Actions</a>
         }
     </div>
     <ul class="thread-posts">
@@ -14,7 +14,7 @@
         {
             <li class="thread-post">
                 <div class="post-user">
-                    <a class="post-username" href="/User?id=@comment.UserID">@comment.User.Username</a>
+                    <a class="post-username" asp-controller="User" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
                     <img class="post-profile-img" src="~/img/defaultprofile.png">
                     <span class="post-date">@comment.DatePosted.ToShortDateString()
                                             @comment.DatePosted.ToShortTimeString()</span>
@@ -30,7 +30,7 @@
     
     @if (ViewBag.Page == ViewBag.PageCount)
     {
-        <form class="post-form" action="/Thread/PostComment" method="post">
+        <form class="post-form" asp-action="PostComment" method="post">
             <textarea class="post-input" placeholder="Post" name="content"></textarea>
             <input type="hidden" name="threadID" value="@ViewData["ThreadID"]">
             <button class="post-button" type="submit">Post</button>
@@ -40,26 +40,26 @@
     @if (ViewBag.PageCount != 1)
     {
         <div class="page-links">
-            @if (ViewBag.Page > 1)
+            @if (ViewBag.Page == 2)
             {
-                <a class="page-link" href="/Thread?id=@ViewData["ThreadID"]">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]">&lt;</a>
             }
             else if (ViewBag.Page > 2)
             {
-                <a class="page-link" href="/Thread?id=@ViewData["ThreadID"]">&lt;&lt;</a>
-                <a class="page-link" href="/Thread?id=@ViewData["ThreadID"]&page=@(ViewBag.Page - 1)">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]">&lt;&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@(ViewBag.Page - 1)">&lt;</a>
             }
             
             <p class="page-link">@ViewData["Page"]</p>
             
             @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
             {
-                <a class="page-link" href="/Thread?id=@ViewData["ThreadID"]&page=@ViewData["PageCount"]">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@ViewData["PageCount"]">&gt;</a>
             }
-            else if (ViewBag.PageCount - ViewBag.Page > 2)
+            else if (ViewBag.PageCount - ViewBag.Page >= 2)
             {
-                <a class="page-link" href="/Thread?id=@ViewData["ThreadID"]&page=@(ViewBag.PageCount + 1)">&gt;</a>
-                <a class="page-link" href="/Thread?id=@ViewData["ThreadID"]&page=@ViewData["PageCount"]">&gt;&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@(ViewBag.Page + 1)">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@ViewData["PageCount"]">&gt;&gt;</a>
             }
         </div>
     }

@@ -45,7 +45,7 @@
         @if (ViewBag.PageCount > 1)
         {
             <div class="page-links">
-                @if (ViewBag.Page > 1)
+                @if (ViewBag.Page == 2)
                 {
                     <a class="page-link" href="/User?id=@ViewBag.User.UserID">&lt;</a>
                 }
@@ -61,9 +61,9 @@
                 {
                     <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@ViewData["PageCount"]">&gt;</a>
                 }
-                else if (ViewBag.PageCount - ViewBag.Page > 2)
+                else if (ViewBag.PageCount - ViewBag.Page >= 2)
                 {
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@(ViewBag.PageCount + 1)">&gt;</a>
+                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@(ViewBag.Page + 1)">&gt;</a>
                     <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@ViewData["PageCount"]">&gt;&gt;</a>
                 }
             </div>
