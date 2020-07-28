@@ -121,7 +121,7 @@ namespace SimpleForum.Web.Controllers
             thread.Deleted = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Thread deleted sucessfully.";
+            ViewData["MessageTitle"] = ViewData["Title"] = "Thread deleted successfully.";
             return View("Message");
         }
 
@@ -134,7 +134,7 @@ namespace SimpleForum.Web.Controllers
             thread.Pinned = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Thread pinned.";
+            ViewData["MessageTitle"] = ViewData["Title"] = "Thread pinned.";
             return View("Message");
         }
 
@@ -148,7 +148,7 @@ namespace SimpleForum.Web.Controllers
             thread.Locked = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Thread has been locked";
+            ViewData["MessageTitle"] = ViewData["Title"] = "Thread has been locked";
             return View("Message");
         }
         
@@ -162,7 +162,7 @@ namespace SimpleForum.Web.Controllers
             thread.Deleted = false;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Thread restored.";
+            ViewData["MessageTitle"] = ViewData["Title"] = "Thread restored.";
             return View("Message");
         }
 
@@ -175,7 +175,7 @@ namespace SimpleForum.Web.Controllers
             thread.Pinned = false;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Thread unpinned";
+            ViewData["MessageTitle"] = ViewData["Title"] = "Thread unpinned";
             return View("Message");
         }
 
@@ -188,7 +188,7 @@ namespace SimpleForum.Web.Controllers
             thread.Locked = false;
             await _context.SaveChangesAsync();
 
-            ViewData["Message"] = "Thread unlocked";
+            ViewData["Message"] = ViewData["Title"] = "Thread unlocked";
             return View("Message");
         }
     }

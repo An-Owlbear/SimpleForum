@@ -43,6 +43,7 @@ namespace SimpleForum.Web.Controllers
 
         public IActionResult Forbidden()
         {
+            ViewData["Title"] = "Forbidden";
             ViewData["MessageTitle"] = "Access denied.";
             return View("Message");
         }

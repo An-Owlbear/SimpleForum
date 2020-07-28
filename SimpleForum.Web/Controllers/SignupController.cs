@@ -88,6 +88,7 @@ namespace SimpleForum.Web.Controllers
             ViewData["MessageTitle"] = "Signup complete!";
             ViewData["MessageContent"] = "Before you can use your account your email must be verified. " +
                                         "We have sent a verification message to your email account";
+            ViewData["Title"] = "Signup complete";
             return View("Message");
         }
 
@@ -108,7 +109,8 @@ namespace SimpleForum.Web.Controllers
             emailCode.User.Activated = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = "Email verified sucessfully. You can now login.";
+            ViewData["Title"] = "Email verified";
+            ViewData["MessageTitle"] = "Email verified successfully. You can now login.";
             return View("Message");
         }
     }
