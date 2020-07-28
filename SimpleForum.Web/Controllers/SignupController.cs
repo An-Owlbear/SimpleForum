@@ -8,9 +8,11 @@ using Microsoft.Extensions.Options;
 using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
+    [AnonymousOnly]
     public class SignupController : Controller
     {
         private readonly ApplicationDbContext _context;

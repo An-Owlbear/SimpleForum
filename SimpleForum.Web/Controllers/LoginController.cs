@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
@@ -20,6 +21,7 @@ namespace SimpleForum.Web.Controllers
             _context = context;
         }
         
+        [AnonymousOnly]
         public IActionResult Index(int? error, string ReturnUrl)
         {
             List<string> errors = new List<string>()
@@ -35,9 +37,9 @@ namespace SimpleForum.Web.Controllers
             return View("Login");
         }
 
+        [AnonymousOnly]
         public async Task<IActionResult> SendLogin(string username, string password, string ReturnUrl)
         {
-            if (User.Identity.IsAuthenticated) return Redirect("/");
             if (username == null || password == null) return Redirect("/Login?error=0");
             
             User user;
