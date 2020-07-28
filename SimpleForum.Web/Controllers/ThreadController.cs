@@ -113,16 +113,11 @@ namespace SimpleForum.Web.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Policy = "OwnerOrAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return Redirect("/");
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
-            if (User.FindFirstValue(ClaimTypes.Role) != "Admin" ||
-                User.FindFirstValue(ClaimTypes.NameIdentifier) == thread.UserID.ToString())
-                return Redirect("/");
-
-            
             thread.Deleted = true;
             await _context.SaveChangesAsync();
 

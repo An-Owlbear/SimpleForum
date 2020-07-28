@@ -1,5 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using SimpleForum.Internal;
+using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web
 {
@@ -36,6 +39,16 @@ namespace SimpleForum.Web
                     options.LoginPath = new PathString("/Login");
                     options.AccessDeniedPath = new PathString("/Home/Forbidden");
                 });
+
+            services.AddHttpContextAccessor();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("OwnerOrAdmin", policy =>
+                {
+                    policy.Requirements.Add(new OwnerOrAdminRequirement());
+                });
+            });
+            services.AddScoped<IAuthorizationHandler, OwnerOrAdminHandler>();
             
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>
