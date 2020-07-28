@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
@@ -18,7 +19,6 @@ namespace SimpleForum.Web.Controllers
             _context = context;
         }
         
-        // GET
         public IActionResult Index(int? id, int page = 1)
         {
             if (id == null) return Redirect("/");
@@ -44,9 +44,9 @@ namespace SimpleForum.Web.Controllers
             return View("User");
         }
 
+        [Authorize]
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {
-            if (!User.Identity.IsAuthenticated) return Redirect("/Login");
             if (content == null) return Redirect("/");
             
             UserComment comment = new UserComment()

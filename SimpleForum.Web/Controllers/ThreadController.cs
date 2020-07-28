@@ -19,7 +19,6 @@ namespace SimpleForum.Web.Controllers
             _context = context;
         }
         
-        // GET
         public IActionResult Index(int? id, int page = 1)
         {
             if (id == null) return Redirect("/");
@@ -84,26 +83,21 @@ namespace SimpleForum.Web.Controllers
 
             return Redirect("/Thread?id=" + threadID);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> PostComment([FromForm] string content, [FromForm] int threadID)
+        
+        [Authorize]
+        public async Task<IActionResult> PostComment(string content, int threadID)
         {
-            if (User.Identity.IsAuthenticated)
+            Comment comment = new Comment()
             {
-                Comment comment = new Comment()
-                {
-                    Content = content,
-                    DatePosted = DateTime.Now,
-                    ThreadID = threadID,
-                    UserID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)
-                };
-                await _context.Comments.AddAsync(comment);
-                await _context.SaveChangesAsync();
-                
-                return Redirect("/Thread?id=" + threadID.ToString());
-            }
-
-            return Redirect("/Login");
+                Content = content,
+                DatePosted = DateTime.Now,
+                ThreadID = threadID,
+                UserID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)
+            };
+            await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+            
+            return Redirect("/Thread?id=" + threadID.ToString());
         }
 
         [Authorize(Roles = "Admin")]
