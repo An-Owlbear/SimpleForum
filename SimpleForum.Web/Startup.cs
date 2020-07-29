@@ -1,7 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,8 +46,13 @@ namespace SimpleForum.Web
                 {
                     policy.Requirements.Add(new OwnerOrAdminRequirement());
                 });
+                options.AddPolicy("Owner", policy =>
+                {
+                    policy.Requirements.Add(new OwnerRequirement());
+                });
             });
             services.AddScoped<IAuthorizationHandler, OwnerOrAdminHandler>();
+            services.AddScoped<IAuthorizationHandler, OwnerHandler>();
             
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>
