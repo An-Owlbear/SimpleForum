@@ -23,6 +23,10 @@
         @foreach ((Thread thread, int replies) in (IEnumerable<(Thread, int)>)ViewData["Threads"])
         {
             <li class="list-item">
+                @if (thread.Pinned)
+                {
+                    <i class="ri-pushpin-2-fill list-item-icon"></i> 
+                }
                 <a class="list-item-title list-item-property" asp-controller="Thread" asp-route-id="@thread.ThreadID">@thread.Title</a>
                 <span class="list-item-property">@replies replies</span>
                 <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>

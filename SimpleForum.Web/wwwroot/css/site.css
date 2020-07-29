@@ -185,7 +185,7 @@ textarea:focus, input:focus {
 
 .list-item-icon {
   font-size: 1rem;
-  line-height: 1rem;
+  line-height: 4rem;
   margin: 0 0 0 1rem;
   color: var(--text-primary);
 }

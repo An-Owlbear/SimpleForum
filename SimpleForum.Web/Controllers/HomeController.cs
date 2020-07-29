@@ -21,8 +21,12 @@ namespace SimpleForum.Web.Controllers
         public IActionResult Index(int page = 1)
         {
             // Creates a list of threads and replies and returns the view
-            IEnumerable<(Thread, int)> threads = _context.Threads.Where(x =>x.Deleted == false)
-                .OrderByDescending(x => x.DatePosted).Skip((page - 1) * ThreadsPerPage).Take(ThreadsPerPage)
+            IEnumerable<(Thread, int)> threads = _context.Threads
+                .Where(x =>x.Deleted == false)
+                .OrderByDescending(x => x.Pinned)
+                .ThenByDescending(x => x.DatePosted)
+                .Skip((page - 1) * ThreadsPerPage)
+                .Take(ThreadsPerPage)
                 .ToList().Select(x => (x, x.Comments.Count));
             
             ViewData["Threads"] = threads;
