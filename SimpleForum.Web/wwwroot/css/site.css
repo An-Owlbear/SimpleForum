@@ -478,10 +478,14 @@ textarea.thread-create-input {
   text-decoration: none;
   color: var(--text-primary-light);
   font-size: 1.25rem;
-  margin: 1rem 2rem 1rem 2rem;
+  margin: 1rem 0.5rem 1rem 0;
   padding: 0.5rem 1rem 0.5rem 1rem;
   border-radius: 10px;
   background-color: royalblue;
+}
+
+.content-container-top-link:last-child {
+  margin-right: 2rem;
 }
 
 .top-message {
