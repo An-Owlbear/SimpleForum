@@ -39,10 +39,10 @@
                     @if (!User.Identity.IsAuthenticated)
                     {
                         <li class="dropdown-item">
-                            <a class="dropdown-link" asp-controller="Login">Login</a>
+                            <a class="dropdown-link" asp-controller="Login" asp-action="Index">Login</a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="dropdown-link" asp-controller="Signup">Signup</a>
+                            <a class="dropdown-link" asp-controller="Signup" asp-action="Index">Signup</a>
                         </li>
                     }
                     else if (User.Identity.IsAuthenticated)
