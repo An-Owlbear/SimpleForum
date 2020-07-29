@@ -22,6 +22,7 @@ namespace SimpleForum.Web.Controllers
         public IActionResult Index(int? id, int page = 1)
         {
             if (id == null) return Redirect("/");
+
             Thread thread;
 
             try
@@ -31,6 +32,13 @@ namespace SimpleForum.Web.Controllers
             catch (InvalidOperationException)
             {
                 return Redirect("/");
+            }
+
+            if (thread.Deleted)
+            {
+                ViewData["Title"] = "Removed";
+                ViewData["MessageTitle"] = "This thread has been removed.";
+                return View("Message");
             }
 
             ViewData["Title"] = thread.Title;
