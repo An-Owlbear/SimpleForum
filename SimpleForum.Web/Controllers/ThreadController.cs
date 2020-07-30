@@ -93,7 +93,7 @@ namespace SimpleForum.Web.Controllers
             return Redirect("/Thread?id=" + threadID);
         }
         
-        [Authorize]
+        [Authorize(Policy = "ThreadReply")]
         public async Task<IActionResult> PostComment(string content, int threadID)
         {
             Comment comment = new Comment()

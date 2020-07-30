@@ -50,9 +50,14 @@ namespace SimpleForum.Web
                 {
                     policy.Requirements.Add(new OwnerRequirement());
                 });
+                options.AddPolicy("ThreadReply", policy =>
+                {
+                    policy.Requirements.Add(new ThreadReplyRequirement());
+                });
             });
             services.AddScoped<IAuthorizationHandler, OwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, OwnerHandler>();
+            services.AddScoped<IAuthorizationHandler, ThreadReplyHandler>();
             
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>
