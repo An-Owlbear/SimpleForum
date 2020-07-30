@@ -66,4 +66,16 @@
       <Folder Include="wwwroot\lib" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Policies\OwnerOrAdminHandler.cs">
+        <DependentUpon>OwnerOrAdminRequirement.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Policies\OwnerHandler.cs">
+        <DependentUpon>OwnerRequirement.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Policies\ThreadReplyHandler.cs">
+        <DependentUpon>ThreadReplyRequirement.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
