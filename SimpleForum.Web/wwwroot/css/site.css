@@ -545,6 +545,14 @@ h1.top-message-text {
   background: royalblue;
 }
 
+.thread-message {
+  margin: 1rem 2rem 0 2rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  text-align: center;
+}
+
 @media only screen and (max-width:800px) {
   .navbar-nav {
     overflow: hidden;

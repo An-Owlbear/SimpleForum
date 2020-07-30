@@ -35,11 +35,20 @@
     
     @if (ViewBag.Page == ViewBag.PageCount)
     {
-        <form class="post-form" asp-action="PostComment" method="post">
-            <textarea class="post-input" placeholder="Post" name="content"></textarea>
-            <input type="hidden" name="threadID" value="@ViewData["ThreadID"]">
-            <button class="post-button" type="submit">Post</button>
-        </form>
+        if (!ViewBag.Locked)
+        {
+            <form class="post-form" asp-action="PostComment" method="post">
+                <textarea class="post-input" placeholder="Post" name="content"></textarea>
+                <input type="hidden" name="threadID" value="@ViewData["ThreadID"]">
+                <button class="post-button" type="submit">Post</button>
+            </form>
+        }
+        else
+        {
+            <div class="thread-message">
+                <h1 class="top-message-text">This thread is locked, it is no longer open for comments or replies.</h1>
+            </div>
+        }
     }
     
     @if (ViewBag.PageCount != 1)

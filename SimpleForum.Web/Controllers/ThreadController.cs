@@ -44,6 +44,7 @@ namespace SimpleForum.Web.Controllers
             ViewData["Title"] = thread.Title;
             ViewData["ThreadTitle"] = thread.Title;
             ViewData["ThreadID"] = thread.ThreadID;
+            ViewData["Locked"] = thread.Locked;
             ViewData["Comments"] = thread.Comments.OrderBy(x => x.DatePosted)
                 .Skip((page - 1) * PostsPerPage).Take(PostsPerPage);
             ViewData["Page"] = page;
