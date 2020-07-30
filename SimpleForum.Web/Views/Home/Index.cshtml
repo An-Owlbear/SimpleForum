@@ -27,6 +27,10 @@
                 {
                     <i class="ri-pushpin-2-fill list-item-icon"></i> 
                 }
+                @if (thread.Locked)
+                {
+                    <i class="ri-lock-fill list-item-icon"></i>
+                }
                 <a class="list-item-title list-item-property" asp-controller="Thread" asp-route-id="@thread.ThreadID">@thread.Title</a>
                 <span class="list-item-property">@replies replies</span>
                 <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
