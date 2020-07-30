@@ -199,8 +199,12 @@ i.content-container-title {
 .list-item-icon {
   font-size: 1rem;
   line-height: 4rem;
-  margin: 0 0 0 1rem;
+  margin: 0 0 0 0.5rem;
   color: var(--text-primary);
+}
+
+.list-item-icon:first-child {
+  margin-left: 1rem;
 }
 
 .list-item-title {
