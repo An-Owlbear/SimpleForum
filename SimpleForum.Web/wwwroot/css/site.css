@@ -140,13 +140,26 @@ textarea:focus, input:focus {
 
 .content-container-title {
   display: inline-block;
-  padding: 2rem 2rem 2rem 2rem;
+  margin: 2rem 0 2rem 1rem;
   font-size: 2rem;
   color: var(--text-primary);
+  vertical-align: middle;
 }
 
-.content-container-title:hover {
+.content-container-title:first-child {
+  margin-left: 2rem;
+}
+
+span.content-container-title {
+  font-size: 2rem;
+}
+
+span.content-container-title:hover {
   cursor: text;
+}
+
+i.content-container-title {
+  font-size: 1.75rem;
 }
 
 .content-list {
@@ -482,6 +495,7 @@ textarea.thread-create-input {
   padding: 0.5rem 1rem 0.5rem 1rem;
   border-radius: 10px;
   background-color: royalblue;
+  vertical-align: middle;
 }
 
 .content-container-top-link:last-child {
@@ -551,6 +565,10 @@ h1.top-message-text {
   background-color: var(--bg-secondary);
   border-radius: 10px;
   text-align: center;
+}
+
+i.content-container-icon {
+  margin-left: 0.125rem;
 }
 
 @media only screen and (max-width:800px) {

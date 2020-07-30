@@ -2,7 +2,17 @@
 
 <div class="content-container">
     <div class="content-container-top">
-        <span class="content-container-title">@ViewData["ThreadTitle"]</span>
+        <div class="content-container-title-container">
+            @if (ViewBag.Pinned)
+            {
+                <i class="ri-pushpin-2-fill content-container-title content-container-icon"></i> 
+            }
+            @if (ViewBag.Locked)
+            {
+                <i class="ri-lock-fill content-container-title content-container-icon"></i>
+            }
+            <span class="content-container-title">@ViewData["ThreadTitle"]</span>
+        </div>
         <div class="content-container-top-link-container">
             @if ((await AuthorizationService.AuthorizeAsync(User, "Owner")).Succeeded)
             {
