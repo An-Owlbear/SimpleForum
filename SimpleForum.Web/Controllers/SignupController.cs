@@ -18,6 +18,15 @@ namespace SimpleForum.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
+        
+        string generateCode(int length)
+        {
+            string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        
 
         public SignupController(ApplicationDbContext context, IEmailService emailService, IOptions<SimpleForumConfig> config)
         {
@@ -61,9 +70,7 @@ namespace SimpleForum.Web.Controllers
 
             // Creates a random 32 character long string and adds to the email codes table
             // TODO - Verify the generated code does not already exist
-            Random random = new Random();
-            string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
-            string code = new string(Enumerable.Repeat(chars, 32).Select(s => s[random.Next(s.Length)]).ToArray());
+            string code = generateCode(32);
 
             EmailCode emailCode = new EmailCode()
             {
@@ -85,9 +92,13 @@ namespace SimpleForum.Web.Controllers
                 "'>" + url + "</a></p>",
                 true);
 
+            string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
+                               userAdded.Entity.UserID;
             ViewData["MessageTitle"] = "Signup complete!";
             ViewData["MessageContent"] = "Before you can use your account your email must be verified. " +
-                                        "We have sent a verification message to your email account";
+                                        "We have sent a verification message to your email account.\n" +
+                                        "If you have not received the email click <a class=top-message-link href='" +
+                                        resendUrl + "'>here</a>.";
             ViewData["Title"] = "Signup complete";
             return View("Message");
         }
@@ -111,6 +122,44 @@ namespace SimpleForum.Web.Controllers
 
             ViewData["Title"] = "Email verified";
             ViewData["MessageTitle"] = "Email verified successfully. You can now login.";
+            return View("Message");
+        }
+
+        public async Task<IActionResult> ResendVerificationEmail(int? userID)
+        {
+            EmailCode emailCode;
+            try
+            {
+                emailCode = _context.EmailCodes.First(x => x.UserID == userID);
+            }
+            catch (InvalidOperationException)
+            {
+                return Redirect("/");
+            }
+
+            string code = generateCode(32);
+
+            EmailCode newEmailCode = new EmailCode()
+            {
+                Code = code,
+                Type = "Signup",
+                DateCreated = DateTime.Now,
+                ValidUntil = DateTime.Now.AddHours(24),
+                UserID = emailCode.UserID
+            };
+
+            await _context.EmailCodes.AddAsync(newEmailCode);
+            await _context.SaveChangesAsync();
+            
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + code;
+            await _emailService.SendAsync(
+                emailCode.User.Email,
+                "SimpleForum email confirmation",
+                "<p>please confirm your email by clicking the following link: <a href='" + url +
+                "'>" + url + "</a></p>",
+                true);
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Verification email resent.";
             return View("Message");
         }
     }
