@@ -34,7 +34,7 @@
                     <span class="post-date">@comment.DatePosted.ToShortDateString()
                                             @comment.DatePosted.ToShortTimeString()</span>
                 </div>
-                <span class="post-contents">@comment.Content</span>
+                <span class="post-contents">@Html.RenderOutput(comment.Content)</span>
                 <div class="post-footer">
                     <a class="footer-link" href="javascript:void(0)">Reply</a>
                     <a class="footer-link" href="javascript:void(0)">Share</a>
