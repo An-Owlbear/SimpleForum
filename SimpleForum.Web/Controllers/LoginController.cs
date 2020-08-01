@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Policies;
@@ -16,10 +17,12 @@ namespace SimpleForum.Web.Controllers
     public class LoginController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleForumConfig _config;
 
-        public LoginController(ApplicationDbContext context)
+        public LoginController(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
         {
             _context = context;
+            _config = config.Value;
         }
         
         [AnonymousOnly]
@@ -60,7 +63,17 @@ namespace SimpleForum.Web.Controllers
             }
 
             if (user.Password != password) return Redirect("/Login?error=1");
-            if (!user.Activated) return Redirect("/Login?error=2");
+            if (!user.Activated)
+            {
+                string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
+                                   user.UserID;
+                ViewData["Title"] = ViewData["MessageTitle"] = "Email not verified";
+                ViewData["MessageContent"] = "Before you can use your account your email must be verified. " +
+                                             "We have sent a verification message to your email account.\n" +
+                                             "If you have not received the email click <a class=top-message-link href='" +
+                                             resendUrl + "'>here</a>.";
+                return View("Message");
+            }
 
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
