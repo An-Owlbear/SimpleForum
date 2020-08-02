@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SimpleForum.Web.Models;
 using SimpleForum.Internal;
 using SimpleForum.Models;
@@ -11,11 +13,13 @@ namespace SimpleForum.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleForumConfig _config;
         private int ThreadsPerPage = 30;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
         {
             _context = context;
+            _config = config.Value;
         }
 
         public IActionResult Index(int page = 1)
@@ -28,7 +32,24 @@ namespace SimpleForum.Web.Controllers
                 .Skip((page - 1) * ThreadsPerPage)
                 .Take(ThreadsPerPage)
                 .ToList().Select(x => (x, x.Comments.Count));
+
+            // Checks if the user's email is verified and sets EmailVerified accordingly
+            if (User.Identity.IsAuthenticated)
+            {
+                try
+                {
+                    User user = _context.Users.First(x =>
+                        x.UserID.ToString() == User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    ViewData["EmailVerified"] = user.Activated;
+                    ViewData["EmailVerifyRequired"] = _config.RequireEmailVerification;
+                }
+                catch
+                {
+                    ViewData["EmailVerified"] = false;
+                }
+            }
             
+            // Sets thread and page variables and returns view
             ViewData["Threads"] = threads;
             ViewData["Page"] = page;
             ViewData["PageCount"] = (_context.Threads.ToList().Count + (ThreadsPerPage - 1)) / ThreadsPerPage;

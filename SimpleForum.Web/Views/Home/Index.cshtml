@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Security.Claims
+@{
     ViewData["Title"] = "SimpleForum";
 }
 
@@ -7,6 +8,16 @@
     {
         <h1 class="top-message-text">Welcome to SimpleForum.
         <a class="top-message-link" asp-controller="Signup">Signup</a> to get started</h1>
+    }
+    else if (!ViewBag.EmailVerified && ViewBag.EmailVerifyRequired)
+    {
+        <h1 class="top-message-text">Your email account is not verified.</h1>
+        <p class="top-message-text">
+            Some functions of the site will be unavailable until you verify your email. We have sent you an email
+            containing a verification link. If you have not recieved the email please click
+            <a class="top-message-link" asp-controller="Signup" asp-action="ResendVerificationEmail"
+                       asp-route-userID="@User.FindFirstValue(ClaimTypes.NameIdentifier)">here</a>.
+        </p>
     }
     else
     {
