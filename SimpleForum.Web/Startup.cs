@@ -58,6 +58,8 @@ namespace SimpleForum.Web
             services.AddScoped<IAuthorizationHandler, OwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, OwnerHandler>();
             services.AddScoped<IAuthorizationHandler, ThreadReplyHandler>();
+
+            services.AddScoped<VerifiedEmail>();
             
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ApplicationDbContext>(options =>

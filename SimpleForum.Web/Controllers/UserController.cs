@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
@@ -45,6 +46,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {
             if (content == null) return Redirect("/");

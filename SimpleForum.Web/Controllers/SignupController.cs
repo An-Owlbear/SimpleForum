@@ -62,7 +62,8 @@ namespace SimpleForum.Web.Controllers
             {
                 Email = email,
                 Username = username,
-                Password = password
+                Password = password,
+                Activated = false
             };
 
             EntityEntry<User> userAdded = await _context.Users.AddAsync(user);
@@ -84,6 +85,7 @@ namespace SimpleForum.Web.Controllers
             await _context.EmailCodes.AddAsync(emailCode);
             await _context.SaveChangesAsync();
 
+            // Sends an email containing the link to verify the email
             string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + code;
             await _emailService.SendAsync(
                 email,
@@ -92,6 +94,8 @@ namespace SimpleForum.Web.Controllers
                 "'>" + url + "</a></p>",
                 true);
 
+            // Returns a signup complete page informing the user about email verification, containing a button to
+            // resend the verification email.
             string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
                                userAdded.Entity.UserID;
             ViewData["MessageTitle"] = "Signup complete!";

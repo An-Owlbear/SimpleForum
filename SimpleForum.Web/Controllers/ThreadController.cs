@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
@@ -55,12 +56,14 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(VerifiedEmail))]
         public IActionResult Create()
         {
             return View();
         }
         
         [Authorize]
+        [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> CreateThread(string title, string content)
         {
             if (title == null || content == null) return Redirect("/Thread/Create");
@@ -95,6 +98,7 @@ namespace SimpleForum.Web.Controllers
         }
         
         [Authorize(Policy = "ThreadReply")]
+        [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> PostComment(string content, int threadID)
         {
             Comment comment = new Comment()
@@ -124,6 +128,7 @@ namespace SimpleForum.Web.Controllers
 
 
         [Authorize(Policy = "OwnerOrAdmin")]
+        [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return Redirect("/");

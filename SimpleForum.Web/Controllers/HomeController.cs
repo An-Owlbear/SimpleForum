@@ -52,5 +52,14 @@ namespace SimpleForum.Web.Controllers
             ViewData["MessageTitle"] = "Access denied.";
             return View("Message");
         }
+
+        public IActionResult EmailUnverified()
+        {
+            ViewData["Title"] = "Forbidden";
+            ViewData["MessageTitle"] = "Your email is not verified.";
+            ViewData["MessageContent"] = "To access this page your email account must be verified. We have sent you" +
+                                         " an email containing the verification link.";
+            return View("Message");
+        }
     }
 }

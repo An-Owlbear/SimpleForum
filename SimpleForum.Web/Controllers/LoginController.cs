@@ -63,17 +63,6 @@ namespace SimpleForum.Web.Controllers
             }
 
             if (user.Password != password) return Redirect("/Login?error=1");
-            if (!user.Activated)
-            {
-                string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
-                                   user.UserID;
-                ViewData["Title"] = ViewData["MessageTitle"] = "Email not verified";
-                ViewData["MessageContent"] = "Before you can use your account your email must be verified. " +
-                                             "We have sent a verification message to your email account.\n" +
-                                             "If you have not received the email click <a class=top-message-link href='" +
-                                             resendUrl + "'>here</a>.";
-                return View("Message");
-            }
 
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
