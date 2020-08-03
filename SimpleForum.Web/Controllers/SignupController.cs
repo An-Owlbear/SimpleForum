@@ -12,7 +12,6 @@ using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
-    [AnonymousOnly]
     public class SignupController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -35,6 +34,7 @@ namespace SimpleForum.Web.Controllers
             _config = config.Value;
         }
         
+        [AnonymousOnly]
         public IActionResult Index(int? error)
         {
             List<string> errors = new List<string>()
@@ -49,6 +49,7 @@ namespace SimpleForum.Web.Controllers
             return View("Signup");
         }
 
+        [AnonymousOnly]
         public async Task<IActionResult> SendSignup(string email, string username, string password)
         {
             // Validates the user input and redirects them if necessary
