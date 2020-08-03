@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Policies;
@@ -18,11 +19,21 @@ namespace SimpleForum.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly SimpleForumConfig _config;
+        private readonly IEmailService _emailService;
+        
+        string generateCode(int length)
+        {
+            string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+            Random random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
-        public LoginController(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
+        public LoginController(ApplicationDbContext context, IOptions<SimpleForumConfig> config, IEmailService emailService)
         {
             _context = context;
             _config = config.Value;
+            _emailService = emailService;
         }
         
         [AnonymousOnly]
@@ -86,6 +97,126 @@ namespace SimpleForum.Web.Controllers
         {
             await HttpContext.SignOutAsync();
             return Redirect("/");
+        }
+
+        [AnonymousOnly]
+        public IActionResult ForgotPassword(int? error)
+        {
+            List<string> errors = new List<string>()
+            {
+                "Enter an email",
+                "No account found with the submitted email"
+            };
+            if (error != null) ViewData["error"] = errors[(int)error];
+            
+            return View();
+        }
+
+        [AnonymousOnly]
+        public async Task<IActionResult> SendForgotPassword(string email)
+        {
+            // Checks the entered email is valid
+            if (email == null) return RedirectToAction("ForgotPassword", new {error = 0});
+            
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.Email == email);
+            }
+            catch
+            {
+                return RedirectToAction("ForgotPassword", new {error = 1});
+            }
+            
+            // Creates new EmailCode and adds it to database
+            string code = generateCode(32);
+            DateTime now = DateTime.Now;
+            
+            EmailCode emailCode = new EmailCode()
+            {
+                Code = code,
+                DateCreated = DateTime.Now,
+                Type = "password_reset",
+                UserID = user.UserID,
+                ValidUntil = now.AddHours(1)
+            };
+            await _context.EmailCodes.AddAsync(emailCode);
+            await _context.SaveChangesAsync();
+
+            // Sends password reset email
+            string url = _config.InstanceURL + "/Login/ResetPassword?code=" + code;
+            await _emailService.SendAsync(
+                user.Email,
+                "SimpleForum password reset",
+                "<p>To reset your password, please click the following link: <a href=\"" + url +
+                "\">" + url + "</a></p>",
+                true
+            );
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Password reset email sent";
+            return View("Message");
+        }
+
+        [AnonymousOnly]
+        public IActionResult ResetPassword(string code, int? error)
+        {
+            List<string> errors = new List<string>()
+            {
+                "Please enter and confirm your new password",
+                "Password does not match confirm password"
+            };
+            
+            EmailCode emailCode;
+            try
+            {
+                emailCode = _context.EmailCodes.First(x => x.Code == code);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            if (error != null)
+            {
+                ViewData["error"] = errors[(int)error];
+            }
+            
+            ViewData["code"] = code;
+            ViewData["userID"] = emailCode.UserID;
+            
+            return View();
+        }
+
+        public async Task<IActionResult> SendResetPassword(string password, string confirmPassword,
+            string code, int? userID)
+        {
+            // Checks the parameters are valid and handles errors accordingly
+            if (code == null || userID == null) return Redirect("/");
+            if (password == null || confirmPassword == null) return RedirectToAction("ResetPassword", new {code, error = 0}); 
+            if (password != confirmPassword) return RedirectToAction("ResetPassword", new {code, error = 1});
+
+            // Checks the submitted userID and code are valid
+            User user;
+            EmailCode emailCode;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == userID);
+                emailCode = _context.EmailCodes.First(x => x.Code == code);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            if (user.UserID != emailCode.UserID) return Redirect("/");
+            if (emailCode.ValidUntil < DateTime.Now) return Redirect("/");
+
+            // Changed password and returns message
+            user.Password = password;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Password changed successfully";
+            return View("Message");
         }
     }
 }

@@ -581,6 +581,31 @@ i.content-container-icon {
   text-decoration: none;
 }
 
+.form-bottom-link {
+  color: royalblue;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  width: 80%;
+  margin: 1rem 10% 1rem 10%;
+}
+
+.reset-password-button {
+  display: block;
+  width: 80%;
+  margin: 1.5rem 10% 0.5rem 10%;
+  color: var(--text-primary-light);
+  border: 0;
+  padding: 1rem;
+  background-color: royalblue;
+  border-radius: 10px;
+  line-height: 19px;
+}
+
+.reset-password-button:hover {
+  cursor: pointer;
+}
+
 @media only screen and (max-width:800px) {
   .navbar-nav {
     overflow: hidden;
