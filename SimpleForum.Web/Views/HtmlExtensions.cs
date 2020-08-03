@@ -19,7 +19,7 @@ namespace SimpleForum.Web.Views
             string output = Regex.Replace(addNewLines, @"\[[^\[\]\n\r]+\]", delegate(Match match)
             {
                 string matchString = match.ToString().Replace("[", "").Replace("]", "");
-                return $"<a href=\"{matchString}\">{matchString}</a>";
+                return $"<a class=\"markdown-link\" href=\"{matchString}\">{matchString}</a>";
             });
             
             return new HtmlString(output);

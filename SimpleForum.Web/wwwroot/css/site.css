@@ -575,6 +575,12 @@ i.content-container-icon {
   margin-left: 0.125rem;
 }
 
+.markdown-link {
+  font-size: inherit;
+  color: royalblue;
+  text-decoration: none;
+}
+
 @media only screen and (max-width:800px) {
   .navbar-nav {
     overflow: hidden;
