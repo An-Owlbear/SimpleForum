@@ -99,10 +99,9 @@ namespace SimpleForum.Web.Controllers
             string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
                                userAdded.Entity.UserID;
             ViewData["MessageTitle"] = "Signup complete!";
-            ViewData["MessageContent"] = "Before you can use your account your email must be verified. " +
+            ViewData["MessageContent"] = "Some features may be restricted until your email is verified. " +
                                         "We have sent a verification message to your email account.\n" +
-                                        "If you have not received the email click <a class=top-message-link href='" +
-                                        resendUrl + "'>here</a>.";
+                                        $"If you have not received the email click here [{resendUrl}] to resend the email";
             ViewData["Title"] = "Signup complete";
             return View("Message");
         }

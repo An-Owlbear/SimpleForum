@@ -76,10 +76,13 @@ namespace SimpleForum.Web.Controllers
 
         public IActionResult EmailUnverified()
         {
+            string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
+                               User.FindFirstValue(ClaimTypes.NameIdentifier);
             ViewData["Title"] = "Forbidden";
             ViewData["MessageTitle"] = "Your email is not verified.";
             ViewData["MessageContent"] = "To access this page your email account must be verified. We have sent you" +
-                                         " an email containing the verification link.";
+                                         " an email containing the verification link. If you have not received the email" +
+                                         $" click here [{resendUrl}]";
             return View("Message");
         }
     }
