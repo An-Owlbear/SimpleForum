@@ -18,7 +18,7 @@
             {
                 <a class="content-container-top-link" asp-action="Delete" asp-route-id="@ViewData["ThreadID"]">Delete thread</a>
             }
-            @if (User.FindFirst(ClaimTypes.Role)?.Value == "Admin")
+            @if (ViewBag.UserRole == "Admin")
             {
                 <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@ViewData["ThreadID"]">Admin actions</a>
             }

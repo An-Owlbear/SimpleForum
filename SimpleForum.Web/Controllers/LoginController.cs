@@ -67,8 +67,7 @@ namespace SimpleForum.Web.Controllers
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-            if (user.Admin) identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-            
+
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
             
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,

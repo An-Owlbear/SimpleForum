@@ -51,6 +51,8 @@ namespace SimpleForum.Web.Controllers
                 .Skip((page - 1) * PostsPerPage).Take(PostsPerPage);
             ViewData["Page"] = page;
             ViewData["PageCount"] = (thread.Comments.Count + (PostsPerPage - 1)) / PostsPerPage;
+            ViewData["UserRole"] = _context.Users
+                .First(x => x.UserID.ToString() == User.FindFirstValue(ClaimTypes.NameIdentifier)).Role;
 
             return View("Thread");
         }

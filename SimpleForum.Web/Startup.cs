@@ -58,6 +58,7 @@ namespace SimpleForum.Web
             services.AddScoped<IAuthorizationHandler, OwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, OwnerHandler>();
             services.AddScoped<IAuthorizationHandler, ThreadReplyHandler>();
+            services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 
             services.AddScoped<VerifiedEmail>();
             

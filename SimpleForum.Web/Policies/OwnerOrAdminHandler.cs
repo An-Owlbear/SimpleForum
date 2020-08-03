@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using SimpleForum.Internal;
+using SimpleForum.Models;
 using Thread = SimpleForum.Models.Thread;
 
 namespace SimpleForum.Web.Policies
@@ -22,7 +23,9 @@ namespace SimpleForum.Web.Policies
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OwnerOrAdminRequirement requirement)
         {
             if (!context.User.Identity.IsAuthenticated) return Task.CompletedTask;
-            if (context.User.FindFirstValue(ClaimTypes.Role) == "Admin") context.Succeed(requirement);
+            User user = _context.Users.First(x =>
+                x.UserID.ToString() == context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user.Role == "Admin") context.Succeed(requirement);
             
             int ThreadID;
             try
