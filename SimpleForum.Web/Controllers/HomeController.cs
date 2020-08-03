@@ -82,7 +82,7 @@ namespace SimpleForum.Web.Controllers
             ViewData["MessageTitle"] = "Your email is not verified.";
             ViewData["MessageContent"] = "To access this page your email account must be verified. We have sent you" +
                                          " an email containing the verification link. If you have not received the email" +
-                                         $" click here [{resendUrl}]";
+                                         $" click [here]({resendUrl}).";
             return View("Message");
         }
     }

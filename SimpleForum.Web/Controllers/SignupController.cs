@@ -101,7 +101,7 @@ namespace SimpleForum.Web.Controllers
             ViewData["MessageTitle"] = "Signup complete!";
             ViewData["MessageContent"] = "Some features may be restricted until your email is verified. " +
                                         "We have sent a verification message to your email account.\n" +
-                                        $"If you have not received the email click here [{resendUrl}] to resend the email";
+                                        $"If you have not received the email click [here]({resendUrl}).";
             ViewData["Title"] = "Signup complete";
             return View("Message");
         }

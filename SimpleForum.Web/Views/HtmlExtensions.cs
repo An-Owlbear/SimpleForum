@@ -16,7 +16,17 @@ namespace SimpleForum.Web.Views
                 message.Split(new [] { Environment.NewLine }, StringSplitOptions.None)
                     .Select(HttpUtility.HtmlEncode));
 
-            string output = Regex.Replace(addNewLines, @"\[[^\[\]\n\r]+\]", delegate(Match match)
+            string addLinks = Regex.Replace(addNewLines, @"\[[^\[\]\n\r]+\]\([^\(\)\n\r]+\)", delegate(Match match)
+            {
+                string matchString = match.ToString();
+                string title = Regex.Match(matchString, @"\[[^\[\]\n\r]+\]").Value
+                    .Replace("[", "").Replace("]","");
+                string url = Regex.Match(matchString, @"\([^\(\)\n\r]+\)").Value
+                    .Replace("(","").Replace(")","");
+                return $"<a class=\"markdown-link\" href=\"{url}\">{title}</a>";
+            });
+            
+            string output = Regex.Replace(addLinks, @"\[[^\[\]\n\r]+\]", delegate(Match match)
             {
                 string matchString = match.ToString().Replace("[", "").Replace("]", "");
                 return $"<a class=\"markdown-link\" href=\"{matchString}\">{matchString}</a>";
