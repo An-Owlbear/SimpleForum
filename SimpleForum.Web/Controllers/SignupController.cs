@@ -64,7 +64,8 @@ namespace SimpleForum.Web.Controllers
                 Email = email,
                 Username = username,
                 Password = password,
-                Activated = false
+                Activated = false,
+                SignupDate = DateTime.Now
             };
 
             EntityEntry<User> userAdded = await _context.Users.AddAsync(user);
