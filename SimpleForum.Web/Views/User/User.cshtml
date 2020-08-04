@@ -7,11 +7,13 @@
             <span class="profile-property">@ViewData["PostCount"] Posts/Comments</span>
         </div>
 
-        <span class="content-container-title">Comments</span>
+        <div class="content-container-top">
+            <span class="content-container-title">Comments</span>
+        </div>
 
         @if (User.Identity.IsAuthenticated && ViewBag.Page == 1)
         {
-            <form class="post-form profile-post-form" action="/User/PostUserComment" method="post">
+            <form class="post-form profile-post-form" asp-action="PostUserComment" method="post">
                 <textarea class="post-input" placeholder="Comment" name="content"></textarea>
                 <input type="hidden" name="userPageID" value="@ViewBag.User.UserID">
                 <button class="post-button" type="submit">Post</button>
@@ -23,7 +25,7 @@
             {
                 <li class="thread-post">
                     <div class="post-user">
-                        <a class="post-username" href="/User?id=@comment.UserID">@comment.User.Username</a>
+                        <a class="post-username" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
                         <img class="post-profile-img" src="~/img/defaultprofile.png">
                         <span class="post-date">
                             @comment.DatePosted.ToShortDateString()
@@ -45,19 +47,19 @@
             <div class="page-links">
                 @if (ViewBag.Page == 2)
                 {
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID">&lt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID">&lt;</a>
                 }
                 else if (ViewBag.Page > 2)
                 {
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID">&lt;&lt;</a>
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@(ViewBag.Page - 1)">&lt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID">&lt;&lt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@(ViewBag.Page - 1)">&lt;</a>
                 }
 
                 <p class="page-link">@ViewData["Page"]</p>
 
                 @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
                 {
-                    <a class="page-link" href="/User?id=@ViewBag.User.UserID&page=@ViewData["PageCount"]">&gt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@ViewData["PageCount"]">&gt;</a>
                 }
                 else if (ViewBag.PageCount - ViewBag.Page >= 2)
                 {
