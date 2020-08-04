@@ -42,23 +42,33 @@ namespace SimpleForum.Web
             services.AddHttpContextAccessor();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("OwnerOrAdmin", policy =>
+                options.AddPolicy("ThreadOwnerOrAdmin", policy =>
                 {
-                    policy.Requirements.Add(new OwnerOrAdminRequirement());
+                    policy.Requirements.Add(new ThreadOwnerOrAdminRequirement());
                 });
-                options.AddPolicy("Owner", policy =>
+                options.AddPolicy("ThreadOwner", policy =>
                 {
-                    policy.Requirements.Add(new OwnerRequirement());
+                    policy.Requirements.Add(new ThreadOwnerRequirement());
                 });
                 options.AddPolicy("ThreadReply", policy =>
                 {
                     policy.Requirements.Add(new ThreadReplyRequirement());
                 });
+                options.AddPolicy("UserOwner", policy =>
+                {
+                    policy.Requirements.Add(new UserOwnerRequirement());
+                });
+                options.AddPolicy("UserOwnerOrAdmin", policy =>
+                {
+                    policy.Requirements.Add(new UserOwnerOrAdminRequirement());
+                });
             });
-            services.AddScoped<IAuthorizationHandler, OwnerOrAdminHandler>();
-            services.AddScoped<IAuthorizationHandler, OwnerHandler>();
+            services.AddScoped<IAuthorizationHandler, ThreadOwnerOrAdminHandler>();
+            services.AddScoped<IAuthorizationHandler, ThreadOwnerHandler>();
             services.AddScoped<IAuthorizationHandler, ThreadReplyHandler>();
             services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, UserOwnerHandler>();
+            services.AddScoped<IAuthorizationHandler, UserOwnerOrAdminHandler>();
 
             services.AddScoped<VerifiedEmail>();
 

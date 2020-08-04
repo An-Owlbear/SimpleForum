@@ -14,7 +14,7 @@
             <span class="content-container-title">@ViewData["ThreadTitle"]</span>
         </div>
         <div class="content-container-top-link-container">
-            @if ((await AuthorizationService.AuthorizeAsync(User, "Owner")).Succeeded)
+            @if ((await AuthorizationService.AuthorizeAsync(User, "ThreadOwner")).Succeeded)
             {
                 <a class="content-container-top-link" asp-action="Delete" asp-route-id="@ViewData["ThreadID"]">Delete thread</a>
             }

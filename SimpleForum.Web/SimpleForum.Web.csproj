@@ -74,14 +74,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Policies\OwnerOrAdminHandler.cs">
+      <Compile Update="Policies\ThreadOwnerOrAdminHandler.cs">
         <DependentUpon>OwnerOrAdminRequirement.cs</DependentUpon>
       </Compile>
-      <Compile Update="Policies\OwnerHandler.cs">
-        <DependentUpon>OwnerRequirement.cs</DependentUpon>
+      <Compile Update="Policies\ThreadOwnerHandler.cs">
+        <DependentUpon>ThreadOwnerRequirement.cs</DependentUpon>
       </Compile>
       <Compile Update="Policies\ThreadReplyHandler.cs">
         <DependentUpon>ThreadReplyRequirement.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Policies\UserOwnerOrAdminHandler.cs">
+        <DependentUpon>UserOwnerOrAdminRequirement.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Policies\UserOwnerHandler.cs">
+        <DependentUpon>UserOwnerRequirement.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

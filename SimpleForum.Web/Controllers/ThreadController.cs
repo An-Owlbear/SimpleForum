@@ -133,7 +133,7 @@ namespace SimpleForum.Web.Controllers
         }
 
 
-        [Authorize(Policy = "OwnerOrAdmin")]
+        [Authorize(Policy = "ThreadOwnerOrAdmin")]
         [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> Delete(int? id)
         {
