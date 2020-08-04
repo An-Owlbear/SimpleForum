@@ -25,7 +25,11 @@ namespace SimpleForum.Web.Policies
             if (!context.User.Identity.IsAuthenticated) return Task.CompletedTask;
             User user = _context.Users.First(x =>
                 x.UserID.ToString() == context.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (user.Role == "Admin") context.Succeed(requirement);
+            if (user.Role == "Admin")
+            {
+                context.Succeed(requirement);
+                return Task.CompletedTask;
+            }
             
             int ThreadID;
             try

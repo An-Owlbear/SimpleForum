@@ -26,6 +26,7 @@ namespace SimpleForum.Web.Policies
                 .Role == "Admin")
             {
                 context.Succeed(requirement);
+                return Task.CompletedTask;
             }
 
             string userID;
