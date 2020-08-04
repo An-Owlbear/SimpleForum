@@ -64,5 +64,44 @@ namespace SimpleForum.Web.Controllers
 
             return Redirect("/User?id=" + userPageID);
         }
+
+        [Authorize]
+        public IActionResult CommentSettings()
+        {
+            ViewData["UserID"] = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View();
+        }
+
+        [Authorize(Policy = "UserOwnerOrAdmin")]
+        public async Task<IActionResult> LockComments(int? id)
+        {
+            if (id == null) return Redirect("/");
+            
+            User user = _context.Users.First(x => x.UserID == id);
+
+            user.CommentsLocked = true;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Comments locked";
+            return View("Message");
+        }
+
+        [Authorize(Policy = "UserOwnerOrAdmin")]
+        public async Task<IActionResult> ClearComments(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user = _context.Users.First(x => x.UserID == id);
+            
+            foreach (UserComment userComment in user.UserPageComments)
+            {
+                userComment.Deleted = true;
+            }
+
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Comments cleared";
+            return View("Message");
+        }
     }
 }

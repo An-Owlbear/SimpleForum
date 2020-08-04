@@ -13,6 +13,7 @@ namespace SimpleForum.Models
         public DateTime SignupDate { get; set; }
         public bool Activated { get; set; } = false;
         public string Role { get; set; } = "User";
+        public bool CommentsLocked { get; set; }
 
         public virtual ICollection<Thread> Threads { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

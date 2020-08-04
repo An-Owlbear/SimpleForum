@@ -9,6 +9,12 @@
 
         <div class="content-container-top">
             <span class="content-container-title">Comments</span>
+            <div class="content-container-top-link-container">
+                @if ((await AuthorizationService.AuthorizeAsync(User, "UserOwner")).Succeeded)
+                {
+                    <a class="content-container-top-link" asp-action="CommentSettings">Comment settings</a>
+                }
+            </div>
         </div>
 
         @if (User.Identity.IsAuthenticated && ViewBag.Page == 1)
@@ -29,17 +35,17 @@
                         <img class="post-profile-img" src="~/img/defaultprofile.png">
                         <span class="post-date">
                             @comment.DatePosted.ToShortDateString()
-                        @comment.DatePosted.ToShortTimeString()
-                    </span>
-                </div>
-                <span class="post-contents">@comment.Content</span>
+                            @comment.DatePosted.ToShortTimeString()
+                        </span>
+                    </div>
+                    <span class="post-contents">@comment.Content</span>
 
-                <div class="post-footer">
-                    <a class="footer-link" href="javascript:void(0)">Reply</a>
-                    <a class="footer-link" href="javascript:void(0)">Share</a>
-                </div>
-            </li>
-        }
+                    <div class="post-footer">
+                        <a class="footer-link" href="javascript:void(0)">Reply</a>
+                        <a class="footer-link" href="javascript:void(0)">Share</a>
+                    </div>
+                </li>
+            }
         </ul>
 
         @if (ViewBag.PageCount > 1)
