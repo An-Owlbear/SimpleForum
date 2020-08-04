@@ -19,11 +19,20 @@
 
         @if (User.Identity.IsAuthenticated && ViewBag.Page == 1)
         {
-            <form class="post-form profile-post-form" asp-action="PostUserComment" method="post">
-                <textarea class="post-input" placeholder="Comment" name="content"></textarea>
-                <input type="hidden" name="userPageID" value="@ViewBag.User.UserID">
-                <button class="post-button" type="submit">Post</button>
-            </form>
+            @if (!ViewBag.User.CommentsLocked)
+            {
+                <form class="post-form profile-post-form" asp-action="PostUserComment" method="post">
+                    <textarea class="post-input" placeholder="Comment" name="content"></textarea>
+                    <input type="hidden" name="userPageID" value="@ViewBag.User.UserID">
+                    <button class="post-button" type="submit">Post</button>
+                </form>
+            }
+            else
+            {
+                <div class="thread-message">
+                    <h1 class="top-message-text">The comments are locked, it is no longer open for comments or replies.</h1>
+                </div>
+            }
         }
 
         <ul class="thread-posts">

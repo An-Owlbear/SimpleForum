@@ -37,15 +37,18 @@ namespace SimpleForum.Web.Controllers
             ViewData["PostCount"] = user.Comments.Count;
             ViewData["Title"] = user.Username;
             ViewData["User"] = user;
-            ViewData["PageComments"] = user.UserPageComments.OrderByDescending(x => x.DatePosted)
-                .Skip((page - 1) * CommentsPerPage).Take(CommentsPerPage);
+            ViewData["PageComments"] = user.UserPageComments
+                .Where(x => !x.Deleted)
+                .OrderByDescending(x => x.DatePosted)
+                .Skip((page - 1) * CommentsPerPage)
+                .Take(CommentsPerPage);
             ViewData["Page"] = page;
             ViewData["PageCount"] = (user.UserPageComments.Count + (CommentsPerPage - 1)) / CommentsPerPage;
 
             return View("User");
         }
 
-        [Authorize]
+        [Authorize(Policy = "UserPageReply")]
         [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {

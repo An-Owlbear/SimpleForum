@@ -79,7 +79,7 @@
 
     <ItemGroup>
       <Compile Update="Policies\ThreadOwnerOrAdminHandler.cs">
-        <DependentUpon>OwnerOrAdminRequirement.cs</DependentUpon>
+        <DependentUpon>ThreadOwnerOrAdminRequirement.cs</DependentUpon>
       </Compile>
       <Compile Update="Policies\ThreadOwnerHandler.cs">
         <DependentUpon>ThreadOwnerRequirement.cs</DependentUpon>
@@ -92,6 +92,9 @@
       </Compile>
       <Compile Update="Policies\UserOwnerHandler.cs">
         <DependentUpon>UserOwnerRequirement.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Policies\UserPageReplyHandler.cs">
+        <DependentUpon>UserPageReplyRequirement.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 
