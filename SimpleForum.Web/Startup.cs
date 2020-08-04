@@ -61,8 +61,8 @@ namespace SimpleForum.Web
             services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
 
             services.AddScoped<VerifiedEmail>();
-            
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
 
