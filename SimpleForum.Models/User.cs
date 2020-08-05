@@ -14,6 +14,11 @@ namespace SimpleForum.Models
         public bool Activated { get; set; } = false;
         public string Role { get; set; } = "User";
         public bool CommentsLocked { get; set; }
+        
+        public bool Muted { get; set;}
+        public string MuteReason { get; set; }
+        public bool Banned { get; set; }
+        public string BanReason { get; set; }
 
         public virtual ICollection<Thread> Threads { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
