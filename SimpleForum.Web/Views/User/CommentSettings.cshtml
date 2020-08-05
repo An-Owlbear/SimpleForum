@@ -5,13 +5,23 @@
 <div class="content-container">
     <span class="content-container-title">Comment settings</span>
     <ul class="action-list">
-        <li class="action-list-item">
-            <span class="action-list-item-title">Lock comments, disabling further comments</span>
-            <a class="action-list-item-button" asp-action="LockComments" asp-route-id="@ViewData["UserID"]">Lock comments</a>
-        </li>
+        @if (!ViewBag.User.CommentsLocked)
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Lock comments, disabling further comments</span>
+                <a class="action-list-item-button" asp-action="LockComments" asp-route-id="@ViewBag.User.UserID">Lock comments</a>
+            </li>
+        }
+        else
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Unlock comments, allowing users to reply again></span>
+                <a class="action-list-item-button" asp-action="UnLockComments" asp-route-id="@ViewBag.User.UserID">Unlock comments</a>
+            </li>
+        }
         <li class="action-list-item">
             <span class="action-list-item-title">Clear all comments</span>
-            <a class="action-list-item-button" asp-action="ClearComments" asp-route-id="@ViewData["UserID"]">Clear comments</a>
+            <a class="action-list-item-button" asp-action="ClearComments" asp-route-id="@ViewBag.User.UserID">Clear comments</a>
         </li>
     </ul>
 </div>

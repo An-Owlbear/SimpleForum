@@ -77,7 +77,8 @@ namespace SimpleForum.Web.Controllers
         [Authorize]
         public IActionResult CommentSettings()
         {
-            ViewData["UserID"] = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["User"] =
+                _context.Users.First(x => x.UserID == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             return View();
         }
 
@@ -95,7 +96,7 @@ namespace SimpleForum.Web.Controllers
             return View("Message");
         }
 
-        [Authorize(Policy = "UserOwnerOrAdmin")]
+        [Authorize(Policy = "UserOwner")]
         public async Task<IActionResult> ClearComments(int? id)
         {
             if (id == null) return Redirect("/");
@@ -110,6 +111,19 @@ namespace SimpleForum.Web.Controllers
             await _context.SaveChangesAsync();
 
             ViewData["Title"] = ViewData["MessageTitle"] = "Comments cleared";
+            return View("Message");
+        }
+
+        [Authorize(Policy = "UserOwner")]
+        public async Task<IActionResult> UnLockComments(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user = _context.Users.First(x => x.UserID == id);
+            user.CommentsLocked = false;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Comments unlocked";
             return View("Message");
         }
 
