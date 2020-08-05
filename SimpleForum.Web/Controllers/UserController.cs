@@ -45,6 +45,12 @@ namespace SimpleForum.Web.Controllers
             ViewData["Page"] = page;
             ViewData["PageCount"] = (user.UserPageComments.Count + (CommentsPerPage - 1)) / CommentsPerPage;
 
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["Role"] = _context.Users
+                    .First(x => x.UserID == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))).Role;
+            }
+            
             return View("User");
         }
 
@@ -75,7 +81,7 @@ namespace SimpleForum.Web.Controllers
             return View();
         }
 
-        [Authorize(Policy = "UserOwnerOrAdmin")]
+        [Authorize(Policy = "UserOwner")]
         public async Task<IActionResult> LockComments(int? id)
         {
             if (id == null) return Redirect("/");
@@ -105,6 +111,26 @@ namespace SimpleForum.Web.Controllers
 
             ViewData["Title"] = ViewData["MessageTitle"] = "Comments cleared";
             return View("Message");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminActions(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            ViewData["User"] = user;
+            
+            return View();
         }
     }
 }

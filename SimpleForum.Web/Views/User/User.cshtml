@@ -10,6 +10,10 @@
         <div class="content-container-top">
             <span class="content-container-title">Comments</span>
             <div class="content-container-top-link-container">
+                @if (ViewBag.Role == "Admin")
+                {
+                    <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@ViewBag.User.UserID">Admin actions</a>
+                }
                 @if ((await AuthorizationService.AuthorizeAsync(User, "UserOwner")).Succeeded)
                 {
                     <a class="content-container-top-link" asp-action="CommentSettings">Comment settings</a>
