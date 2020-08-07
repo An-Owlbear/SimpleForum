@@ -5,13 +5,33 @@
 <div class="content-container">
     <span class="content-container-title">Admin actions</span>
     <ul class="action-list">
-        <li class="action-list-item">
-            <span class="action-list-item-title">Mute user, temporarily preventing them from creating threads and replies.</span>
-            <a class="action-list-item-button">Mute user</a>
-        </li>
-        <li class="action-list-item">
-            <span class="action-list-item-title">Ban user, preventing the account from being used.</span>
-            <a class="action-list-item-button">Ban user</a>
-        </li>
+        @if (!ViewBag.User.Muted)
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Mute user, temporarily preventing them from creating threads and replies.</span>
+                <a class="action-list-item-button" asp-action="MuteUser" asp-route-id="@ViewBag.User.UserID">Mute user</a>
+            </li>
+        }
+        else
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Unmute user, allowing to create and reply to threads.</span>
+                <a class="action-list-item-button" asp-action="SendUnmuteUser" asp-route-id="@ViewBag.User.UserID">Unmute user</a>
+            </li>
+        }
+        @if (!ViewBag.User.Banned)
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Ban user, preventing the account from being used.</span>
+                <a class="action-list-item-button" asp-action="BanUser" asp-route-id="@ViewBag.User.UserID">Ban user</a>
+            </li>
+        }
+        else
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Unban user, allowing them to user the account again.</span>
+                <a class="action-list-item-button" asp-action="SendUnbanUser" asp-route-id="@ViewBag.User.UserID">Unban user</a>
+            </li>
+        }
     </ul>
 </div>

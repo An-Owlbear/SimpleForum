@@ -146,5 +146,135 @@ namespace SimpleForum.Web.Controllers
             
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult MuteUser(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            ViewData["User"] = user;
+            return View();
+;        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SendMuteUser(int? id, string reason)
+        {
+            if (id == null || reason == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            user.Muted = true;
+            user.MuteReason = reason;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "User muted";
+            return View("Message");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SendUnmuteUser(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            user.Muted = false;
+            user.MuteReason = null;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "User unmuted";
+            return View("Message");
+        }
+        
+        [Authorize(Roles = "Admin")]
+        public IActionResult BanUser(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            ViewData["User"] = user;
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SendBanUser(int? id, string reason)
+        {
+            if (id == null || reason == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            user.Banned = true;
+            user.BanReason = reason;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "User banned";
+            return View("Message");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SendUnbanUser(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            User user;
+            try
+            {
+                user = _context.Users.First(x => x.UserID == id);
+            }
+            catch
+            {
+                return Redirect("/");
+            }
+
+            user.Banned = false;
+            user.BanReason = null;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "User unbanned";
+            return View("Message");
+        }
     }
 }
