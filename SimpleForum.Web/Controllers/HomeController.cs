@@ -85,5 +85,12 @@ namespace SimpleForum.Web.Controllers
                                          $" click [here]({resendUrl}).";
             return View("Message");
         }
+
+        public IActionResult Banned(int? userID)
+        {
+            ViewData["Title"] = ViewData["MessageTitle"] = "Your account is banned";
+            ViewData["MessageContent"] = "Ban reason: " + _context.Users.First(x => x.UserID == userID).BanReason;
+            return View("Message");
+        }
     }
 }

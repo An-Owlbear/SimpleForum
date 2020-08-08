@@ -116,6 +116,8 @@ namespace SimpleForum.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseRevokeBannedUsers();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
