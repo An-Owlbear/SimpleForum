@@ -75,6 +75,13 @@ namespace SimpleForum.Web.Controllers
 
             if (user.Password != password) return Redirect("/Login?error=1");
 
+            if (user.Banned)
+            {
+                ViewData["Title"] = ViewData["MessageTitle"] = "Your account is banned";
+                ViewData["MessageContent"] = "Ban reason: " + user.BanReason;
+                return View("Message");
+            }
+
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
