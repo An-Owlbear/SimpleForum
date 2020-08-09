@@ -212,5 +212,18 @@ namespace SimpleForum.Web.Controllers
             ViewData["Message"] = ViewData["Title"] = "Thread unlocked";
             return View("Message");
         }
+
+        [Authorize(Policy = "CommentOwner")]
+        public async Task<IActionResult> DeleteComment(int? id)
+        {
+            if (id == null) return Redirect("/");
+
+            Comment comment = _context.Comments.First(x => x.CommentID == id);
+            comment.Deleted = true;
+            await _context.SaveChangesAsync();
+
+            ViewData["Title"] = ViewData["MessageTitle"] = "Comment deleted";
+            return View("Message");
+        }
     }
 }

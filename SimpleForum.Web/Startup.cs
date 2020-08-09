@@ -66,6 +66,10 @@ namespace SimpleForum.Web
                 {
                     policy.Requirements.Add(new UserPageReplyRequirement());
                 });
+                options.AddPolicy("CommentOwner", policy =>
+                {
+                    policy.Requirements.Add(new CommentOwnerRequirement());
+                });
             });
             services.AddScoped<IAuthorizationHandler, ThreadOwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, ThreadOwnerHandler>();
@@ -74,6 +78,7 @@ namespace SimpleForum.Web
             services.AddScoped<IAuthorizationHandler, UserOwnerHandler>();
             services.AddScoped<IAuthorizationHandler, UserOwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, UserPageReplyHandler>();
+            services.AddScoped<IAuthorizationHandler, CommentOwnerHandler>();
 
             services.AddScoped<VerifiedEmail>();
 
