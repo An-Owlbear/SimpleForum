@@ -29,7 +29,11 @@ namespace SimpleForum.Web.Policies
             Comment comment; 
             try
             {
-                commentID = int.Parse(_httpContextAccessor.HttpContext.Request.Query["id"]);
+                commentID = (_httpContextAccessor.HttpContext.Request.Method == HttpMethods.Post) switch
+                {
+                    true => int.Parse(_httpContextAccessor.HttpContext.Request.Form["id"]),
+                    false => int.Parse(_httpContextAccessor.HttpContext.Request.Query["id"])
+                };
                 comment = _dbContext.Comments.First(x => x.CommentID == commentID);
             }
             catch
