@@ -10,31 +10,46 @@
             else
             {
                 <span class="action-list-item-title">Restore the thread and its contents.</span>
-                <a class="action-list-item-button" asp-action="Restore" asp-route-id="@ViewData["ThreadID"]">Restore thread</a>
+                <form asp-action="Restore" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Restore thread</button>
+                </form>
             }
         </li>
         <li class="action-list-item">
             @if (!ViewBag.Thread.Pinned)
             {
                 <span class="action-list-item-title">Pin the thread to the top of the list.</span>
-                <a class="action-list-item-button" asp-action="Pin" asp-route-id="@ViewData["ThreadID"]">Pin thread</a>
+                <form asp-action="Pin" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Pin thread</button>
+                </form>
             }
             else
             {
                 <span class="action-list-item-title">Unpin the thread.</span>
-                <a class="action-list-item-button" asp-action="Unpin" asp-route-id="@ViewData["ThreadID"]">Unpin thread</a>
+                <form asp-action="Unpin" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Unpin thread</button>
+                </form>
             }
         </li>
         <li class="action-list-item">
             @if (!ViewBag.Thread.Locked)
             {
                 <span class="action-list-item-title">Lock the thread, preventing it from recieving further replies.</span>
-                <a class="action-list-item-button" asp-action="Lock" asp-route-id="@ViewData["ThreadID"]">Lock thread</a>
+                <form asp-action="Lock" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Lock thread</button>
+                </form>
             }
             else
             {
                 <span class="action-list-item-title">Unlock the thread, allowing it recieve replies again.</span>
-                <a class="action-list-item-button" asp-action="Unlock" asp-route-id="@ViewData["ThreadID"]">Unlock thread</a>
+                <form asp-action="Unlock" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Unlock thread</button>
+                </form>
             }
         </li>
     </ul>

@@ -606,6 +606,40 @@ i.content-container-icon {
   cursor: pointer;
 }
 
+.post-footer form {
+  float: right;
+}
+
+button.footer-link {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+button.footer-link:hover {
+  cursor: pointer;
+}
+
+button.content-container-top-link {
+  border: none;
+}
+
+button.content-container-top-link:hover {
+  cursor: pointer;
+}
+
+.content-container-top-link-container form {
+  display: inline-block;
+}
+
+button.action-list-item-button {
+  border: 0;
+}
+
+button.action-list-item-button:hover {
+  cursor: pointer;
+}
+
 @media only screen and (max-width:800px) {
   .navbar-nav {
     overflow: hidden;

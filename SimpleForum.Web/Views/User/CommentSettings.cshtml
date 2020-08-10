@@ -9,19 +9,28 @@
         {
             <li class="action-list-item">
                 <span class="action-list-item-title">Lock comments, disabling further comments</span>
-                <a class="action-list-item-button" asp-action="LockComments" asp-route-id="@ViewBag.User.UserID">Lock comments</a>
+                <form asp-action="LockComments" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Lock comments</button>
+                </form>
             </li>
         }
         else
         {
             <li class="action-list-item">
                 <span class="action-list-item-title">Unlock comments, allowing users to reply again</span>
-                <a class="action-list-item-button" asp-action="UnLockComments" asp-route-id="@ViewBag.User.UserID">Unlock comments</a>
+                <form asp-action="UnlockComments">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="action-list-item-button" type="submit">Unlock comments</button>
+                </form>
             </li>
         }
         <li class="action-list-item">
             <span class="action-list-item-title">Clear all comments</span>
-            <a class="action-list-item-button" asp-action="ClearComments" asp-route-id="@ViewBag.User.UserID">Clear comments</a>
+            <form asp-action="ClearComments" method="post">
+                <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                <button class="action-list-item-button" type="submit">Clear comments</button>
+            </form>
         </li>
     </ul>
 </div>

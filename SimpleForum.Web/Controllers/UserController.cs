@@ -115,7 +115,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Policy = "UserOwner")]
-        public async Task<IActionResult> UnLockComments(int? id)
+        public async Task<IActionResult> UnlockComments(int? id)
         {
             if (id == null) return Redirect("/");
 

@@ -16,7 +16,10 @@
         <div class="content-container-top-link-container">
             @if ((await AuthorizationService.AuthorizeAsync(User, "ThreadOwner")).Succeeded)
             {
-                <a class="content-container-top-link" asp-action="Delete" asp-route-id="@ViewData["ThreadID"]">Delete thread</a>
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <button class="content-container-top-link" type="submit">Delete thread</button>
+                </form>
             }
             @if (ViewBag.UserRole == "Admin")
             {
@@ -40,7 +43,10 @@
                     <a class="footer-link" href="javascript:void(0)">Share</a>
                     @if (RazorMethods.IsOwner(User, comment))
                     {
-                        <a class="footer-link" asp-action="DeleteComment" asp-route-id="@comment.ID">Delete</a>
+                        <form asp-action="DeleteComment" method="post">
+                            <input type="hidden" name="id" value="@comment.ID">
+                            <button class="footer-link" type="submit">Delete</button>
+                        </form>
                     }
                     else if (ViewBag.UserRole == "Admin")
                     {

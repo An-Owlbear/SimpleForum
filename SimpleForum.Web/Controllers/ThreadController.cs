@@ -136,7 +136,7 @@ namespace SimpleForum.Web.Controllers
         }
 
 
-        [Authorize(Policy = "ThreadOwnerOrAdmin")]
+        [Authorize(Policy = "ThreadOwner")]
         [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -217,6 +217,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Policy = "CommentOwner")]
+        [ServiceFilter(typeof(VerifiedEmail))]
         public async Task<IActionResult> DeleteComment(int? id)
         {
             if (id == null) return Redirect("/");
