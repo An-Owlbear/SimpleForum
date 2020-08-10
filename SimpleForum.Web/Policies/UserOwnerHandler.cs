@@ -21,7 +21,11 @@ namespace SimpleForum.Web.Policies
             string userID;
             try
             {
-                userID = _httpContextAccessor.HttpContext.Request.Query["id"];
+                userID = (_httpContextAccessor.HttpContext.Request.Method == HttpMethods.Post) switch
+                {
+                    true => _httpContextAccessor.HttpContext.Request.Form["id"],
+                    false => _httpContextAccessor.HttpContext.Request.Query["id"]
+                };
             }
             catch
             {

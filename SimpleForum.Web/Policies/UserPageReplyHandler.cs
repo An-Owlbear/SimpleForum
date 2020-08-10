@@ -25,7 +25,11 @@ namespace SimpleForum.Web.Policies
             User user;
             try
             {
-                int userID = int.Parse(_httpContextAccessor.HttpContext.Request.Form["userPageID"]);
+                int userID = (_httpContextAccessor.HttpContext.Request.Method == HttpMethods.Post) switch
+                {
+                    true => int.Parse(_httpContextAccessor.HttpContext.Request.Form["userPageID"]),
+                    false => int.Parse(_httpContextAccessor.HttpContext.Request.Query["userPageID"])
+                };
                 user = _context.Users.First(x => x.UserID == userID);
             }
             catch

@@ -31,17 +31,21 @@ namespace SimpleForum.Web.Policies
                 return Task.CompletedTask;
             }
             
-            int ThreadID;
+            int threadId;
             try
             {
-                ThreadID = int.Parse(_httpContextAccessor.HttpContext.Request.Query["id"]);
+                threadId = (_httpContextAccessor.HttpContext.Request.Method == HttpMethods.Post) switch
+                {
+                    true => int.Parse(_httpContextAccessor.HttpContext.Request.Form["id"]),
+                    false => int.Parse(_httpContextAccessor.HttpContext.Request.Query["id"])
+                };
             }
             catch
             {
                 return Task.CompletedTask;
             }
 
-            Thread thread = _context.Threads.First(x => x.ThreadID == ThreadID);
+            Thread thread = _context.Threads.First(x => x.ThreadID == threadId);
             if (thread.UserID.ToString() == context.User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 context.Succeed(requirement);
