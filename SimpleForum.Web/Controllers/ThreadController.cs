@@ -138,6 +138,7 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Policy = "ThreadOwner")]
         [ServiceFilter(typeof(VerifiedEmail))]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return Redirect("/");
@@ -150,6 +151,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Pin(int? id)
         {
             if (id == null) return Redirect("/");
@@ -163,6 +165,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Lock(int? id)
         {
             if (id == null) return Redirect("/");
@@ -177,6 +180,7 @@ namespace SimpleForum.Web.Controllers
         }
         
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null) return Redirect("/");
@@ -191,6 +195,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Unpin(int? id)
         {
             if (id == null) return Redirect("/");
@@ -204,6 +209,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Unlock(int? id)
         {
             if (id == null) return Redirect("/");
@@ -218,6 +224,7 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Policy = "CommentOwner")]
         [ServiceFilter(typeof(VerifiedEmail))]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> DeleteComment(int? id)
         {
             if (id == null) return Redirect("/");
@@ -231,6 +238,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> AdminDeleteComment(int? id)
         {
             if (id == null) return Redirect("/");

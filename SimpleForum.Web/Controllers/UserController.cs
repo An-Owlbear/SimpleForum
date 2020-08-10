@@ -83,6 +83,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Policy = "UserOwner")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> LockComments(int? id)
         {
             if (id == null) return Redirect("/");
@@ -97,6 +98,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Policy = "UserOwner")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> ClearComments(int? id)
         {
             if (id == null) return Redirect("/");
@@ -115,6 +117,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Policy = "UserOwner")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> UnlockComments(int? id)
         {
             if (id == null) return Redirect("/");
@@ -167,6 +170,7 @@ namespace SimpleForum.Web.Controllers
 ;        }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> SendMuteUser(int? id, string reason)
         {
             if (id == null || reason == null) return Redirect("/");
@@ -190,6 +194,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> SendUnmuteUser(int? id)
         {
             if (id == null) return Redirect("/");
@@ -232,6 +237,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> SendBanUser(int? id, string reason)
         {
             if (id == null || reason == null) return Redirect("/");
@@ -255,6 +261,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> SendUnbanUser(int? id)
         {
             if (id == null) return Redirect("/");

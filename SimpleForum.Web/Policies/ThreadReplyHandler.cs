@@ -27,7 +27,7 @@ namespace SimpleForum.Web.Policies
             {
                 threadID = (_httpContextAccessor.HttpContext.Request.Method == HttpMethods.Post) switch
                 {
-                    true => int.Parse(_httpContextAccessor.HttpContext.Request.Form["id"]),
+                    true => int.Parse(_httpContextAccessor.HttpContext.Request.Form["threadID"]),
                     false => int.Parse(_httpContextAccessor.HttpContext.Request.Query["id"])
                 };
             }

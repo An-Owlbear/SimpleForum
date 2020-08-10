@@ -81,6 +81,7 @@ namespace SimpleForum.Web
             services.AddScoped<IAuthorizationHandler, CommentOwnerHandler>();
 
             services.AddScoped<VerifiedEmail>();
+            services.AddScoped<CheckPassword>();
 
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
