@@ -42,6 +42,10 @@
                     {
                         <a class="footer-link" asp-action="DeleteComment" asp-route-id="@comment.ID">Delete</a>
                     }
+                    else if (ViewBag.UserRole == "Admin")
+                    {
+                        <a class="footer-link" asp-action="AdminDeleteComment" asp-route-id="@comment.ID">Delete (as admin)</a>
+                    }
                 </div>
             </li>
         }
