@@ -47,8 +47,11 @@ namespace SimpleForum.Web.Controllers
             ViewData["ThreadID"] = thread.ThreadID;
             ViewData["Pinned"] = thread.Pinned;
             ViewData["Locked"] = thread.Locked;
-            ViewData["Comments"] = thread.Comments.OrderBy(x => x.DatePosted)
-                .Skip((page - 1) * PostsPerPage).Take(PostsPerPage);
+            ViewData["Comments"] = thread.Comments
+                .Where(x => !x.Deleted)
+                .OrderBy(x => x.DatePosted)
+                .Skip((page - 1) * PostsPerPage)
+                .Take(PostsPerPage);
             ViewData["Page"] = page;
             ViewData["PageCount"] = (thread.Comments.Count + (PostsPerPage - 1)) / PostsPerPage;
 
