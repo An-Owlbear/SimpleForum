@@ -92,5 +92,11 @@ namespace SimpleForum.Web.Controllers
             ViewData["MessageContent"] = "Ban reason: " + _context.Users.First(x => x.UserID == userID).BanReason;
             return View("Message");
         }
+
+        public IActionResult StatusError(int code)
+        {
+            ViewData["Title"] = ViewData["MessageTitle"] = $"Error {code}";
+            return View("Message");
+        }
     }
 }

@@ -113,6 +113,7 @@ namespace SimpleForum.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Home/StatusError", "?code={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
