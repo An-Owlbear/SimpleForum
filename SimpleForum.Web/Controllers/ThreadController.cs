@@ -32,7 +32,7 @@ namespace SimpleForum.Web.Controllers
             }
             catch (InvalidOperationException)
             {
-                return Redirect("/");
+                return StatusCode(404);
             }
 
             if (thread.Deleted)

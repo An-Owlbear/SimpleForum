@@ -31,7 +31,7 @@ namespace SimpleForum.Web.Controllers
             }
             catch (InvalidOperationException)
             {
-                return Redirect("/");
+                return StatusCode(404);
             }
 
             ViewData["PostCount"] = user.Comments.Count;
