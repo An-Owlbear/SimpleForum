@@ -421,7 +421,7 @@ i.content-container-title {
   border-radius: 5px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .profile-img {
@@ -638,6 +638,41 @@ button.action-list-item-button {
 
 button.action-list-item-button:hover {
   cursor: pointer;
+}
+
+.profile-info-name {
+  margin-top: 0.5rem;
+  display: inline-block;
+  max-width: 125px;
+  word-break: break-word;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+.profile-info-image {
+  display: block;
+  height: 125px;
+  width: auto;
+  border-radius: 75px;
+  margin: 1rem 1.5rem 1.5rem 1.5rem;
+}
+.profile-info-section:first-child {
+  text-align: center;
+}
+.profile-info-text {
+  display: block;
+  margin: 0.5rem 2rem 0 0.5rem;
+  color: var(--text-primary);
+}
+.profile-info-section:last-child {
+  text-align: right;
+}
+.profile-info-section {
+  margin-top: 1rem;
+}
+.profile-bio {
+  color: var(--text-primary);
+  display: inline-block;
+  margin: 0.5rem;
 }
 
 @media only screen and (max-width:800px) {

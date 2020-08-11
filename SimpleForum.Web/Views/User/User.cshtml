@@ -1,10 +1,19 @@
 <div class="variable-container main-profile-container">
     <div class="profile-container">
         <div class="profile-info">
-            <img class="profile-img" src="~/img/defaultprofile.png">
-            <span class="profile-property">@ViewBag.User.Username</span>
-            <span class="profile-property">Joined @ViewBag.User.SignupDate.ToShortDateString()</span>
-            <span class="profile-property">@ViewData["PostCount"] Posts/Comments</span>
+
+            <div class="profile-info-section">
+                <span class="profile-info-name">Owlbear</span>
+                <img class="profile-info-image" src="/img/defaultprofile.png">
+            </div>
+            <div class="profile-info-section">
+                <span class="profile-bio">This is some information the user added about themselves.</span>
+            </div>
+            <div class="profile-info-section">
+                <span class="profile-info-text">Threads: @ViewBag.User.Threads.Count</span>
+                <span class="profile-info-text">Comments: @ViewBag.User.Comments.Count</span>
+                <span class="profile-info-text">Joined: @ViewBag.User.SignupDate.ToShortDateString()</span>
+            </div>
         </div>
 
         <div class="content-container-top">
@@ -56,6 +65,13 @@
                     <div class="post-footer">
                         <a class="footer-link" href="javascript:void(0)">Reply</a>
                         <a class="footer-link" href="javascript:void(0)">Share</a>
+                        @if (RazorMethods.IsOwner(User, comment))
+                        {
+                            <form method="post">
+                                <input type="hidden" name="id" value="@comment.UserCommentID">
+                                <button class="footer-link" type="submit">Delete</button>
+                            </form>
+                        }
                     </div>
                 </li>
             }
