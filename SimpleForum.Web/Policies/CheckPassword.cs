@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,11 @@ namespace SimpleForum.Web.Policies
             };
 
             var viewData = ((Controller)context.Controller).ViewData;
+            IEnumerable postData = (context.HttpContext.Request.Method == HttpMethods.Post) switch
+            {
+                true => context.HttpContext.Request.Form,
+                false => context.HttpContext.Request.Query
+            };
             if (password == null)
             {
                 context.Result = new ViewResult()
@@ -40,7 +46,8 @@ namespace SimpleForum.Web.Policies
                     ViewName = "ConfirmPassword",
                     ViewData = new ViewDataDictionary(viewData)
                     {
-                        {"Incorrect", false}
+                        {"Incorrect", false},
+                        {"PostData", postData}
                     }
                 };
                 return;
@@ -65,7 +72,8 @@ namespace SimpleForum.Web.Policies
                     ViewName = "ConfirmPassword",
                     ViewData = new ViewDataDictionary(viewData)
                     {
-                        {"Incorrect", true}
+                        {"Incorrect", true},
+                        {"PostData", postData}
                     }
                 };
             }
