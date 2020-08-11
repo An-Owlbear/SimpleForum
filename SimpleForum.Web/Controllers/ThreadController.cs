@@ -169,7 +169,6 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> Lock(int? id)
         {
             if (id == null) return Redirect("/");
-            if (User.FindFirstValue(ClaimTypes.Role) != "Admin") return Redirect("/");
 
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Locked = true;
@@ -184,7 +183,6 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null) return Redirect("/");
-            if (!User.IsInRole("Admin")) return Redirect("/");
 
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Deleted = false;
