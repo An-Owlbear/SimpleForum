@@ -16,7 +16,10 @@
         {
             <li class="action-list-item">
                 <span class="action-list-item-title">Unmute user, allowing to create and reply to threads.</span>
-                <a class="action-list-item-button" asp-action="SendUnmuteUser" asp-route-id="@ViewBag.User.UserID">Unmute user</a>
+                <form asp-action="SendUnMuteUser">
+                    <input type="hidden" name="id" value="@ViewBag.User.UserID">
+                    <button class="action-list-item-button" type="submit">Unmute user</button>
+                </form>
             </li>
         }
         @if (!ViewBag.User.Banned)
@@ -30,7 +33,10 @@
         {
             <li class="action-list-item">
                 <span class="action-list-item-title">Unban user, allowing them to user the account again.</span>
-                <a class="action-list-item-button" asp-action="SendUnbanUser" asp-route-id="@ViewBag.User.UserID">Unban user</a>
+                <form asp-action="SendUnbanUser">
+                    <input type="hidden" name="id" value="@ViewBag.User.UserID">
+                    <button class="action-list-item-button" type="submit">Unban user</button>
+                </form>
             </li>
         }
     </ul>
