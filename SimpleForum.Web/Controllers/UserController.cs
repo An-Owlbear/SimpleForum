@@ -47,8 +47,8 @@ namespace SimpleForum.Web.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["Role"] = _context.Users
-                    .First(x => x.UserID == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))).Role;
+                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                ViewData["CurrentUser"] = _context.Users.First(x => x.UserID == userID);
             }
             
             return View("User");
@@ -56,6 +56,7 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Policy = "UserPageReply")]
         [ServiceFilter(typeof(VerifiedEmail))]
+        [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {
             if (content == null) return Redirect("/");

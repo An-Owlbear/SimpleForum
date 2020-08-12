@@ -57,8 +57,9 @@ namespace SimpleForum.Web.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                ViewData["UserRole"] = _context.Users
-                    .First(x => x.UserID.ToString() == User.FindFirstValue(ClaimTypes.NameIdentifier)).Role;
+                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user = _context.Users.First(x => x.UserID == userID);
+                ViewData["User"] = user;
             }
 
             return View("Thread");
@@ -66,6 +67,7 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(VerifiedEmail))]
+        [ServiceFilter(typeof(PreventMuted))]
         public IActionResult Create()
         {
             return View();
@@ -73,6 +75,7 @@ namespace SimpleForum.Web.Controllers
         
         [Authorize]
         [ServiceFilter(typeof(VerifiedEmail))]
+        [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> CreateThread(string title, string content)
         {
             if (title == null || content == null) return Redirect("/Thread/Create");
@@ -108,6 +111,7 @@ namespace SimpleForum.Web.Controllers
         
         [Authorize(Policy = "ThreadReply")]
         [ServiceFilter(typeof(VerifiedEmail))]
+        [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(string content, int threadID)
         {
             Comment comment = new Comment()

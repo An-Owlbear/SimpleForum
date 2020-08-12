@@ -1,4 +1,6 @@
-@using System.Security.Claims
+@{
+    bool IsAuthenticated = User.Identity.IsAuthenticated;
+}
 
 <div class="content-container">
     <div class="content-container-top">
@@ -21,7 +23,7 @@
                     <button class="content-container-top-link" type="submit">Delete thread</button>
                 </form>
             }
-            @if (ViewBag.UserRole == "Admin")
+            @if (IsAuthenticated && ViewBag.User.Role == "Admin")
             {
                 <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@ViewData["ThreadID"]">Admin actions</a>
             }
@@ -48,7 +50,7 @@
                             <button class="footer-link" type="submit">Delete</button>
                         </form>
                     }
-                    else if (ViewBag.UserRole == "Admin")
+                    else if (IsAuthenticated && ViewBag.User.Role == "Admin")
                     {
                         <a class="footer-link" asp-action="AdminDeleteComment" asp-route-id="@comment.ID">Delete (as admin)</a>
                     }
@@ -56,10 +58,17 @@
             </li>
         }
     </ul>
-    
+
     @if (ViewBag.Page == ViewBag.PageCount)
     {
-        if (!ViewBag.Locked)
+        if (IsAuthenticated && ViewBag.User.Muted)
+        {
+            <div class="thread-message">
+                <h1 class="top-message-text">Your account is muted.</h1>
+                <p class="top-message-text">Reason: @ViewBag.User.MuteReason</p>
+            </div>
+        }
+        else if (!ViewBag.Locked)
         {
             <form class="post-form" asp-action="PostComment" method="post">
                 <textarea class="post-input" placeholder="Post" name="content"></textarea>
