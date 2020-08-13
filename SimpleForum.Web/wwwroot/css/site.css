@@ -679,6 +679,7 @@ button.action-list-item-button:hover {
   color: var(--text-primary);
   display: inline-block;
   margin: 0.5rem;
+  font-size: 1.25rem;
 }
 
 .main-edit-container {
