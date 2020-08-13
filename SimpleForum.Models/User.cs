@@ -11,6 +11,8 @@ namespace SimpleForum.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime SignupDate { get; set; }
+        public string Bio { get; set; }
+        
         public bool Activated { get; set; } = false;
         public string Role { get; set; } = "User";
         public bool CommentsLocked { get; set; }

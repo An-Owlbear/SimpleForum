@@ -7,7 +7,7 @@
                 <img class="profile-info-image" src="/img/defaultprofile.png">
             </div>
             <div class="profile-info-section">
-                <span class="profile-bio">This is some information the user added about themselves.</span>
+                <span class="profile-bio">@ViewBag.User.Bio</span>
             </div>
             <div class="profile-info-section">
                 <span class="profile-info-text">Threads: @ViewBag.User.Threads.Count</span>
@@ -26,6 +26,7 @@
                 @if ((await AuthorizationService.AuthorizeAsync(User, "UserOwner")).Succeeded)
                 {
                     <a class="content-container-top-link" asp-action="CommentSettings">Comment settings</a>
+                    <a class="content-container-top-link" asp-action="Edit">Edit profile</a>
                 }
             </div>
         </div>

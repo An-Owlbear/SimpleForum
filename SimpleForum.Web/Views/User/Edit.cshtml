@@ -1,0 +1,25 @@
+﻿@model EditUserViewModel
+@{
+    ViewData["Title"] = "Edit profile";
+}
+
+<div class="variable-container main-edit-container">
+    <form class="edit-form" asp-action="Edit" method="post">
+        <div class="edit-container">
+            <h1 class="edit-container-title">Email</h1>
+            <span class="edit-container-item">Current: @Model.User.Email</span>
+            <input class="edit-container-item" type="text" name="Email" placeholder="New email">
+        </div>
+        <div class="edit-container">
+            <h1 class="edit-container-title">Password</h1>
+            <input class="edit-container-item" type="text" name="password" placeholder="Password">
+            <input class="edit-container-item" type="text" name="confirmPassword" placeholder="Confirm password">
+        </div>
+        <div class="edit-container">
+            <h1 class="edit-container-title">Bio</h1>
+            <p class="edit-container-bio">Current: @Model.User.Bio</p>
+            <textarea class="edit-container-item" name="bio" placeholder="New bio"></textarea>
+        </div>
+        <button class="edit-button" type="submit">Update profile</button>
+    </form>
+</div>

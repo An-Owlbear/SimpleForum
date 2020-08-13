@@ -648,6 +648,7 @@ button.action-list-item-button:hover {
   color: var(--text-primary);
   font-size: 1.25rem;
 }
+
 .profile-info-image {
   display: block;
   height: 125px;
@@ -655,27 +656,100 @@ button.action-list-item-button:hover {
   border-radius: 75px;
   margin: 1rem 1.5rem 1.5rem 1.5rem;
 }
+
 .profile-info-section:first-child {
   text-align: center;
 }
+
 .profile-info-text {
   display: block;
   margin: 0.5rem 2rem 0 0.5rem;
   color: var(--text-primary);
 }
+
 .profile-info-section:last-child {
   text-align: right;
 }
+
 .profile-info-section {
   margin-top: 1rem;
 }
+
 .profile-bio {
   color: var(--text-primary);
   display: inline-block;
   margin: 0.5rem;
 }
 
-@media only screen and (max-width:800px) {
+.main-edit-container {
+  padding-bottom: 0;
+}
+
+.edit-form {
+  width: 50vw;
+  min-width: 1000px;
+  display: inline-block;
+}
+
+.edit-container {
+  margin: 2rem;
+}
+
+h1.edit-container-title {
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary);
+}
+
+.edit-container-item {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  margin-right: 2rem;
+}
+
+input.edit-container-item {
+  display: inline;
+  background-color: var(--bg-secondary);
+  border: 0;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.edit-container-bio {
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+textarea.edit-container-item {
+  display: block;
+  width: 100%;
+  border: 0;
+  resize: none;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  margin: 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.edit-button {
+  margin: 0 2rem 2rem 2rem;
+  background-color: royalblue;
+  border: 0;
+  color: var(--text-primary-light);
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
+}
+
+.edit-button:hover {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 800px) {
   .navbar-nav {
     overflow: hidden;
   }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Models;
 using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
@@ -283,6 +284,54 @@ namespace SimpleForum.Web.Controllers
 
             ViewData["Title"] = ViewData["MessageTitle"] = "User unbanned";
             return View("Message");
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Edit()
+        {
+            User user;
+            try
+            {
+                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                user = _context.Users.First(x => x.UserID == userID);
+            }
+            catch
+            {
+                return new BadRequestResult();
+            }
+            
+            EditUserViewModel model = new EditUserViewModel()
+            {
+                User = user
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(string email, string password, string confirmPassword, string bio)
+        {
+            if (password != confirmPassword) return RedirectToAction("Edit");
+            
+            User user;
+            try
+            {
+                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                user = await _context.Users.FindAsync(userID);
+            }
+            catch
+            {
+                return new BadRequestResult();
+            }
+
+            if (email != null) user.Email = email;
+            if (password != null) user.Password = password;
+            if (bio != null) user.Bio = bio;
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Index", new {id = user.UserID});
         }
     }
 }
