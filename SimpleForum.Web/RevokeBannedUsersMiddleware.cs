@@ -1,10 +1,7 @@
-using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 
 namespace SimpleForum.Web
@@ -18,7 +15,7 @@ namespace SimpleForum.Web
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, ApplicationDbContext dbContext)
+        public async Task InvokeAsync(HttpContext httpContext, ApplicationDbContext dbContext, IViewRenderService renderService)
         {
             if (httpContext.User.Identity.IsAuthenticated)
             {
@@ -37,8 +34,12 @@ namespace SimpleForum.Web
 
                 if (userBanned)
                 {
-                    await httpContext.SignOutAsync();
-                    httpContext.Response.Redirect("/Home/Banned?userID=" + userID);
+                    httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    httpContext.Response.ContentType = "text/html";
+                    // TODO - Create object containing message title and contents
+                    string response = await renderService.RenderToStringAsync("Message", new object());
+                    await httpContext.Response.WriteAsync(response);
+                    return;
                 }
             }
             
