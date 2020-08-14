@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SimpleForum.Internal;
+using SimpleForum.Models;
+using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web
 {
@@ -19,25 +21,40 @@ namespace SimpleForum.Web
         {
             if (httpContext.User.Identity.IsAuthenticated)
             {
-                int userID = 0;
-                bool userBanned = false;
+                User user;
                 try
                 {
-                    userID = int.Parse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    userBanned = dbContext.Users.First(x => x.UserID == userID).Banned;
+                    int userID = int.Parse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    user = dbContext.Users.First(x => x.UserID == userID);
                 }
                 catch
                 {
-                    // TODO - only ignore certain errors
-                    // ignored
+                    MessageViewModel model = new MessageViewModel()
+                    {
+                        Title = "Error",
+                        MessageTitle = "Error during request",
+                        MessageContent = "Clear your cookies to resolve the issue."
+                    };
+                    httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    httpContext.Response.ContentType = "text/html";
+                    string response = await renderService.RenderToStringAsync("Message", model);
+                    await httpContext.Response.WriteAsync(response);
+                    return;
                 }
 
-                if (userBanned)
+                if (user.Banned)
                 {
                     httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     httpContext.Response.ContentType = "text/html";
-                    // TODO - Create object containing message title and contents
-                    string response = await renderService.RenderToStringAsync("Message", new object());
+                    
+                    MessageViewModel model = new MessageViewModel()
+                    {
+                        Title = "Account banned",
+                        MessageTitle = "Your account is banned",
+                        MessageContent = "Ban reason: " + user.BanReason
+                    };
+                    
+                    string response = await renderService.RenderToStringAsync("Message", model);
                     await httpContext.Response.WriteAsync(response);
                     return;
                 }

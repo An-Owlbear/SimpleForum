@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web.Policies
 {
@@ -40,14 +41,19 @@ namespace SimpleForum.Web.Policies
             if (user.Muted)
             {
                 var viewData = ((Controller)context.Controller).ViewData;
+                MessageViewModel model = new MessageViewModel()
+                {
+                    Title = "Access denied",
+                    MessageTitle = "Your account is muted, you cannot make further posts",
+                    MessageContent = "Reason: " + user.MuteReason
+                };
+                
                 context.Result = new ViewResult()
                 {
                     ViewName = "Message",
                     ViewData = new ViewDataDictionary(viewData)
                     {
-                        {"Title", "Access denied"},
-                        {"MessageTitle", "Your account is muted, you cannot make further posts"},
-                        {"MessageContent", "Reason: " + user.MuteReason}
+                        Model = model
                     }
                 };
             }

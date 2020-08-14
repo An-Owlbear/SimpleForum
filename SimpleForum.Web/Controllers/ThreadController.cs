@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Models;
 using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
@@ -37,9 +38,12 @@ namespace SimpleForum.Web.Controllers
 
             if (thread.Deleted)
             {
-                ViewData["Title"] = "Removed";
-                ViewData["MessageTitle"] = "This thread has been removed.";
-                return View("Message");
+                MessageViewModel model = new MessageViewModel()
+                {
+                    Title = "Removed",
+                    MessageTitle = "This thread has been removed"
+                };
+                return View("Message", model);
             }
 
             ViewData["Title"] = thread.Title;
@@ -149,9 +153,13 @@ namespace SimpleForum.Web.Controllers
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Deleted = true;
             await _context.SaveChangesAsync();
-
-            ViewData["MessageTitle"] = ViewData["Title"] = "Thread deleted successfully.";
-            return View("Message");
+            
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread deleted",
+                MessageTitle = "Thread deleted successfully"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -164,8 +172,12 @@ namespace SimpleForum.Web.Controllers
             thread.Pinned = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = ViewData["Title"] = "Thread pinned.";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread pinned",
+                MessageTitle = "Thread pinned"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -178,8 +190,12 @@ namespace SimpleForum.Web.Controllers
             thread.Locked = true;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = ViewData["Title"] = "Thread has been locked";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread locked",
+                MessageTitle = "Thread locked"
+            };
+            return View("Message", model);
         }
         
         [Authorize(Roles = "Admin")]
@@ -191,9 +207,13 @@ namespace SimpleForum.Web.Controllers
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Deleted = false;
             await _context.SaveChangesAsync();
-
-            ViewData["MessageTitle"] = ViewData["Title"] = "Thread restored.";
-            return View("Message");
+            
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread restored",
+                MessageTitle = "Thread restored"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -206,8 +226,12 @@ namespace SimpleForum.Web.Controllers
             thread.Pinned = false;
             await _context.SaveChangesAsync();
 
-            ViewData["MessageTitle"] = ViewData["Title"] = "Thread unpinned";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread unpinned",
+                MessageTitle = "Thread unpinned"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -220,8 +244,12 @@ namespace SimpleForum.Web.Controllers
             thread.Locked = false;
             await _context.SaveChangesAsync();
 
-            ViewData["Message"] = ViewData["Title"] = "Thread unlocked";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread unlocked",
+                MessageTitle = "Thread unlocked"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Policy = "CommentOwner")]
@@ -235,8 +263,12 @@ namespace SimpleForum.Web.Controllers
             comment.Deleted = true;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "Comment deleted";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comment deleted",
+                MessageTitle = "Comment deleted"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -249,8 +281,12 @@ namespace SimpleForum.Web.Controllers
             comment.Deleted = true;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "Comment deleted";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comment deleted",
+                MessageTitle = "Comment deleted"
+            };
+            return View("Message", model);
         }
     }
 }

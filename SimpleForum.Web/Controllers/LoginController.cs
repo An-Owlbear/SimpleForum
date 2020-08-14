@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Models;
 using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
@@ -77,9 +78,13 @@ namespace SimpleForum.Web.Controllers
 
             if (user.Banned)
             {
-                ViewData["Title"] = ViewData["MessageTitle"] = "Your account is banned";
-                ViewData["MessageContent"] = "Ban reason: " + user.BanReason;
-                return View("Message");
+                MessageViewModel model = new MessageViewModel()
+                {
+                    Title = "Account banned",
+                    MessageTitle = "Your account is banned",
+                    MessageContent =  "Ban reason: " + user.BanReason
+                };
+                return View("Message", model);
             }
 
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
@@ -160,8 +165,12 @@ namespace SimpleForum.Web.Controllers
                 true
             );
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "Password reset email sent";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Email sent",
+                MessageTitle = "Password reset email sent"
+            };
+            return View("Message", model);
         }
 
         [AnonymousOnly]
@@ -221,9 +230,13 @@ namespace SimpleForum.Web.Controllers
             // Changed password and returns message
             user.Password = password;
             await _context.SaveChangesAsync();
-
-            ViewData["Title"] = ViewData["MessageTitle"] = "Password changed successfully";
-            return View("Message");
+            
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Password changed",
+                MessageTitle = "Password changed successfully"
+            };
+            return View("Message", model);
         }
     }
 }

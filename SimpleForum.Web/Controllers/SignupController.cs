@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Models;
 using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
@@ -100,12 +101,15 @@ namespace SimpleForum.Web.Controllers
             // resend the verification email.
             string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
                                userAdded.Entity.UserID;
-            ViewData["MessageTitle"] = "Signup complete!";
-            ViewData["MessageContent"] = "Some features may be restricted until your email is verified. " +
-                                        "We have sent a verification message to your email account.\n" +
-                                        $"If you have not received the email click [here]({resendUrl}).";
-            ViewData["Title"] = "Signup complete";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Signup complete",
+                MessageTitle = "Signup complete",
+                MessageContent = "Some features may be restricted until your email is verified. " +
+                                 "We have sent a verification message to your email account.\n" +
+                                 $"If you have not received the email click [here]({resendUrl})."
+            };
+            return View("Message", model);
         }
 
         public async Task<IActionResult> VerifyEmail(string code)
@@ -124,10 +128,13 @@ namespace SimpleForum.Web.Controllers
 
             emailCode.User.Activated = true;
             await _context.SaveChangesAsync();
-
-            ViewData["Title"] = "Email verified";
-            ViewData["MessageTitle"] = "Email verified successfully. You can now login.";
-            return View("Message");
+            
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Email verified",
+                MessageTitle = "Email verified successfully, you can now login"
+            };
+            return View("Message", model);
         }
 
         public async Task<IActionResult> ResendVerificationEmail(int? userID)
@@ -164,8 +171,12 @@ namespace SimpleForum.Web.Controllers
                 "'>" + url + "</a></p>",
                 true);
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "Verification email resent.";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Email resent",
+                MessageTitle = "Verification email resent"
+            };
+            return View("Message", model);
         }
     }
 }

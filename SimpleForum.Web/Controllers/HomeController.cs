@@ -69,34 +69,37 @@ namespace SimpleForum.Web.Controllers
 
         public IActionResult Forbidden()
         {
-            ViewData["Title"] = "Forbidden";
-            ViewData["MessageTitle"] = "Access denied.";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Forbidden",
+                MessageTitle = "Access denied."
+            };
+            return View("Message", model);
         }
 
         public IActionResult EmailUnverified()
         {
             string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
                                User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewData["Title"] = "Forbidden";
-            ViewData["MessageTitle"] = "Your email is not verified.";
-            ViewData["MessageContent"] = "To access this page your email account must be verified. We have sent you" +
-                                         " an email containing the verification link. If you have not received the email" +
-                                         $" click [here]({resendUrl}).";
-            return View("Message");
-        }
-
-        public IActionResult Banned(int? userID)
-        {
-            ViewData["Title"] = ViewData["MessageTitle"] = "Your account is banned";
-            ViewData["MessageContent"] = "Ban reason: " + _context.Users.First(x => x.UserID == userID).BanReason;
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Forbidden",
+                MessageTitle = "Your email is not verified",
+                MessageContent = "To access this page your email account must be verified. We have sent you" +
+                                 " an email containing the verification link. If you have not received the email" +
+                                 $" click [here]({resendUrl})."
+            };
+            return View("Message", model);
         }
 
         public IActionResult StatusError(int code)
         {
-            ViewData["Title"] = ViewData["MessageTitle"] = $"Error {code}";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = $"Error {code}",
+                MessageTitle = $"Error {code}"
+            };
+            return View("Message", model);
         }
     }
 }

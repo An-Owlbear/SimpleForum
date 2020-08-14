@@ -94,9 +94,13 @@ namespace SimpleForum.Web.Controllers
 
             user.CommentsLocked = true;
             await _context.SaveChangesAsync();
-
-            ViewData["Title"] = ViewData["MessageTitle"] = "Comments locked";
-            return View("Message");
+            
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comments locked",
+                MessageContent = "Comments locked"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Policy = "UserOwner")]
@@ -114,8 +118,12 @@ namespace SimpleForum.Web.Controllers
 
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "Comments cleared";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comments cleared",
+                MessageTitle = "Comments cleared"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Policy = "UserOwner")]
@@ -128,8 +136,12 @@ namespace SimpleForum.Web.Controllers
             user.CommentsLocked = false;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "Comments unlocked";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comments unlocked",
+                MessageTitle = "Comments unlocked"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -191,8 +203,12 @@ namespace SimpleForum.Web.Controllers
             user.MuteReason = reason;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "User muted";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "User muted",
+                MessageTitle = "User muted"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -215,8 +231,12 @@ namespace SimpleForum.Web.Controllers
             user.MuteReason = null;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "User unmuted";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "User unmuted",
+                MessageTitle = "User unmuted"
+            };
+            return View("Message", model);
         }
         
         [Authorize(Roles = "Admin")]
@@ -258,8 +278,12 @@ namespace SimpleForum.Web.Controllers
             user.BanReason = reason;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "User banned";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "User banned",
+                MessageTitle = "User banned"
+            };
+            return View("Message", model);
         }
 
         [Authorize(Roles = "Admin")]
@@ -282,8 +306,12 @@ namespace SimpleForum.Web.Controllers
             user.BanReason = null;
             await _context.SaveChangesAsync();
 
-            ViewData["Title"] = ViewData["MessageTitle"] = "User unbanned";
-            return View("Message");
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "User unbanned",
+                MessageTitle = "User unbanned"
+            };
+            return View("Message", model);
         }
 
         [HttpGet]
