@@ -84,6 +84,8 @@ namespace SimpleForum.Web
             services.AddScoped<CheckPassword>();
             services.AddScoped<PreventMuted>();
 
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
