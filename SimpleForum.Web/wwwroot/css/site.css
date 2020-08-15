@@ -364,7 +364,7 @@ i.content-container-title {
 }
 
 .post-form.profile-post-form {
-  margin: 0 2rem 1rem 2rem;
+  margin: 0 2rem 0 2rem;
 }
 
 .post-input {
@@ -382,8 +382,8 @@ i.content-container-title {
 
 .form-error {
   width: 80%;
-  margin: 0.5rem 10% 0.5rem 10%;
-  padding: 0.5rem;
+  margin: 1rem 10% 0 10%;
+  padding: 1rem;
   border-radius: 10px;
   box-sizing: border-box;
   text-align: center;
