@@ -38,35 +38,38 @@ namespace SimpleForum.Web.Controllers
 
             if (thread.Deleted)
             {
-                MessageViewModel model = new MessageViewModel()
+                MessageViewModel messageModel = new MessageViewModel()
                 {
                     Title = "Removed",
                     MessageTitle = "This thread has been removed"
                 };
-                return View("Message", model);
+                return View("Message", messageModel);
             }
-
-            ViewData["Title"] = thread.Title;
-            ViewData["ThreadTitle"] = thread.Title;
-            ViewData["ThreadID"] = thread.ThreadID;
-            ViewData["Pinned"] = thread.Pinned;
-            ViewData["Locked"] = thread.Locked;
-            ViewData["Comments"] = thread.Comments
-                .Where(x => !x.Deleted)
-                .OrderBy(x => x.DatePosted)
-                .Skip((page - 1) * PostsPerPage)
-                .Take(PostsPerPage);
-            ViewData["Page"] = page;
-            ViewData["PageCount"] = (thread.Comments.Count + (PostsPerPage - 1)) / PostsPerPage;
-
+            
+            User user = null;
             if (User.Identity.IsAuthenticated)
             {
                 int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                User user = _context.Users.First(x => x.UserID == userID);
-                ViewData["User"] = user;
+                user = _context.Users.First(x => x.UserID == userID);
             }
+            
+            ThreadViewModel model = new ThreadViewModel()
+            {
+                Title = thread.Title,
+                ThreadID = thread.ThreadID,
+                Pinned = thread.Pinned,
+                Locked = thread.Pinned,
+                Comments = thread.Comments
+                    .Where(x => !x.Deleted)
+                    .OrderBy(x => x.DatePosted)
+                    .Skip((page - 1) * PostsPerPage)
+                    .Take(PostsPerPage),
+                Page = page,
+                PageCount = (thread.Comments.Count + (PostsPerPage - 1)) / PostsPerPage,
+                User = user
+            };
 
-            return View("Thread");
+            return View("Thread", model);
         }
 
         [Authorize]
@@ -281,7 +284,7 @@ namespace SimpleForum.Web.Controllers
             comment.Deleted = true;
             await _context.SaveChangesAsync();
 
-            MessageViewModel model = new MessageViewModel()
+                MessageViewModel model = new MessageViewModel()
             {
                 Title = "Comment deleted",
                 MessageTitle = "Comment deleted"

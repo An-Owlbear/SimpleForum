@@ -1,36 +1,38 @@
+@model ThreadViewModel
 @{
+    ViewData["Title"] = Model.Title;
     bool IsAuthenticated = User.Identity.IsAuthenticated;
 }
 
 <div class="content-container">
     <div class="content-container-top">
         <div class="content-container-title-container">
-            @if (ViewBag.Pinned)
+            @if (Model.Pinned)
             {
                 <i class="ri-pushpin-2-fill content-container-title content-container-icon"></i> 
             }
-            @if (ViewBag.Locked)
+            @if (Model.Locked)
             {
                 <i class="ri-lock-fill content-container-title content-container-icon"></i>
             }
-            <span class="content-container-title">@ViewData["ThreadTitle"]</span>
+            <span class="content-container-title">@Model.Title</span>
         </div>
         <div class="content-container-top-link-container">
             @if ((await AuthorizationService.AuthorizeAsync(User, "ThreadOwner")).Succeeded)
             {
                 <form asp-action="Delete" method="post">
-                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <input type="hidden" name="id" value="@Model.ThreadID">
                     <button class="content-container-top-link" type="submit">Delete thread</button>
                 </form>
             }
-            @if (IsAuthenticated && ViewBag.User.Role == "Admin")
+            @if (IsAuthenticated && Model.User.Role == "Admin")
             {
-                <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@ViewData["ThreadID"]">Admin actions</a>
+                <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@Model.ThreadID">Admin actions</a>
             }
         </div>
     </div>
     <ul class="thread-posts">
-        @foreach (Comment comment in (IEnumerable<Comment>)ViewData["Comments"])
+        @foreach (Comment comment in Model.Comments)
         {
             <li class="thread-post">
                 <div class="post-user">
@@ -50,7 +52,7 @@
                             <button class="footer-link" type="submit">Delete</button>
                         </form>
                     }
-                    else if (IsAuthenticated && ViewBag.User.Role == "Admin")
+                    else if (IsAuthenticated && Model.User.Role == "Admin")
                     {
                         <a class="footer-link" asp-action="AdminDeleteComment" asp-route-id="@comment.ID">Delete (as admin)</a>
                     }
@@ -59,20 +61,20 @@
         }
     </ul>
 
-    @if (ViewBag.Page == ViewBag.PageCount)
+    @if (Model.Page == Model.PageCount)
     {
-        if (IsAuthenticated && ViewBag.User.Muted)
+        if (IsAuthenticated && Model.User.Muted)
         {
             <div class="thread-message">
                 <h1 class="top-message-text">Your account is muted.</h1>
-                <p class="top-message-text">Reason: @ViewBag.User.MuteReason</p>
+                <p class="top-message-text">Reason: @Model.User.MuteReason</p>
             </div>
         }
-        else if (!ViewBag.Locked)
+        else if (!Model.Locked)
         {
             <form class="post-form" asp-action="PostComment" method="post">
                 <textarea class="post-input" placeholder="Post" name="content"></textarea>
-                <input type="hidden" name="threadID" value="@ViewData["ThreadID"]">
+                <input type="hidden" name="threadID" value="@Model.ThreadID">
                 <button class="post-button" type="submit">Post</button>
             </form>
         }
@@ -84,29 +86,29 @@
         }
     }
     
-    @if (ViewBag.PageCount != 1)
+    @if (Model.PageCount != 1)
     {
         <div class="page-links">
-            @if (ViewBag.Page == 2)
+            @if (Model.Page == 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID">&lt;</a>
             }
-            else if (ViewBag.Page > 2)
+            else if (Model.Page > 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]">&lt;&lt;</a>
-                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@(ViewBag.Page - 1)">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID">&lt;&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@(Model.Page - 1)">&lt;</a>
             }
             
-            <p class="page-link">@ViewData["Page"]</p>
+            <p class="page-link">@Model.Page</p>
             
-            @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
+            @if (Model.PageCount - Model.Page < 2 && Model.PageCount - Model.Page > 0)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@ViewData["PageCount"]">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@Model.PageCount">&gt;</a>
             }
-            else if (ViewBag.PageCount - ViewBag.Page >= 2)
+            else if (Model.PageCount - Model.Page >= 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@(ViewBag.Page + 1)">&gt;</a>
-                <a class="page-link" asp-action="Index" asp-route-id="@ViewData["ThreadID"]" asp-route-page="@ViewData["PageCount"]">&gt;&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@(Model.Page + 1)">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@Model.PageCount">&gt;&gt;</a>
             }
         </div>
     }

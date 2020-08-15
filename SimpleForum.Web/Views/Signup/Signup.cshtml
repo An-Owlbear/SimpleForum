@@ -1,5 +1,12 @@
+@model FormViewModel
 @{
     ViewData["Title"] = "Signup";
+    List<string> errors = new List<string>()
+    {
+        "Enter email, username and password",
+        "Email not available",
+        "Username not available"
+    };
 }
 
 <div class="variable-container">
@@ -10,9 +17,9 @@
         <input class="login-input" type="password" placeholder="Password" name="password">
         <input class="login-input" type="password" placeholder="Confirm password" name="confirm_password">
         
-        @if (ViewData["error"] != null)
+        @if (Model.Error != null)
         {
-            <span class="form-error">@ViewData["error"]</span>
+            <span class="form-error">@errors[(int)Model.Error]</span>
         }
         
         <a class="login-link" asp-controller="Login">Login</a>

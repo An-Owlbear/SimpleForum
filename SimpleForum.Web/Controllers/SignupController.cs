@@ -38,16 +38,12 @@ namespace SimpleForum.Web.Controllers
         [AnonymousOnly]
         public IActionResult Index(int? error)
         {
-            List<string> errors = new List<string>()
+            FormViewModel model = new FormViewModel()
             {
-                "Enter email, username and password",
-                "Email not available",
-                "Username not available"
+                Error = error
             };
-
-            if (error != null) ViewData["error"] = errors[(int)error];
             
-            return View("Signup");
+            return View("Signup", model);
         }
 
         [AnonymousOnly]
