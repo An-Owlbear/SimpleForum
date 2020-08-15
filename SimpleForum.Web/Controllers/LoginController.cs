@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -40,17 +39,13 @@ namespace SimpleForum.Web.Controllers
         [AnonymousOnly]
         public IActionResult Index(int? error, string ReturnUrl)
         {
-            List<string> errors = new List<string>()
+            LoginViewModel model = new LoginViewModel()
             {
-                "Enter both username and password",
-                "Username or password is incorrect",
-                "Email is not verified"
+                Error = error,
+                ReturnUrl = ReturnUrl
             };
 
-            if (error != null) ViewData["error"] = errors[(int)error];
-            ViewData["ReturnUrl"] = ReturnUrl;
-            
-            return View("Login");
+            return View("Login", model);
         }
 
         [AnonymousOnly]
@@ -114,14 +109,11 @@ namespace SimpleForum.Web.Controllers
         [AnonymousOnly]
         public IActionResult ForgotPassword(int? error)
         {
-            List<string> errors = new List<string>()
+            FormViewModel model = new FormViewModel()
             {
-                "Enter an email",
-                "No account found with the submitted email"
+                Error = error
             };
-            if (error != null) ViewData["error"] = errors[(int)error];
-            
-            return View();
+            return View(model);
         }
 
         [AnonymousOnly]
@@ -176,12 +168,6 @@ namespace SimpleForum.Web.Controllers
         [AnonymousOnly]
         public IActionResult ResetPassword(string code, int? error)
         {
-            List<string> errors = new List<string>()
-            {
-                "Please enter and confirm your new password",
-                "Password does not match confirm password"
-            };
-            
             EmailCode emailCode;
             try
             {
@@ -191,16 +177,15 @@ namespace SimpleForum.Web.Controllers
             {
                 return Redirect("/");
             }
-
-            if (error != null)
+            
+            ResetPasswordViewModel model = new ResetPasswordViewModel()
             {
-                ViewData["error"] = errors[(int)error];
-            }
+                Error = error,
+                Code = code,
+                UserID = emailCode.UserID
+            };
             
-            ViewData["code"] = code;
-            ViewData["userID"] = emailCode.UserID;
-            
-            return View();
+            return View(model);
         }
 
         public async Task<IActionResult> SendResetPassword(string password, string confirmPassword,

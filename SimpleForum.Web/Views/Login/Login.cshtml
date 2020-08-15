@@ -1,5 +1,11 @@
+@model LoginViewModel
 @{
     ViewData["Title"] = "Login";
+    List<string> errors = new List<string>()
+    {
+        "Enter both username and password",
+        "Username or password is incorrect"
+    };
 }
 
 <div class="variable-container">
@@ -7,11 +13,11 @@
     <form class="login-form" asp-action="SendLogin" method="post">
         <input class="login-input" type="text" placeholder="Username/Email" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
-        <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]">
+        <input type="hidden" name="ReturnUrl" value="@Model.ReturnUrl">
         
-        @if (ViewData["error"] != null)
+        @if (Model.Error != null)
         {
-            <span class="form-error">@ViewData["error"]</span>
+            <span class="form-error">@errors[(int)Model.Error]</span>
         }
         
         <a class="login-link" asp-controller="Signup">Signup</a>
