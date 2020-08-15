@@ -25,35 +25,40 @@ namespace SimpleForum.Web.Controllers
         public IActionResult Index(int page = 1)
         {
             // Creates a list of threads and replies and returns the view
-            IEnumerable<(Thread, int)> threads = _context.Threads
-                .Where(x =>x.Deleted == false)
+            IEnumerable<Thread> threads = _context.Threads
+                .Where(x => x.Deleted == false)
                 .OrderByDescending(x => x.Pinned)
                 .ThenByDescending(x => x.DatePosted)
                 .Skip((page - 1) * ThreadsPerPage)
-                .Take(ThreadsPerPage)
-                .ToList().Select(x => (x, x.Comments.Count));
+                .Take(ThreadsPerPage).ToList();
 
             // Checks if the user's email is verified and sets EmailVerified accordingly
+            bool emailVerified = false;
+            bool emailVerificationRequired = _config.RequireEmailVerification;
             if (User.Identity.IsAuthenticated)
             {
                 try
                 {
-                    User user = _context.Users.First(x =>
-                        x.UserID.ToString() == User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    ViewData["EmailVerified"] = user.Activated;
-                    ViewData["EmailVerifyRequired"] = _config.RequireEmailVerification;
+                    int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    User user = _context.Users.First(x => x.UserID == userID);
+                    emailVerified = user.Activated;
                 }
                 catch
                 {
-                    ViewData["EmailVerified"] = false;
+                    emailVerified = false;
                 }
             }
             
             // Sets thread and page variables and returns view
-            ViewData["Threads"] = threads;
-            ViewData["Page"] = page;
-            ViewData["PageCount"] = (_context.Threads.ToList().Count + (ThreadsPerPage - 1)) / ThreadsPerPage;
-            return View();
+            IndexViewModel model = new IndexViewModel()
+            {
+                Threads = threads,
+                Page = page,
+                PageCount = (_context.Threads.Count(x => !x.Deleted) + (ThreadsPerPage - 1)) / ThreadsPerPage,
+                EmailVerified = emailVerified,
+                EmailVerificationRequired = emailVerificationRequired
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -1,4 +1,5 @@
-﻿@using System.Security.Claims
+﻿@model IndexViewModel
+@using System.Security.Claims
 @{
     ViewData["Title"] = "SimpleForum";
 }
@@ -9,7 +10,7 @@
         <h1 class="top-message-text">Welcome to SimpleForum.
         <a class="top-message-link" asp-controller="Signup">Signup</a> to get started</h1>
     }
-    else if (!ViewBag.EmailVerified && ViewBag.EmailVerifyRequired)
+    else if (!Model.EmailVerified && Model.EmailVerificationRequired)
     {
         <h1 class="top-message-text">Your email account is not verified.</h1>
         <p class="top-message-text">
@@ -31,7 +32,7 @@
         <a class="content-container-top-link" asp-controller="Thread" asp-action="Create">Create thread</a>
     </div>
     <ul class="content-list">
-        @foreach ((Thread thread, int replies) in (IEnumerable<(Thread, int)>)ViewData["Threads"])
+        @foreach (Thread thread in Model.Threads)
         {
             <li class="list-item">
                 @if (thread.Pinned)
@@ -43,35 +44,35 @@
                     <i class="ri-lock-fill list-item-icon"></i>
                 }
                 <a class="list-item-title list-item-property" asp-controller="Thread" asp-route-id="@thread.ThreadID">@thread.Title</a>
-                <span class="list-item-property">@replies replies</span>
+                <span class="list-item-property">@thread.Comments.Count replies</span>
                 <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
             </li>
         }
     </ul>
     
-    @if (ViewBag.PageCount != 1)
+    @if (Model.PageCount != 1)
     {
         <div class="page-links">
-            @if (ViewBag.Page == 2)
+            @if (Model.Page == 2)
             {
                 <a class="page-link" asp-action="Index">&lt;</a>
             }
-            else if (ViewBag.Page >= 2)
+            else if (Model.Page >= 2)
             {
                 <a class="page-link" asp-action="Index">&lt;&lt;</a>
-                <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.Page - 1)">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page - 1)">&lt;</a>
             }
             
-            <p class="page-link">@ViewData["Page"]</p>
+            <p class="page-link">@Model.Page</p>
             
-            @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
+            @if (Model.PageCount - Model.Page < 2 && Model.PageCount - Model.Page > 0)
             {
-                <a class="page-link" asp-action="Index" asp-route-page="@ViewData["PageCount"]">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount">&gt;</a>
             }
-            else if (ViewBag.PageCount - ViewBag.Page >= 2)
+            else if (Model.PageCount - Model.Page >= 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.Page + 1)">&gt;</a>
-                <a class="page-link" asp-action="Index" asp-route-page="@ViewData["PageCount"]">&gt;&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page + 1)">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-page="@Model.PageCount">&gt;&gt;</a>
             }
         </div>
     }
