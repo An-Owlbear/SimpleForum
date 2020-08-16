@@ -141,9 +141,8 @@ namespace SimpleForum.Web.Controllers
 
             // TODO - Add code for thread preview
 
-            ViewData["Thread"] = _context.Threads.First(x => x.ThreadID == id);
-            ViewData["ThreadID"] = id;
-            return View();
+            Thread model = await _context.Threads.FindAsync(id);
+            return View(model);
         }
 
 
