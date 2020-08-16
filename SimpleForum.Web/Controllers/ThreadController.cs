@@ -58,7 +58,7 @@ namespace SimpleForum.Web.Controllers
                 Title = thread.Title,
                 ThreadID = thread.ThreadID,
                 Pinned = thread.Pinned,
-                Locked = thread.Pinned,
+                Locked = thread.Locked,
                 Comments = thread.Comments
                     .Where(x => !x.Deleted)
                     .OrderBy(x => x.DatePosted)

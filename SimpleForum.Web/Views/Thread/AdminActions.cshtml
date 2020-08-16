@@ -40,7 +40,7 @@
             }
         </li>
         <li class="action-list-item">
-            @if (!ViewBag.Thread.Locked)
+            @if (!Model.Locked)
             {
                 <span class="action-list-item-title">Lock the thread, preventing it from recieving further replies.</span>
                 <form asp-action="Lock" method="post">
