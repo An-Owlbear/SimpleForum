@@ -35,24 +35,27 @@ namespace SimpleForum.Web.Controllers
                 return StatusCode(404);
             }
 
-            ViewData["PostCount"] = user.Comments.Count;
-            ViewData["Title"] = user.Username;
-            ViewData["User"] = user;
-            ViewData["PageComments"] = user.UserPageComments
-                .Where(x => !x.Deleted)
-                .OrderByDescending(x => x.DatePosted)
-                .Skip((page - 1) * CommentsPerPage)
-                .Take(CommentsPerPage);
-            ViewData["Page"] = page;
-            ViewData["PageCount"] = (user.UserPageComments.Count + (CommentsPerPage - 1)) / CommentsPerPage;
-
+            User currentUser = null;
             if (User.Identity.IsAuthenticated)
             {
                 int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                ViewData["CurrentUser"] = _context.Users.First(x => x.UserID == userID);
+                currentUser = _context.Users.First(x => x.UserID == userID);
             }
             
-            return View("User");
+            UserPageViewModel model = new UserPageViewModel()
+            {
+                User = user,
+                Page = page,
+                PageCount = (user.UserPageComments.Count(x => !x.Deleted) + (CommentsPerPage - 1)) / CommentsPerPage,
+                CurrentUser = currentUser,
+                CurrentPageComments = user.UserPageComments
+                    .Where(x => !x.Deleted)
+                    .OrderByDescending(x => x.DatePosted)
+                    .Skip((page - 1) * CommentsPerPage)
+                    .Take(CommentsPerPage)
+            };
+            
+            return View("User", model);
         }
 
         [Authorize(Policy = "UserPageReply")]
@@ -67,7 +70,7 @@ namespace SimpleForum.Web.Controllers
                 Content = content,
                 DatePosted = DateTime.Now,
                 UserID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                UserPageID = userPageID
+                UserPageID = userPageID,
             };
 
             await _context.UserComments.AddAsync(comment);
@@ -181,7 +184,7 @@ namespace SimpleForum.Web.Controllers
 
             ViewData["User"] = user;
             return View();
-;        }
+        }
 
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
