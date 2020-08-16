@@ -80,11 +80,11 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult CommentSettings()
+        public async Task<IActionResult> CommentSettings()
         {
-            ViewData["User"] =
-                _context.Users.First(x => x.UserID == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            return View();
+            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User user = await _context.Users.FindAsync(userID);
+            return View(user);
         }
 
         [Authorize(Policy = "UserOwner")]
@@ -181,9 +181,8 @@ namespace SimpleForum.Web.Controllers
             {
                 return Redirect("/");
             }
-
-            ViewData["User"] = user;
-            return View();
+            
+            return View(user);
         }
 
         [Authorize(Roles = "Admin")]
@@ -256,9 +255,8 @@ namespace SimpleForum.Web.Controllers
             {
                 return Redirect("/");
             }
-
-            ViewData["User"] = user;
-            return View();
+            
+            return View(user);
         }
 
         [Authorize(Roles = "Admin")]
