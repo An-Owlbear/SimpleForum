@@ -72,31 +72,6 @@ namespace SimpleForum.Web.Controllers
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
-        public IActionResult Forbidden()
-        {
-            MessageViewModel model = new MessageViewModel()
-            {
-                Title = "Forbidden",
-                MessageTitle = "Access denied."
-            };
-            return View("Message", model);
-        }
-
-        public IActionResult EmailUnverified()
-        {
-            string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
-                               User.FindFirstValue(ClaimTypes.NameIdentifier);
-            MessageViewModel model = new MessageViewModel()
-            {
-                Title = "Forbidden",
-                MessageTitle = "Your email is not verified",
-                MessageContent = "To access this page your email account must be verified. We have sent you" +
-                                 " an email containing the verification link. If you have not received the email" +
-                                 $" click [here]({resendUrl})."
-            };
-            return View("Message", model);
-        }
-
         public IActionResult StatusError(int code)
         {
             MessageViewModel model = new MessageViewModel()

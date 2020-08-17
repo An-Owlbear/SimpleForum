@@ -2,9 +2,11 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Options;
 using SimpleForum.Internal;
 using SimpleForum.Models;
+using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web.Policies
 {
@@ -42,7 +44,24 @@ namespace SimpleForum.Web.Policies
 
             if (!user.Activated)
             {
-                context.Result = new RedirectToActionResult("EmailUnverified", "Home", null);
+                string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" + user.UserID;
+                MessageViewModel model = new MessageViewModel()
+                {
+                    Title = "Forbidden",
+                    MessageTitle = "Your email is not verified",
+                    MessageContent = "To access this page your email account must be verified. We have sent you" +
+                                     " an email containing the verification link. If you have not received the email" +
+                                     $" click [here]({resendUrl})."
+                };
+                ViewDataDictionary viewData = ((Controller)context.Controller).ViewData;
+                context.Result = new ViewResult()
+                {
+                    ViewName = "Message",
+                    ViewData = new ViewDataDictionary(viewData)
+                    {
+                        Model = model
+                    }
+                };
             }
         }
     }

@@ -36,7 +36,7 @@ namespace SimpleForum.Web
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
                     options.LoginPath = new PathString("/Login");
-                    options.AccessDeniedPath = new PathString("/Home/Forbidden");
+                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
                 });
 
             services.AddHttpContextAccessor();
@@ -85,6 +85,7 @@ namespace SimpleForum.Web
             services.AddScoped<PreventMuted>();
 
             services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<CustomCookieAuthenticationEvents>();
 
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>

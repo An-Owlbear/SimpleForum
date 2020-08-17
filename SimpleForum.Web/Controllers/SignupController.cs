@@ -1,7 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
@@ -18,7 +20,7 @@ namespace SimpleForum.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
-        
+
         string generateCode(int length)
         {
             string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
@@ -26,15 +28,16 @@ namespace SimpleForum.Web.Controllers
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        
 
-        public SignupController(ApplicationDbContext context, IEmailService emailService, IOptions<SimpleForumConfig> config)
+
+        public SignupController(ApplicationDbContext context, IEmailService emailService,
+            IOptions<SimpleForumConfig> config)
         {
             _context = context;
             _emailService = emailService;
             _config = config.Value;
         }
-        
+
         [AnonymousOnly]
         public IActionResult Index(int? error)
         {
@@ -42,7 +45,7 @@ namespace SimpleForum.Web.Controllers
             {
                 Error = error
             };
-            
+
             return View("Signup", model);
         }
 
@@ -93,6 +96,22 @@ namespace SimpleForum.Web.Controllers
                 "'>" + url + "</a></p>",
                 true);
 
+            // Logs in the user
+            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme,
+                ClaimTypes.Name, ClaimTypes.Role);
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+
+            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),
+                    IsPersistent = true,
+                    AllowRefresh = false
+                });
+
             // Returns a signup complete page informing the user about email verification, containing a button to
             // resend the verification email.
             string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
@@ -105,6 +124,7 @@ namespace SimpleForum.Web.Controllers
                                  "We have sent a verification message to your email account.\n" +
                                  $"If you have not received the email click [here]({resendUrl})."
             };
+
             return View("Message", model);
         }
 
@@ -128,7 +148,7 @@ namespace SimpleForum.Web.Controllers
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Email verified",
-                MessageTitle = "Email verified successfully, you can now login"
+                MessageTitle = "Email verified successfully, you can now access all features"
             };
             return View("Message", model);
         }
