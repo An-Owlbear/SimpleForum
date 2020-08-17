@@ -17,6 +17,10 @@ namespace SimpleForum.Internal
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EmailCode>().HasKey(x => x.Code);
+            
+            modelBuilder.Entity<Thread>().HasIndex(x => x.DatePosted);
+            modelBuilder.Entity<Comment>().HasIndex(x => x.DatePosted);
+            modelBuilder.Entity<UserComment>().HasIndex(x => x.DatePosted);
         }
     }
 }
