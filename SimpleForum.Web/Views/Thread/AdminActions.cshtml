@@ -1,8 +1,13 @@
+@model Thread
+@{
+    ViewData["Title"] = "Admin actions";
+}
+
 <div class="content-container">
     <span class="content-container-title">Admin actions</span>
     <ul class="action-list">
         <li class="action-list-item">
-            @if (!ViewBag.Thread.Deleted)
+            @if (!Model.Deleted)
             {
                 <span class="action-list-item-title">Delete the thread and its contents.</span>
                 <a class="action-list-item-button" asp-action="Delete" asp-route-id="@ViewData["ThreadID"]">Delete thread</a>
@@ -11,17 +16,17 @@
             {
                 <span class="action-list-item-title">Restore the thread and its contents.</span>
                 <form asp-action="Restore" method="post">
-                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <input type="hidden" name="id" value="@Model.ThreadID">
                     <button class="action-list-item-button" type="submit">Restore thread</button>
                 </form>
             }
         </li>
         <li class="action-list-item">
-            @if (!ViewBag.Thread.Pinned)
+            @if (!Model.Pinned)
             {
                 <span class="action-list-item-title">Pin the thread to the top of the list.</span>
                 <form asp-action="Pin" method="post">
-                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <input type="hidden" name="id" value="@Model.ThreadID">
                     <button class="action-list-item-button" type="submit">Pin thread</button>
                 </form>
             }
@@ -29,17 +34,17 @@
             {
                 <span class="action-list-item-title">Unpin the thread.</span>
                 <form asp-action="Unpin" method="post">
-                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <input type="hidden" name="id" value="@Model.ThreadID">
                     <button class="action-list-item-button" type="submit">Unpin thread</button>
                 </form>
             }
         </li>
         <li class="action-list-item">
-            @if (!ViewBag.Thread.Locked)
+            @if (!Model.Locked)
             {
                 <span class="action-list-item-title">Lock the thread, preventing it from recieving further replies.</span>
                 <form asp-action="Lock" method="post">
-                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <input type="hidden" name="id" value="@Model.ThreadID">
                     <button class="action-list-item-button" type="submit">Lock thread</button>
                 </form>
             }
@@ -47,7 +52,7 @@
             {
                 <span class="action-list-item-title">Unlock the thread, allowing it recieve replies again.</span>
                 <form asp-action="Unlock" method="post">
-                    <input type="hidden" name="id" value="@ViewData["ThreadID"]">
+                    <input type="hidden" name="id" value="@Model.ThreadID">
                     <button class="action-list-item-button" type="submit">Unlock thread</button>
                 </form>
             }

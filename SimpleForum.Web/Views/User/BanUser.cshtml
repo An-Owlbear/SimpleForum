@@ -1,11 +1,12 @@
+@model User
 @{
     ViewData["Title"] = "Ban user";
 }
 
 <div class="variable-container">
-    <span class="login-form-title">Ban @ViewBag.User.Username</span>
+    <span class="login-form-title">Ban @Model.Username</span>
     <form class="login-form" asp-action="SendBanUser" method="post">
-        <input type="hidden" name="id" value="@ViewBag.User.UserID">
+        <input type="hidden" name="id" value="@Model.UserID">
         <input class="login-input" type="text" placeholder="Ban reason" name="reason">
         <button class="reset-password-button" type="submit">Ban user</button>
     </form>

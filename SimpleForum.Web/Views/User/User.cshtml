@@ -1,27 +1,32 @@
+@model UserPageViewModel
+@{
+    ViewData["Title"] = Model.User.Username;
+}
+
 <div class="variable-container main-profile-container">
     <div class="profile-container">
         <div class="profile-info">
 
             <div class="profile-info-section">
-                <span class="profile-info-name">@ViewBag.User.Username</span>
+                <span class="profile-info-name">@Model.User.Username</span>
                 <img class="profile-info-image" src="/img/defaultprofile.png">
             </div>
             <div class="profile-info-section">
-                <span class="profile-bio">@ViewBag.User.Bio</span>
+                <span class="profile-bio">@Model.User.Bio</span>
             </div>
             <div class="profile-info-section">
-                <span class="profile-info-text">Threads: @ViewBag.User.Threads.Count</span>
-                <span class="profile-info-text">Comments: @ViewBag.User.Comments.Count</span>
-                <span class="profile-info-text">Joined: @ViewBag.User.SignupDate.ToShortDateString()</span>
+                <span class="profile-info-text">Threads: @Model.User.Threads.Count</span>
+                <span class="profile-info-text">Comments: @Model.User.Comments.Count</span>
+                <span class="profile-info-text">Joined: @Model.User.SignupDate.ToShortDateString()</span>
             </div>
         </div>
 
         <div class="content-container-top">
             <span class="content-container-title">Comments</span>
             <div class="content-container-top-link-container">
-                @if (User.Identity.IsAuthenticated && ViewBag.CurrentUser.Role == "Admin")
+                @if (User.Identity.IsAuthenticated && Model.CurrentUser.Role == "Admin")
                 {
-                    <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@ViewBag.User.UserID">Admin actions</a>
+                    <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@Model.User.UserID">Admin actions</a>
                 }
                 @if ((await AuthorizationService.AuthorizeAsync(User, "UserOwner")).Succeeded)
                 {
@@ -31,20 +36,20 @@
             </div>
         </div>
 
-        @if (User.Identity.IsAuthenticated && ViewBag.Page == 1)
+        @if (User.Identity.IsAuthenticated && Model.Page == 1)
         {
-            @if (User.Identity.IsAuthenticated && ViewBag.User.Muted)
+            @if (User.Identity.IsAuthenticated && Model.User.Muted)
             {
                 <div class="thread-message">
                     <h1 class="top-message-text">Your account is muted</h1>
-                    <p class="top-message-text">Reason: @ViewBag.User.MuteReason</p>
+                    <p class="top-message-text">Reason: @Model.User.MuteReason</p>
                 </div>
             }
-            else if (!ViewBag.CurrentUser.CommentsLocked)
+            else if (!Model.CurrentUser.CommentsLocked)
             {
                 <form class="post-form profile-post-form" asp-action="PostUserComment" method="post">
                     <textarea class="post-input" placeholder="Comment" name="content"></textarea>
-                    <input type="hidden" name="userPageID" value="@ViewBag.User.UserID">
+                    <input type="hidden" name="userPageID" value="@Model.User.UserID">
                     <button class="post-button" type="submit">Post</button>
                 </form>
             }
@@ -56,8 +61,8 @@
             }
         }
 
-        <ul class="thread-posts">
-            @foreach (UserComment comment in ViewBag.PageComments)
+        <ul class="thread-posts user-comments">
+            @foreach (UserComment comment in Model.CurrentPageComments)
             {
                 <li class="thread-post">
                     <div class="post-user">
@@ -85,29 +90,29 @@
             }
         </ul>
 
-        @if (ViewBag.PageCount > 1)
+        @if (Model.PageCount > 1)
         {
             <div class="page-links">
-                @if (ViewBag.Page == 2)
+                @if (Model.Page == 2)
                 {
-                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID">&lt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@Model.User.UserID">&lt;</a>
                 }
-                else if (ViewBag.Page > 2)
+                else if (Model.Page > 2)
                 {
-                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID">&lt;&lt;</a>
-                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@(ViewBag.Page - 1)">&lt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@Model.User.UserID">&lt;&lt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@Model.User.UserID" asp-route-page="@(Model.Page - 1)">&lt;</a>
                 }
 
-                <p class="page-link">@ViewData["Page"]</p>
+                <p class="page-link">@Model.Page</p>
 
-                @if (ViewBag.PageCount - ViewBag.Page < 2 && ViewBag.PageCount - ViewBag.Page > 0)
+                @if (Model.PageCount - Model.Page < 2 && Model.PageCount - Model.Page > 0)
                 {
-                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@ViewData["PageCount"]">&gt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@Model.User.UserID" asp-route-page="@Model.PageCount">&gt;</a>
                 }
-                else if (ViewBag.PageCount - ViewBag.Page >= 2)
+                else if (Model.PageCount - Model.Page >= 2)
                 {
-                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@(ViewBag.Page + 1)">&gt;</a>
-                    <a class="page-link" asp-action="Index" asp-route-id="@ViewBag.User.UserID" asp-route-page="@ViewData["PageCount"]">&gt;&gt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@Model.User.UserID" asp-route-page="@(Model.Page + 1)">&gt;</a>
+                    <a class="page-link" asp-action="Index" asp-route-id="@Model.User.UserID" asp-route-page="@Model.PageCount">&gt;&gt;</a>
                 }
             </div>
         }

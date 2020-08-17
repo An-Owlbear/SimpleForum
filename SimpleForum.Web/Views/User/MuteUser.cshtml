@@ -1,11 +1,12 @@
+@model User
 @{
     ViewData["Title"] = "Mute user";
 }
 
 <div class="variable-container">
-    <span class="login-form-title">Mute @ViewBag.User.Username</span>
+    <span class="login-form-title">Mute @Model.Username</span>
     <form class="login-form" asp-action="SendMuteUser" method="post">
-        <input type="hidden" name="id" value="@ViewBag.User.UserID">
+        <input type="hidden" name="id" value="@Model.UserID">
         <input class="login-input" type="text" placeholder="Mute reason" name="reason">
         <button class="reset-password-button" type="submit">Mute user</button>
     </form>
