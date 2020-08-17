@@ -95,8 +95,9 @@ namespace SimpleForum.Web.Controllers
                     IsPersistent = true,
                     AllowRefresh = false
                 });
-            
-            return Redirect(ReturnUrl ?? "/");
+
+            if (Url.IsLocalUrl(ReturnUrl)) return Redirect(ReturnUrl);
+            return Redirect("/");
         }
 
         [Authorize]
