@@ -322,13 +322,13 @@ i.content-container-title {
 .post-profile-img {
   display: block;
   height: 100px;
-  margin: 0.5rem 1rem 0 1rem;
+  margin: 1rem 1rem 0 1rem;
   border-radius: 75px;
 }
 
 .post-date {
   display: inline-block;
-  margin: 0.5rem 1rem 1rem 1rem;
+  margin: 1rem;
   text-align: center;
   color: var(--text-primary);
 }
@@ -641,8 +641,8 @@ button.action-list-item-button:hover {
 }
 
 .profile-info-name {
-  margin-top: 0.5rem;
-  display: inline-block;
+  margin: 0.5rem auto 0 auto;
+  display: block;
   max-width: 125px;
   word-break: break-word;
   color: var(--text-primary);
@@ -752,6 +752,19 @@ textarea.edit-container-item {
 
 .user-comments {
   margin-top: 1rem;
+}
+
+.ban-text {
+  display: block;
+  color: var(--text-primary);
+}
+
+.ban-text.profile {
+  margin-top: 1rem;
+}
+
+.ban-text.post {
+  margin-top: 0.5rem;
 }
 
 @media only screen and (max-width: 800px) {

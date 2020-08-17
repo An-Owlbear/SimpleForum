@@ -9,7 +9,13 @@
 
             <div class="profile-info-section">
                 <span class="profile-info-name">@Model.User.Username</span>
-                <img class="profile-info-image" src="/img/defaultprofile.png">
+                
+                @if (Model.User.Banned)
+                {
+                    <span class="ban-text profile">(banned)</span>
+                }
+                
+                <img class="profile-info-image" src="/img/defaultprofile.png" alt="@Model.User.Username">
             </div>
             <div class="profile-info-section">
                 <span class="profile-bio">@Model.User.Bio</span>
@@ -67,7 +73,13 @@
                 <li class="thread-post">
                     <div class="post-user">
                         <a class="post-username" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
-                        <img class="post-profile-img" src="~/img/defaultprofile.png">
+                        
+                        @if (Model.User.Banned)
+                        {
+                            <span class="ban-text post">(banned)</span>
+                        }
+                        
+                        <img class="post-profile-img" src="~/img/defaultprofile.png" alt="@Model.User.Username">
                         <span class="post-date">
                             @comment.DatePosted.ToShortDateString()
                             @comment.DatePosted.ToShortTimeString()
