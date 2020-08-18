@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleForum.Models
 {
-    public class UserComment: IPost
+    public class UserComment : IPost
     {
         [Key]
         public int UserCommentID { get; set; }
@@ -19,6 +19,8 @@ namespace SimpleForum.Models
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
         public bool Deleted { get; set; }
+        public string DeletedBy { get; set; }
+        public string DeleteReason { get; set; }
 
         public int UserID { get; set; }
         public virtual User User { get; set; }

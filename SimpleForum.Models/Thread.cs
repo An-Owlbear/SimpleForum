@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleForum.Models
 {
-    public class Thread: IPost
+    public class Thread : IPost
     {
         [Key]
         public int ThreadID { get; set; }
@@ -22,6 +22,8 @@ namespace SimpleForum.Models
         public bool Pinned { get; set; }
         public bool Locked { get; set; }
         public bool Deleted { get; set; }
+        public string DeletedBy { get; set; }
+        public string DeleteReason { get; set; }
 
         public int UserID { get; set; }
         public virtual User User { get; set; }

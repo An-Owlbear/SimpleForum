@@ -13,6 +13,7 @@ namespace SimpleForum.Internal
         public DbSet<UserComment> UserComments { get; set; }
         public DbSet<AuthToken> AuthTokens { get; set; }
         public DbSet<EmailCode> EmailCodes { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
