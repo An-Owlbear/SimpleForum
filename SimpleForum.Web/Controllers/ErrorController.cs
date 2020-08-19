@@ -58,6 +58,8 @@ namespace SimpleForum.Web.Controllers
                 return BadRequest();
             }
 
+            if (!user.Banned) return Redirect("/");
+            
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Account banned",
