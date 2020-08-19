@@ -1,12 +1,21 @@
+@using Microsoft.AspNetCore.Http
 @model MessageViewModel
 @{
     ViewData["Title"] = Model.Title;
 }
 
 <div class="top-message">
-    <h1 class="top-message-text">@Model.MessageTitle</h1>
-    @if (Model.MessageContent != null)
+    <div class="top-message-text-container">
+        <h1 class="top-message-text">@Model.MessageTitle</h1>
+        @if (Model.MessageContent != null)
+        {
+            <p class="top-message-text">@Html.RenderOutput(Model.MessageContent)</p>
+        }
+    </div>
+    @if (Model.Button != null && Model.Button.Method == HttpMethods.Post)
     {
-        <p class="top-message-text">@Html.RenderOutput(Model.MessageContent)</p>
+        <form class="top-message-form" asp-controller="@Model.Button.Controller" asp-action="@Model.Button.Action" method="post">
+            <button class="top-message-button" type="submit">@Model.Button.Text</button>
+        </form>
     }
 </div>

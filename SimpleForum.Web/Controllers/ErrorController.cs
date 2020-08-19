@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
@@ -64,7 +65,14 @@ namespace SimpleForum.Web.Controllers
             {
                 Title = "Account banned",
                 MessageTitle = "Your account is banned",
-                MessageContent = "Ban reasosn: " + user.BanReason
+                MessageContent = "Ban reason: " + user.BanReason,
+                Button = new ButtonModel()
+                {
+                    Text = "Logout",
+                    Method = HttpMethods.Post,
+                    Controller = "Login",
+                    Action="Logout"
+                }
             };
 
             return View("Message", model);

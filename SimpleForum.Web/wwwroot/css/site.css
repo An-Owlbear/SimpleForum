@@ -513,6 +513,31 @@ textarea.thread-create-input {
   padding: 1rem;
   box-sizing: border-box;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-message-text-container {
+  display: inline-block;
+}
+
+.top-message-form {
+  display: inline-block;
+  margin: 1rem;
+}
+
+.top-message-button {
+  background-color: royalblue;
+  color: var(--text-primary-light);
+  border: 0;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
+}
+
+.top-message-button:hover {
+  cursor: pointer;
 }
 
 .top-message-text {
