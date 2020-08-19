@@ -5,110 +5,113 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.7" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.7" />
-      <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
-      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.7" />
+        <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(Configuration)'=='DEBUG'">
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.7" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="Views\Login\Login.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Signup\Signup.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="wwwroot\css\site.css">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="wwwroot\js\site.js">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="Views\Thread\Thread.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\User\User.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Thread\Create.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Shared\Message.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Thread\AdminActions.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Login\ForgotPassword.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\User\CommentSettings.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\User\AdminActions.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\User\MuteUser.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\User\BanUser.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
-      <Content Update="Views\Shared\ConfirmPassword.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </Content>
+        <Content Update="Views\Login\Login.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Signup\Signup.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="wwwroot\css\site.css">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\js\site.js">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="Views\Thread\Thread.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\User\User.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Thread\Create.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Shared\Message.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Thread\AdminActions.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Login\ForgotPassword.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\User\CommentSettings.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\User\AdminActions.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\User\MuteUser.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\User\BanUser.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="Views\Shared\ConfirmPassword.cshtml">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
-      <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
+        <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
+        <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\lib" />
+        <None Include="wwwroot\lib\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Policies\ThreadOwnerOrAdminHandler.cs">
-        <DependentUpon>ThreadOwnerOrAdminRequirement.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Policies\ThreadOwnerHandler.cs">
-        <DependentUpon>ThreadOwnerRequirement.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Policies\ThreadReplyHandler.cs">
-        <DependentUpon>ThreadReplyRequirement.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Policies\UserOwnerOrAdminHandler.cs">
-        <DependentUpon>UserOwnerOrAdminRequirement.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Policies\UserOwnerHandler.cs">
-        <DependentUpon>UserOwnerRequirement.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Policies\UserPageReplyHandler.cs">
-        <DependentUpon>UserPageReplyRequirement.cs</DependentUpon>
-      </Compile>
+        <Compile Update="Policies\ThreadOwnerOrAdminHandler.cs">
+            <DependentUpon>ThreadOwnerOrAdminRequirement.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Policies\ThreadOwnerHandler.cs">
+            <DependentUpon>ThreadOwnerRequirement.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Policies\ThreadReplyHandler.cs">
+            <DependentUpon>ThreadReplyRequirement.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Policies\UserOwnerOrAdminHandler.cs">
+            <DependentUpon>UserOwnerOrAdminRequirement.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Policies\UserOwnerHandler.cs">
+            <DependentUpon>UserOwnerRequirement.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Policies\UserPageReplyHandler.cs">
+            <DependentUpon>UserPageReplyRequirement.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>
