@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,44 +20,30 @@ namespace SimpleForum.Web
 
         public async Task InvokeAsync(HttpContext httpContext, ApplicationDbContext dbContext, IViewRenderService renderService)
         {
-            if (httpContext.User.Identity.IsAuthenticated)
+            // Urls which can be accessed whilst an account is banned
+            List<string> urlExceptions = new List<string>()
+            {
+                "/Error/Banned",
+                "/Login/Logout",
+                "/Error/StatusError"
+            };
+            
+            List<bool> conditions = new List<bool>()
+            {
+                httpContext.User.Identity.IsAuthenticated,
+                urlExceptions.All(x => x != httpContext.Request.Path.Value)
+            };
+            
+            if (conditions.All(x => x == true))
             {
                 User user;
-                try
-                {
-                    int userID = int.Parse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    user = dbContext.Users.First(x => x.UserID == userID);
-                }
-                catch
-                {
-                    MessageViewModel model = new MessageViewModel()
-                    {
-                        Title = "Error",
-                        MessageTitle = "Error during request",
-                        MessageContent = "Clear your cookies to resolve the issue."
-                    };
-                    httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    httpContext.Response.ContentType = "text/html";
-                    string response = await renderService.RenderToStringAsync("Message", model);
-                    await httpContext.Response.WriteAsync(response);
-                    return;
-                }
+                int userID = int.Parse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                user = dbContext.Users.First(x => x.UserID == userID);
+                
 
                 if (user.Banned)
                 {
-                    httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    httpContext.Response.ContentType = "text/html";
-                    
-                    MessageViewModel model = new MessageViewModel()
-                    {
-                        Title = "Account banned",
-                        MessageTitle = "Your account is banned",
-                        MessageContent = "Ban reason: " + user.BanReason
-                    };
-                    
-                    string response = await renderService.RenderToStringAsync("Message", model);
-                    await httpContext.Response.WriteAsync(response);
-                    return;
+                    httpContext.Response.Redirect("/Error/Banned");
                 }
             }
             

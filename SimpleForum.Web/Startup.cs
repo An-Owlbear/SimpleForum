@@ -37,7 +37,7 @@ namespace SimpleForum.Web
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
                     options.LoginPath = new PathString("/Login");
-                    options.EventsType = typeof(CustomCookieAuthenticationEvents);
+                    options.AccessDeniedPath = new PathString("/Error/AccessDenied");
                 });
 
             services.AddHttpContextAccessor();
@@ -86,7 +86,6 @@ namespace SimpleForum.Web
             services.AddScoped<PreventMuted>();
 
             services.AddScoped<IViewRenderService, ViewRenderService>();
-            services.AddScoped<CustomCookieAuthenticationEvents>();
 
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -119,13 +118,13 @@ namespace SimpleForum.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error/Error");
                 app.UseForwardedHeaders();
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithReExecute("/Home/StatusError", "?code={0}");
+            app.UseStatusCodePagesWithReExecute("/Error/StatusError", "?code={0}");
             app.UseStaticFiles();
 
             app.UseRouting();
