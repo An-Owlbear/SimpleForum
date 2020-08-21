@@ -68,12 +68,25 @@ textarea:focus, input:focus {
 }
 
 .nav-item:last-child {
-  margin: 0 1rem 0 auto;
+  margin: 0 1rem 0 0;
   text-align: right;
+}
+
+.nav-item.right-first {
+  margin-left: auto
 }
 
 .nav-item:hover {
   background: var(--navbar-secondary);
+}
+
+.navi-item.icon-item {
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.nav-icon {
+  color: var(--text-primary-light);
+  display: block;
 }
 
 .nav-link {
