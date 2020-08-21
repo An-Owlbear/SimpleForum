@@ -25,5 +25,10 @@ namespace SimpleForum.Models
         /// The date the notification was created
         /// </summary>
         public DateTime DateCreated { get; set; }
+        
+        /// <summary>
+        /// Whether the user has read the notification
+        /// </summary>
+        public bool Read { get; set; }
     }
 }
