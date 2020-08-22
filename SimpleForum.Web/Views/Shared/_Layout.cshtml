@@ -34,7 +34,7 @@
             </li>
 
             <li class="nav-item icon-item right-first">
-                <a class="nav-link" href="javascript:void(0)">
+                <a class="nav-link" asp-controller="User" asp-action="Notifications">
                     <i class="ri-notification-2-fill"></i> 
                 </a>
             </li>
@@ -69,6 +69,6 @@
 @RenderBody()
 
 <script src="~/js/site.js" asp-append-version="true"></script>
-@RenderSection("Scripts", required: false)
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

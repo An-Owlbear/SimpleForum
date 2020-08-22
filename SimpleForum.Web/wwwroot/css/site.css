@@ -817,6 +817,20 @@ textarea.edit-container-item {
   margin-top: 0.5rem;
 }
 
+.unread-notification-item {
+  display: flex;
+  align-items: center;
+}
+
+.unread-notification-item::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  display: block;
+  border-radius: 75px;
+  background-color: var(--error-background);
+}
+
 @media only screen and (max-width: 800px) {
   .navbar-nav {
     overflow: hidden;

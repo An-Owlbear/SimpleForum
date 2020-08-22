@@ -362,5 +362,19 @@ namespace SimpleForum.Web.Controllers
             
             return RedirectToAction("Index", new {id = user.UserID});
         }
+
+        [Authorize]
+        public async Task<IActionResult> Notifications()
+        {
+            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User user = await _context.Users.FindAsync(userID);
+            
+            NotificationsViewModel model = new NotificationsViewModel()
+            {
+                Notifications = user.Notifications.OrderByDescending(x => x.DateCreated)
+            };
+
+            return View(model);
+        }
     }
 }
