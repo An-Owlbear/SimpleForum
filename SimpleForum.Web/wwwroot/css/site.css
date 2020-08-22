@@ -12,7 +12,7 @@
   /* --bg-secondary: #EDF1F5; */
   --navbar-primary: #23232e;
   --navbar-secondary: #141418;
-  --button-primary: 3DB4F2;
+  --button-primary: 3 DB4F2;
   --error-background: #F56C6C;
 }
 
@@ -87,6 +87,18 @@ textarea:focus, input:focus {
 .nav-icon {
   color: var(--text-primary-light);
   display: block;
+}
+
+.unread-notification::after {
+  content: "";
+  display: block;
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background-color: var(--error-background);
+  border-radius: 75px;
+  top: -1.5rem;
+  left: 0.7rem;
 }
 
 .nav-link {
