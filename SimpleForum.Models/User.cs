@@ -29,5 +29,7 @@ namespace SimpleForum.Models
         public virtual ICollection<UserComment> UserComments { get; set; }
         [InverseProperty("UserPage")]
         public virtual ICollection<UserComment> UserPageComments { get; set; }
+        
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

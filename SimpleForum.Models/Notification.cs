@@ -30,5 +30,15 @@ namespace SimpleForum.Models
         /// Whether the user has read the notification
         /// </summary>
         public bool Read { get; set; }
+        
+        /// <summary>
+        /// The ID of the user the notification is for
+        /// </summary>
+        public int UserID { get; set; }
+        
+        /// <summary>
+        /// Navigation property for user
+        /// </summary>
+        public virtual User User { get; set; }
     }
 }
