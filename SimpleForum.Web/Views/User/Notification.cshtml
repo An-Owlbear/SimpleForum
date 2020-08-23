@@ -1,0 +1,16 @@
+﻿@model Notification
+@{
+    ViewData["Title"] = Model.Title; 
+}
+
+<div class="content-container">
+    <div class="content-container-top">
+        <span class="content-container-title">@Model.Title</span>
+    </div>
+    <div class="notification-item">
+        <span class="notification-contents">@Html.RenderOutput(Model.Content)</span>
+    </div>
+    <div class="notification-item-footer">
+                <span class="notification-footer-item">@Model.DateCreated.ToShortDateString()</span>
+    </div>
+</div>

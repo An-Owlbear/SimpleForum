@@ -376,5 +376,18 @@ namespace SimpleForum.Web.Controllers
 
             return View(model);
         }
+
+        [Authorize(Policy = "NotificationOwner")]
+        public async Task<IActionResult> Notification(int? id)
+        {
+            // Redirects if id parameter is null
+            if (id == null) return Redirect("/");
+
+            // Retrieves notification from database
+            Notification notification = await _context.Notifications.FindAsync(id);
+            
+            // Returns view with notification
+            return View(notification);
+        }
     }
 }

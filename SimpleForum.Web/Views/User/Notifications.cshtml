@@ -15,7 +15,7 @@
                 {
                     <span class="list-item-icon unread-notification-item"></span>
                 }
-                <a class="list-item-title list-item-property" href="javascript:void(0)">@notification.Title</a>
+                <a class="list-item-title list-item-property" asp-action="Notification" asp-route-id="@notification.NotificationID">@notification.Title</a>
                 <span class="list-item-property">@notification.DateCreated.ToShortDateString()</span>
             </li>
         }

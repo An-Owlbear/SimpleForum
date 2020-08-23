@@ -831,6 +831,30 @@ textarea.edit-container-item {
   background-color: var(--error-background);
 }
 
+.notification-item {
+  margin: 0.5rem 2rem 0.5rem 2rem;
+  background-color: var(--bg-secondary);
+  border-radius: 5px;
+  overflow: auto;
+}
+
+.notification-contents {
+  display: inline-block;
+  margin: 1rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+.notification-item-footer {
+  margin: 1rem 2rem 1rem 2rem;
+  text-align: right;
+}
+
+.notification-footer-item {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar-nav {
     overflow: hidden;
