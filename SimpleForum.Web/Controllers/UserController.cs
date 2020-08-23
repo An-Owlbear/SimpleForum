@@ -383,8 +383,13 @@ namespace SimpleForum.Web.Controllers
             // Redirects if id parameter is null
             if (id == null) return Redirect("/");
 
-            // Retrieves notification from database
+            // Retrieves notification from database and sets to read if unread
             Notification notification = await _context.Notifications.FindAsync(id);
+            if (!notification.Read)
+            {
+                notification.Read = true;
+                await _context.SaveChangesAsync();
+            }
             
             // Returns view with notification
             return View(notification);
