@@ -64,6 +64,8 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {
             if (content == null) return Redirect("/");
+            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User user = await _context.Users.FindAsync(userID);
             
             UserComment comment = new UserComment()
             {
@@ -72,10 +74,21 @@ namespace SimpleForum.Web.Controllers
                 UserID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 UserPageID = userPageID,
             };
-
             await _context.UserComments.AddAsync(comment);
+            
+            // Creates a notification if commenting on another user
+            if (userID != userPageID)
+            {
+                Notification notification = new Notification()
+                {
+                    Title = $"{user.Username} left a comment on your profile",
+                    DateCreated = DateTime.Now,
+                    UserID = userPageID
+                };
+                await _context.Notifications.AddAsync(notification);
+            }
+            
             await _context.SaveChangesAsync();
-
             return Redirect("/User?id=" + userPageID);
         }
 
