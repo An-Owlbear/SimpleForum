@@ -174,10 +174,8 @@ namespace SimpleForum.Web.Controllers
             {
                 return Redirect("/");
             }
-
-            ViewData["User"] = user;
             
-            return View();
+            return View(user);
         }
 
         [Authorize(Roles = "Admin")]

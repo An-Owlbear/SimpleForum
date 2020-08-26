@@ -1,3 +1,4 @@
+@model User
 @{
     ViewData["Title"] = "Admin actions";
 }
@@ -5,11 +6,11 @@
 <div class="content-container">
     <span class="content-container-title">Admin actions</span>
     <ul class="action-list">
-        @if (!ViewBag.User.Muted)
+        @if (!Model.Muted)
         {
             <li class="action-list-item">
                 <span class="action-list-item-title">Mute user, temporarily preventing them from creating threads and replies.</span>
-                <a class="action-list-item-button" asp-action="MuteUser" asp-route-id="@ViewBag.User.UserID">Mute user</a>
+                <a class="action-list-item-button" asp-action="MuteUser" asp-route-id="@Model.UserID">Mute user</a>
             </li>
         }
         else
@@ -17,16 +18,16 @@
             <li class="action-list-item">
                 <span class="action-list-item-title">Unmute user, allowing to create and reply to threads.</span>
                 <form asp-action="SendUnMuteUser">
-                    <input type="hidden" name="id" value="@ViewBag.User.UserID">
+                    <input type="hidden" name="id" value="@Model.UserID">
                     <button class="action-list-item-button" type="submit">Unmute user</button>
                 </form>
             </li>
         }
-        @if (!ViewBag.User.Banned)
+        @if (!Model.Banned)
         {
             <li class="action-list-item">
                 <span class="action-list-item-title">Ban user, preventing the account from being used.</span>
-                <a class="action-list-item-button" asp-action="BanUser" asp-route-id="@ViewBag.User.UserID">Ban user</a>
+                <a class="action-list-item-button" asp-action="BanUser" asp-route-id="@Model.UserID">Ban user</a>
             </li>
         }
         else
@@ -34,7 +35,7 @@
             <li class="action-list-item">
                 <span class="action-list-item-title">Unban user, allowing them to user the account again.</span>
                 <form asp-action="SendUnbanUser">
-                    <input type="hidden" name="id" value="@ViewBag.User.UserID">
+                    <input type="hidden" name="id" value="@Model.UserID">
                     <button class="action-list-item-button" type="submit">Unban user</button>
                 </form>
             </li>
