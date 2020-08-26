@@ -1,6 +1,28 @@
 ﻿@using System.Security.Claims
 @using Microsoft.Extensions.Options
+@using SimpleForum.Internal
 @inject IOptions<SimpleForumConfig> options;
+@inject ApplicationDbContext _dbContext;
+@{
+    async Task<string> unreadNotification()
+    {
+        if (!User.Identity.IsAuthenticated)
+        {
+            return null;
+        }
+        
+        int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        User user = await _dbContext.Users.FindAsync(userID);
+
+        if (user.Notifications.Any(x => !x.Read))
+        {
+            return "unread-notification";
+        }
+
+        return "testing";
+    }
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +57,7 @@
 
             <li class="nav-item icon-item right-first">
                 <a class="nav-link" asp-controller="User" asp-action="Notifications">
-                    <i class="ri-notification-2-fill"></i> 
+                    <i class="ri-notification-2-fill @(await unreadNotification())"></i> 
                 </a>
             </li>
             
