@@ -50,7 +50,7 @@
                 <span class="post-contents">@Html.RenderOutput(comment.Content)</span>
                 <div class="post-footer">
                     <a class="footer-link" href="javascript:void(0)">Reply</a>
-                    <a class="footer-link" href="javascript:void(0)">Share</a>
+                    <a class="footer-link" href="#@comment.ID">#@comment.ID</a>
                     @if (RazorMethods.IsOwner(User, comment))
                     {
                         <form asp-action="DeleteComment" method="post">
