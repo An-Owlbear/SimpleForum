@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
@@ -14,11 +15,13 @@ namespace SimpleForum.Web.Controllers
     public class ThreadController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleForumConfig _config;
         private int PostsPerPage = 30;
 
-        public ThreadController(ApplicationDbContext context)
+        public ThreadController(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
         {
             _context = context;
+            _config = config.Value;
         }
         
         public IActionResult Index(int? id, int page = 1)
@@ -121,16 +124,37 @@ namespace SimpleForum.Web.Controllers
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(string content, int threadID)
         {
+            // Retrieve user and threads
+            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            User user = await _context.Users.FindAsync(userID);
+            Thread thread = await _context.Threads.FindAsync(threadID);
+            
+            // Create and add comment
             Comment comment = new Comment()
             {
                 Content = content,
                 DatePosted = DateTime.Now,
                 ThreadID = threadID,
-                UserID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                UserID = userID
             };
             await _context.Comments.AddAsync(comment);
-            await _context.SaveChangesAsync();
+
+
+            // Create notification if commenting on another user's thread
+            if (thread.UserID != userID)
+            {
+                Notification notification = new Notification()
+                {
+                    Title = $"{user.Username} left a comment on your post.",
+                    Content = $"Click [here]({_config.InstanceURL}/Thread?id={threadID}) to view.",
+                    DateCreated = DateTime.Now,
+                    UserID = thread.UserID
+                };
+                await _context.Notifications.AddAsync(notification);
+            }
             
+            // Saves changes and redirects
+            await _context.SaveChangesAsync();
             return Redirect("/Thread?id=" + threadID.ToString());
         }
 
