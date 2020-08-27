@@ -34,7 +34,7 @@
     <ul class="thread-posts">
         @foreach (Comment comment in Model.Comments)
         {
-            <li class="thread-post">
+            <li id="@comment.CommentID" class="thread-post">
                 <div class="post-user">
                     <a class="post-username" asp-controller="User" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
                     

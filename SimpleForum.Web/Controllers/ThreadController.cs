@@ -138,6 +138,8 @@ namespace SimpleForum.Web.Controllers
                 UserID = userID
             };
             await _context.Comments.AddAsync(comment);
+            // Save changes so that comment ID can be accessed
+            await _context.SaveChangesAsync();
 
 
             // Create notification if commenting on another user's thread
@@ -146,7 +148,7 @@ namespace SimpleForum.Web.Controllers
                 Notification notification = new Notification()
                 {
                     Title = $"{user.Username} left a comment on your post.",
-                    Content = $"Click [here]({_config.InstanceURL}/Thread?id={threadID}) to view.",
+                    Content = $"Click [here]({_config.InstanceURL}/Thread?id={threadID}#{comment.ID}) to view.",
                     DateCreated = DateTime.Now,
                     UserID = thread.UserID
                 };
@@ -155,7 +157,7 @@ namespace SimpleForum.Web.Controllers
             
             // Saves changes and redirects
             await _context.SaveChangesAsync();
-            return Redirect("/Thread?id=" + threadID.ToString());
+            return Redirect($"/Thread?id={threadID}#{comment.CommentID}");
         }
 
         [Authorize(Roles = "Admin")]
