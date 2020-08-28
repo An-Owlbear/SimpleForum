@@ -1,33 +1,33 @@
 @model ThreadViewModel
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Thread.Title;
     bool IsAuthenticated = User.Identity.IsAuthenticated;
 }
 
 <div class="content-container">
     <div class="content-container-top">
         <div class="content-container-title-container">
-            @if (Model.Pinned)
+            @if (Model.Thread.Pinned)
             {
                 <i class="ri-pushpin-2-fill content-container-title content-container-icon"></i> 
             }
-            @if (Model.Locked)
+            @if (Model.Thread.Locked)
             {
                 <i class="ri-lock-fill content-container-title content-container-icon"></i>
             }
-            <span class="content-container-title">@Model.Title</span>
+            <span class="content-container-title">@Model.Thread.Title</span>
         </div>
         <div class="content-container-top-link-container">
             @if ((await AuthorizationService.AuthorizeAsync(User, "ThreadOwner")).Succeeded)
             {
                 <form asp-action="Delete" method="post">
-                    <input type="hidden" name="id" value="@Model.ThreadID">
+                    <input type="hidden" name="id" value="@Model.Thread.ThreadID">
                     <button class="content-container-top-link" type="submit">Delete thread</button>
                 </form>
             }
             @if (IsAuthenticated && Model.User.Role == "Admin")
             {
-                <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@Model.ThreadID">Admin actions</a>
+                <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@Model.Thread.ThreadID">Admin actions</a>
             }
         </div>
     </div>
@@ -76,11 +76,11 @@
                 <p class="top-message-text">Reason: @Model.User.MuteReason</p>
             </div>
         }
-        else if (!Model.Locked)
+        else if (!Model.Thread.Locked)
         {
             <form class="post-form" asp-action="PostComment" method="post">
                 <textarea class="post-input" placeholder="Post" name="content"></textarea>
-                <input type="hidden" name="threadID" value="@Model.ThreadID">
+                <input type="hidden" name="threadID" value="@Model.Thread.ThreadID">
                 <button class="post-button" type="submit">Post</button>
             </form>
         }
@@ -97,24 +97,24 @@
         <div class="page-links">
             @if (Model.Page == 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.Thread.ThreadID">&lt;</a>
             }
             else if (Model.Page > 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID">&lt;&lt;</a>
-                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@(Model.Page - 1)">&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.Thread.ThreadID">&lt;&lt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.Thread.ThreadID" asp-route-page="@(Model.Page - 1)">&lt;</a>
             }
             
             <p class="page-link">@Model.Page</p>
             
             @if (Model.PageCount - Model.Page < 2 && Model.PageCount - Model.Page > 0)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@Model.PageCount">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.Thread.ThreadID" asp-route-page="@Model.PageCount">&gt;</a>
             }
             else if (Model.PageCount - Model.Page >= 2)
             {
-                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@(Model.Page + 1)">&gt;</a>
-                <a class="page-link" asp-action="Index" asp-route-id="@Model.ThreadID" asp-route-page="@Model.PageCount">&gt;&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.Thread.ThreadID" asp-route-page="@(Model.Page + 1)">&gt;</a>
+                <a class="page-link" asp-action="Index" asp-route-id="@Model.Thread.ThreadID" asp-route-page="@Model.PageCount">&gt;&gt;</a>
             }
         </div>
     }

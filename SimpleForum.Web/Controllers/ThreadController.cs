@@ -58,10 +58,7 @@ namespace SimpleForum.Web.Controllers
             
             ThreadViewModel model = new ThreadViewModel()
             {
-                Title = thread.Title,
-                ThreadID = thread.ThreadID,
-                Pinned = thread.Pinned,
-                Locked = thread.Locked,
+                Thread = thread,
                 Comments = thread.Comments
                     .Where(x => !x.Deleted)
                     .OrderBy(x => x.DatePosted)
