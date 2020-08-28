@@ -38,12 +38,16 @@ textarea:focus, input:focus {
   outline: none;
 }
 
+#navbar-header {
+  position: sticky;
+  top: 0;
+}
+
 .navbar {
   width: 100%;
   height: 3rem;
   background-color: var(--navbar-primary);
   top: 0;
-  position: sticky;
 }
 
 .navbar-nav {
