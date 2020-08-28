@@ -65,7 +65,7 @@ namespace SimpleForum.Web.Controllers
                     .Skip((page - 1) * PostsPerPage)
                     .Take(PostsPerPage),
                 Page = page,
-                PageCount = (thread.Comments.Count + (PostsPerPage - 1)) / PostsPerPage,
+                PageCount = ((thread.Comments.Count + 1) + (PostsPerPage - 1)) / PostsPerPage,
                 User = user
             };
 
@@ -93,6 +93,7 @@ namespace SimpleForum.Web.Controllers
             Thread thread = new Thread()
             {
                 Title = title,
+                Content = content,
                 DatePosted = time,
                 UserID = userID
             };
@@ -100,19 +101,7 @@ namespace SimpleForum.Web.Controllers
             await _context.Threads.AddAsync(thread);
             await _context.SaveChangesAsync();
 
-            int threadID = _context.Threads.OrderByDescending(x => x.DatePosted).First(x => x.UserID == userID).ThreadID;
-
-            Comment comment = new Comment()
-            {
-                Content = content,
-                DatePosted = time,
-                UserID = userID,
-                ThreadID = threadID
-            };
-
-            await _context.Comments.AddAsync(comment);
-            await _context.SaveChangesAsync();
-
+            int threadID = thread.ID;
             return Redirect("/Thread?id=" + threadID);
         }
         

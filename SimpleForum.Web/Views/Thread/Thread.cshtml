@@ -32,20 +32,41 @@
         </div>
     </div>
     <ul class="thread-posts">
+        <li id="op" class="thread-post">
+            <div class="post-user">
+                <a class="post-username" asp-controller="User" asp-action="Index" asp-route-id="@Model.Thread.UserID">@Model.Thread.User.Username</a>
+
+                @if (Model.Thread.User.Banned)
+                {
+                    <span class="ban-text post">(banned)</span>
+                }
+
+                <img class="post-profile-img" src="~/img/defaultprofile.png" alt="@Model.Thread.User.Username">
+                <span class="post-date">
+                    @Model.Thread.DatePosted.ToShortDateString()
+                    @Model.Thread.DatePosted.ToShortTimeString()
+                </span>
+            </div>
+            <span class="post-contents">@Html.RenderOutput(Model.Thread.Content)</span>
+            <div class="post-footer">
+                <a class="footer-link" href="javascript:void(0)">Reply</a>
+                <a class="footer-link" href="#op">OP</a>
+            </div>
+        </li>
         @foreach (Comment comment in Model.Comments)
         {
             <li id="@comment.CommentID" class="thread-post">
                 <div class="post-user">
                     <a class="post-username" asp-controller="User" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
-                    
+
                     @if (comment.User.Banned)
                     {
                         <span class="ban-text post">(banned)</span>
                     }
-                    
+
                     <img class="post-profile-img" src="~/img/defaultprofile.png" alt="@comment.User.Username">
                     <span class="post-date">@comment.DatePosted.ToShortDateString()
-                                            @comment.DatePosted.ToShortTimeString()</span>
+                        @comment.DatePosted.ToShortTimeString()</span>
                 </div>
                 <span class="post-contents">@Html.RenderOutput(comment.Content)</span>
                 <div class="post-footer">
