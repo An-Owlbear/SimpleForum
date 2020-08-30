@@ -10,7 +10,7 @@
             @if (!Model.Deleted)
             {
                 <span class="action-list-item-title">Delete the thread and its contents.</span>
-                <a class="action-list-item-button" asp-action="Delete" asp-route-id="@ViewData["ThreadID"]">Delete thread</a>
+                <a class="action-list-item-button" asp-action="AdminDelete" asp-route-id="@Model.ThreadID">Delete thread</a>
             }
             else
             {

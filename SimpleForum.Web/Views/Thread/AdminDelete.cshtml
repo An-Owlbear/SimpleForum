@@ -1,0 +1,13 @@
+﻿@model Thread
+@{
+    ViewData["Title"] = "Delete thread";
+}
+
+<div class="variable-container">
+    <span class="login-form-title">Remove thread '@Model.Title'</span>
+    <form class="login-form" asp-action="SendAdminDelete" method="post">
+        <input type="hidden" name="id" value="@Model.ThreadID">
+        <input class="login-input" type="text" placeholder="Delete reason" name="reason">
+        <button class="reset-password-button" type="submit">Ban user</button>
+    </form>
+</div>

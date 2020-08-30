@@ -176,6 +176,50 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Page for admins submitting delete and reason
+        public async Task<IActionResult> AdminDelete(int? id)
+        {
+            // Redirects if id is not set
+            if (id == null) return Redirect("/");
+            
+            // Retrieves thread and returns view
+            Thread thread = await _context.Threads.FindAsync(id);
+            return View(thread);
+        }
+        
+        // Deletes a thread and provides a reason, sending a notification to the user
+        [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> SendAdminDelete(int? id, string reason)
+        {
+            // Redirects if thread id is not set
+            if (id == null) return Redirect("/");
+            
+            // Sets thread as deleted and delete reason
+            Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            thread.Deleted = true;
+            thread.DeleteReason = reason;
+            
+            // Creates and adds notification
+            Notification notification = new Notification()
+            {
+                Title = $"Your thread '{thread.Title}' was deleted",
+                Content = $"Reason: {reason}",
+                DateCreated = DateTime.Now,
+                UserID = thread.UserID
+            };
+            await _context.Notifications.AddAsync(notification);
+            await _context.SaveChangesAsync();
+            
+            // Returns view
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Thread deleted",
+                MessageTitle = "Thread deleted successfully"
+            };
+            return View("Message", model);
+        }
+
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Pin(int? id)
