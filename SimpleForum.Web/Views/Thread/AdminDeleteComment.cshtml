@@ -1,0 +1,13 @@
+﻿@model Comment
+@{
+    ViewData["Title"] = "Delete comment";
+}
+
+<div class="variable-container">
+    <span class="login-form-title">Remove comment from @Model.User.Username</span>
+    <form class="login-form" asp-action="SendAdminDeleteComment" method="post">
+        <input type="hidden" name="id" value="@Model.CommentID">
+        <input class="login-input" type="text" placeholder="Delete reason" name="reason">
+        <button class="reset-password-button" type="submit">Ban user</button>
+    </form>
+</div>

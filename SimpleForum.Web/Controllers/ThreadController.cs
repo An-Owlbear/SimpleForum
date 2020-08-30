@@ -177,6 +177,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Page for admins submitting delete and reason
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminDelete(int? id)
         {
             // Redirects if id is not set
@@ -329,17 +330,44 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Page for admins deleting comments
         [Authorize(Roles = "Admin")]
-        [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> AdminDeleteComment(int? id)
         {
+            // Redirects if id is not set
             if (id == null) return Redirect("/");
 
+            // Retrieves comment and returns view
+            Comment comment = await _context.Comments.FindAsync(id);
+            return View(comment);
+        }
+        
+        // Deletes a comment as admin with a reason
+        [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> SendAdminDeleteComment(int? id, string reason)
+        {
+            // Redirects if id is not set
+            if (id == null) return Redirect("/");
+
+            // Retrieves comment and deletes and sets reason
             Comment comment = _context.Comments.First(x => x.CommentID == id);
             comment.Deleted = true;
+            comment.DeleteReason = reason;
+            
+            // Creates and adds notification
+            Notification notification = new Notification()
+            {
+                Title = $"Your comment on {comment.Thread.Title} was deleted",
+                Content = $"Reason: {reason}",
+                DateCreated = DateTime.Now,
+                UserID = comment.UserID
+            };
+            await _context.Notifications.AddAsync(notification);
             await _context.SaveChangesAsync();
 
-                MessageViewModel model = new MessageViewModel()
+            // Returns view
+            MessageViewModel model = new MessageViewModel()
             {
                 Title = "Comment deleted",
                 MessageTitle = "Comment deleted"
