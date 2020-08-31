@@ -60,7 +60,6 @@ namespace SimpleForum.Web.Controllers
             {
                 Thread = thread,
                 Comments = thread.Comments
-                    .Where(x => !x.Deleted)
                     .OrderBy(x => x.DatePosted)
                     .Skip((page - 1) * PostsPerPage)
                     .Take(PostsPerPage),

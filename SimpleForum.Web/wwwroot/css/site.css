@@ -859,6 +859,13 @@ textarea.edit-container-item {
   font-size: 1.25rem;
 }
 
+.deleted-post-text {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  padding: 1rem;
+  margin: auto;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar-nav {
     overflow: hidden;
