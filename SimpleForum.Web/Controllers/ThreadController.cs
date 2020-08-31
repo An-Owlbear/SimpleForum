@@ -153,8 +153,12 @@ namespace SimpleForum.Web.Controllers
 
             // TODO - Add code for thread preview
 
-            Thread model = await _context.Threads.FindAsync(id);
-            return View(model);
+            Thread thread = await _context.Threads.FindAsync(id);
+            
+            // Returns 404 if the thread was deleted by user
+            if (thread.DeletedBy == "User") return NotFound();
+            
+            return View(thread);
         }
 
 
@@ -166,6 +170,7 @@ namespace SimpleForum.Web.Controllers
             if (id == null) return Redirect("/");
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
             thread.Deleted = true;
+            thread.DeletedBy = "User";
             await _context.SaveChangesAsync();
             
             MessageViewModel model = new MessageViewModel()
@@ -183,8 +188,10 @@ namespace SimpleForum.Web.Controllers
             // Redirects if id is not set
             if (id == null) return Redirect("/");
             
-            // Retrieves thread and returns view
+            // Retrieves thread and return 404 if already deleted by user
             Thread thread = await _context.Threads.FindAsync(id);
+            if (thread.DeletedBy == "User") return NotFound();
+            
             return View(thread);
         }
         
@@ -196,10 +203,14 @@ namespace SimpleForum.Web.Controllers
             // Redirects if thread id is not set
             if (id == null) return Redirect("/");
             
-            // Sets thread as deleted and delete reason
+            // Returns 404 if thread already deleted by user
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            if (thread.DeletedBy == "User") return NotFound();
+            
+            // Sets thread as deleted and delete reason
             thread.Deleted = true;
             thread.DeleteReason = reason;
+            thread.DeletedBy = "Admin";
             
             // Creates and adds notification
             Notification notification = new Notification()
@@ -262,8 +273,9 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null) return Redirect("/");
-
             Thread thread = _context.Threads.First(x => x.ThreadID == id);
+            if (thread.DeletedBy == "User") return NotFound();
+            
             thread.Deleted = false;
             await _context.SaveChangesAsync();
             
