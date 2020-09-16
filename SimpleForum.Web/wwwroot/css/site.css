@@ -531,10 +531,6 @@ textarea.thread-create-input {
   vertical-align: middle;
 }
 
-.content-container-top-link:last-child {
-  margin-right: 2rem;
-}
-
 .top-message {
   width: 80vw;
   margin: 2.5rem 10vw 2.5rem 10vw;
@@ -788,6 +784,10 @@ textarea.edit-container-item {
   margin: 0;
   border-radius: 10px;
   box-sizing: border-box;
+}
+
+.content-container-top-link-container {
+  margin-right: 2rem;
 }
 
 .edit-button {
