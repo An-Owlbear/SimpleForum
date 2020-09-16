@@ -41,7 +41,7 @@
                     <span class="ban-text post">(banned)</span>
                 }
 
-                <img class="post-profile-img" src="~/img/defaultprofile.png" alt="@Model.Thread.User.Username">
+                <img class="post-profile-img" src="/Files/ProfileImg?id=@Model.User.UserID" alt="@Model.Thread.User.Username">
                 <span class="post-date">
                     @Model.Thread.DatePosted.ToShortDateString()
                     @Model.Thread.DatePosted.ToShortTimeString()
@@ -70,7 +70,7 @@
                             <span class="ban-text post">(banned)</span>
                         }
 
-                        <img class="post-profile-img" src="~/img/defaultprofile.png" alt="@comment.User.Username">
+                        <img class="post-profile-img" src="/Files/ProfileImg?id=@comment.UserID" alt="@comment.User.Username">
                         <span class="post-date">@comment.DatePosted.ToShortDateString()
                             @comment.DatePosted.ToShortTimeString()</span>
                     </div>
