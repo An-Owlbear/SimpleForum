@@ -1,13 +1,17 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
 using SimpleForum.Web.Policies;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace SimpleForum.Web.Controllers
 {
@@ -349,27 +353,64 @@ namespace SimpleForum.Web.Controllers
             return View(model);
         }
 
+        // Updates a user's account information
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(string email, string password, string confirmPassword, string bio)
+        public async Task<IActionResult> Edit(string email, string password, string confirmPassword, string bio,
+            IFormFile profilePicture)
         {
+            // Returns if submitted passwords do not match
             if (password != confirmPassword) return RedirectToAction("Edit");
             
+            // Retrieves user account
             User user;
             try
             {
                 int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 user = await _context.Users.FindAsync(userID);
             }
-            catch
-            {
-                return new BadRequestResult();
-            }
+            catch { return new BadRequestResult(); }
 
+            // Changes information where applicable
             if (email != null) user.Email = email;
             if (password != null) user.Password = password;
             if (bio != null) user.Bio = bio;
             await _context.SaveChangesAsync();
+
+            // Updates profile picture
+            await using (MemoryStream outputImage = new MemoryStream())
+            {
+                if (profilePicture != null)
+                {
+                    // Creates image object to edit
+                    
+                    Image imageObject = await Image.LoadAsync(profilePicture.OpenReadStream());
+
+                    // Calculates values and crops image
+                    int diff = Math.Abs(imageObject.Height - imageObject.Width);
+                    int crop = (diff + 1) / 2;
+
+                    if (imageObject.Width > imageObject.Height)
+                    {
+                        imageObject.Mutate(x =>
+                            x.Crop(new Rectangle(crop, 0, imageObject.Height, imageObject.Height)));
+                    }
+                    else if (imageObject.Width < imageObject.Height)
+                    {
+                        imageObject.Mutate(x =>
+                            x.Crop(new Rectangle(0, crop, imageObject.Width, imageObject.Width)));
+                    }
+
+                    // Resizes image to 1000x1000 px if greater
+                    if (imageObject.Width > 1000)
+                        imageObject.Mutate(x => x.Resize(1000, 1000));
+
+                    // Writes image to file
+                    await imageObject.SaveAsJpegAsync(outputImage);
+                    await System.IO.File.WriteAllBytesAsync(
+                        $"UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
+                }
+            }
             
             return RedirectToAction("Index", new {id = user.UserID});
         }

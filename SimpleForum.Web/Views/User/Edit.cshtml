@@ -4,14 +4,14 @@
 }
 <canvas id="canvas" style="display: none"></canvas>
 <div class="variable-container main-edit-container">
-    <form class="edit-form" asp-action="Edit" method="post">
+    <form class="edit-form" asp-action="Edit" method="post" enctype="multipart/form-data">
         <div class="edit-container">
             <h1 class="edit-container-title">Profile picture</h1>
             <div class="flex-box center-vertical">
                 <img id="tempImage" style="display: none">
                 <img id="profilepicture-preview" class="profile-img-edit" src="/Files/ProfileImg?id=@Model.User.UserID" alt="Profile picture">
                 <div class="flex-box flex-column">
-                    <input id="profilepicture-upload" class="file-upload" type="file" accept="image/jpeg,image/png" name="profilepicture" onchange="updateProfileEdit()"    >
+                    <input id="profilepicture-upload" class="file-upload" type="file" accept="image/jpeg,image/png" name="profilePicture" onchange="updateProfileEdit()"    >
                     <span>The uploaded image will be cropped so that it's height and width are equal.</span>
                 </div>
             </div>
