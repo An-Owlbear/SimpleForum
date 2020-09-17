@@ -826,6 +826,24 @@ textarea.edit-container-item {
   align-items: center;
 }
 
+.profile-img-edit {
+  height: 100px;
+  border-radius: 75px;
+  margin-right: 2rem;
+}
+
+.flex-box {
+  display: flex;
+}
+
+.center-vertical {
+  align-items: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
 .unread-notification-item::after {
   content: "";
   width: 10px;
