@@ -29,7 +29,9 @@
 <div class="content-container">
     <div class="content-container-top">
         <span class="content-container-title">Threads</span>
-        <a class="content-container-top-link" asp-controller="Thread" asp-action="Create">Create thread</a>
+        <div class="content-container-top-link-container">
+            <a class="content-container-top-link" asp-controller="Thread" asp-action="Create">Create thread</a>
+        </div>
     </div>
     <ul class="content-list">
         @foreach (Thread thread in Model.Threads)

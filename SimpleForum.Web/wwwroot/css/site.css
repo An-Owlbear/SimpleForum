@@ -530,6 +530,10 @@ textarea.thread-create-input {
   vertical-align: middle;
 }
 
+.content-container-top-link:last-child {
+  margin-right: 0;
+}
+
 .top-message {
   width: 80vw;
   margin: 2.5rem 10vw 2.5rem 10vw;
