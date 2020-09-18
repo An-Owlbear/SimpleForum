@@ -35,6 +35,9 @@
         @foreach (Thread thread in Model.Threads)
         {
             <li class="list-item">
+                <a class="list-item-profile" href="/User?id=@thread.UserID">
+                    <img class="list-item-profile-image" src="/Files/ProfileImg?id=@thread.UserID" alt="@thread.User.Username" title="@thread.User.Username">
+                </a>
                 @if (thread.Pinned)
                 {
                     <i class="ri-pushpin-2-fill list-item-icon"></i> 

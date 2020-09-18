@@ -219,9 +219,8 @@ i.content-container-title {
 
 .list-item-property {
   font-size: 1rem;
-  line-height: 4rem;
   text-align: center;
-  margin: 0 1rem 0 1rem;
+  margin: auto 1rem auto 1rem;
   color: var(--text-primary);
 }
 
@@ -790,6 +789,17 @@ textarea.edit-container-item {
   margin-right: 2rem;
 }
 
+.list-item-profile {
+  margin: auto 0.5rem auto 1rem;
+}
+
+.list-item-profile-image {
+  height: 2.5rem;
+  margin: auto;
+  display: block;
+  border-radius: 75px;
+}
+
 .edit-button {
   margin: 0 2rem 2rem 2rem;
   background-color: royalblue;
@@ -883,6 +893,8 @@ textarea.edit-container-item {
   padding: 1rem;
   margin: auto;
 }
+
+
 
 @media only screen and (max-width: 800px) {
   .navbar-nav {
