@@ -37,7 +37,7 @@
         @foreach (Thread thread in Model.Threads)
         {
             <li class="list-item">
-                <a class="list-item-profile" href="/User?id=@thread.UserID">
+                <a class="list-item-profile" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">
                     <img class="list-item-profile-image" src="/Files/ProfileImg?id=@thread.UserID" alt="@thread.User.Username" title="@thread.User.Username">
                 </a>
                 @if (thread.Pinned)
@@ -48,7 +48,8 @@
                 {
                     <i class="ri-lock-fill list-item-icon"></i>
                 }
-                <a class="list-item-title list-item-property" asp-controller="Thread" asp-route-id="@thread.ThreadID">@thread.Title</a>
+                <a class="list-item-title list-item-property" asp-controller="Thread" asp-action="Index" asp-route-id="@thread.ThreadID">@thread.Title</a>
+                <a class="list-item-property" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">@thread.User.Username</a>
                 <span class="list-item-property">@thread.Comments.Count replies</span>
                 <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
             </li>

@@ -235,10 +235,13 @@ i.content-container-title {
   margin-left: 1rem;
 }
 
-.list-item-title {
-  font-size: 1.25rem;
+a.list-item-property {
   color: royalblue;
   text-decoration: none;
+}
+
+.list-item-title {
+  color: royalblue;
   margin-right: auto;
 }
 
