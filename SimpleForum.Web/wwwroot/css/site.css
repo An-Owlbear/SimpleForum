@@ -901,7 +901,9 @@ textarea.edit-container-item {
   margin: auto;
 }
 
-
+.delete-button {
+  background-color: var(--error-background);
+}
 
 @media only screen and (max-width: 800px) {
   .navbar-nav {

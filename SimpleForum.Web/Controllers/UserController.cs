@@ -446,5 +446,18 @@ namespace SimpleForum.Web.Controllers
             // Returns view with notification
             return View(notification);
         }
+
+        [Authorize]
+        public async Task<IActionResult> Delete()
+        {
+            // Returns view
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Delete account",
+                MessageTitle = "Delete account",
+                MessageContent = "A confirmation email has been sent to your email account."
+            };
+            return View("Message", model);
+        }
     }
 }
