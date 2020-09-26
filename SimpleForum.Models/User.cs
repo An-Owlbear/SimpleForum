@@ -21,6 +21,7 @@ namespace SimpleForum.Models
         public string MuteReason { get; set; }
         public bool Banned { get; set; }
         public string BanReason { get; set; }
+        public bool Deleted { get; set; }
 
         public virtual ICollection<Thread> Threads { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

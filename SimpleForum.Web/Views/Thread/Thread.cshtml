@@ -56,41 +56,34 @@
         @foreach (Comment comment in Model.Comments)
         {
             <li id="@comment.CommentID" class="thread-post">
-                @if (comment.Deleted)
-                {
-                    <span class="deleted-post-text">Comment removed</span>
-                }
-                else
-                {
-                    <div class="post-user">
-                        <a class="post-username" asp-controller="User" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
+                <div class="post-user">
+                    <a class="post-username" asp-controller="User" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
 
-                        @if (comment.User.Banned)
-                        {
-                            <span class="ban-text post">(banned)</span>
-                        }
+                    @if (comment.User.Banned)
+                    {
+                        <span class="ban-text post">(banned)</span>
+                    }
 
-                        <img class="post-profile-img" src="/Files/ProfileImg?id=@comment.UserID" alt="@comment.User.Username">
-                        <span class="post-date">@comment.DatePosted.ToShortDateString()
-                            @comment.DatePosted.ToShortTimeString()</span>
-                    </div>
-                    <span class="post-contents">@Html.RenderOutput(comment.Content)</span>
-                    <div class="post-footer">
-                        <a class="footer-link" href="javascript:void(0)">Reply</a>
-                        <a class="footer-link" href="#@comment.ID">#@comment.ID</a>
-                        @if (RazorMethods.IsOwner(User, comment))
-                        {
-                            <form asp-action="DeleteComment" method="post">
-                                <input type="hidden" name="id" value="@comment.ID">
-                                <button class="footer-link" type="submit">Delete</button>
-                            </form>
-                        }
-                        else if (IsAuthenticated && Model.User.Role == "Admin")
-                        {
-                            <a class="footer-link" asp-action="AdminDeleteComment" asp-route-id="@comment.ID">Delete (as admin)</a>
-                        }
-                    </div>
-                }
+                    <img class="post-profile-img" src="/Files/ProfileImg?id=@comment.UserID" alt="@comment.User.Username">
+                    <span class="post-date">@comment.DatePosted.ToShortDateString()
+                        @comment.DatePosted.ToShortTimeString()</span>
+                </div>
+                <span class="post-contents">@Html.RenderOutput(comment.Content)</span>
+                <div class="post-footer">
+                    <a class="footer-link" href="javascript:void(0)">Reply</a>
+                    <a class="footer-link" href="#@comment.ID">#@comment.ID</a>
+                    @if (RazorMethods.IsOwner(User, comment))
+                    {
+                        <form asp-action="DeleteComment" method="post">
+                            <input type="hidden" name="id" value="@comment.ID">
+                            <button class="footer-link" type="submit">Delete</button>
+                        </form>
+                    }
+                    else if (IsAuthenticated && Model.User.Role == "Admin")
+                    {
+                        <a class="footer-link" asp-action="AdminDeleteComment" asp-route-id="@comment.ID">Delete (as admin)</a>
+                    }
+                </div>
             </li>
         }
     </ul>

@@ -3,9 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
@@ -18,11 +21,15 @@ namespace SimpleForum.Web.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleForumConfig _config;
+        private readonly IEmailService _emailService;
         private int CommentsPerPage = 15;
 
-        public UserController(ApplicationDbContext context)
+        public UserController(ApplicationDbContext context, IOptions<SimpleForumConfig> config, IEmailService emailService)
         {
             _context = context;
+            _config = config.Value;
+            _emailService = emailService;
         }
         
         public IActionResult Index(int? id, int page = 1)
@@ -37,6 +44,17 @@ namespace SimpleForum.Web.Controllers
             catch (InvalidOperationException)
             {
                 return StatusCode(404);
+            }
+            
+            // Returns error if user is deleted
+            if (user.Deleted)
+            {
+                MessageViewModel messageViewModel = new MessageViewModel()
+                {
+                    Title = "User deleted",
+                    MessageTitle = "User deleted"
+                };
+                return View("Message", messageViewModel);
             }
 
             User currentUser = null;
@@ -53,7 +71,7 @@ namespace SimpleForum.Web.Controllers
                 PageCount = (user.UserPageComments.Count(x => !x.Deleted) + (CommentsPerPage - 1)) / CommentsPerPage,
                 CurrentUser = currentUser,
                 CurrentPageComments = user.UserPageComments
-                    .Where(x => !x.Deleted)
+                    .Where(x => !x.Deleted && !x.User.Deleted)
                     .OrderByDescending(x => x.DatePosted)
                     .Skip((page - 1) * CommentsPerPage)
                     .Take(CommentsPerPage)
@@ -448,14 +466,80 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize]
+        [ServiceFilter(typeof(CheckPassword))]
+        [HttpPost]
         public async Task<IActionResult> Delete()
         {
+            // Creates a code to be used for the email
+            DateTime now = DateTime.Now;
+            User user = await _context.Users.FindAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            EmailCode code = new EmailCode()
+            {
+                Code = Tools.GenerateCode(32),
+                DateCreated = now,
+                Type = "AccountDelete",
+                User = user,
+                ValidUntil = now.AddHours(1)
+            };
+            await _context.EmailCodes.AddAsync(code);
+            await _context.SaveChangesAsync();
+            
+            // Sends the confirmation email is the user
+            string url = _config.InstanceURL + "/User/SendDelete?code=" + code.Code;
+            await _emailService.SendAsync(
+                user.Email,
+                "SimpleForum account deletion confirmation",
+                $"<p>Please click the following link to confirm your account deletion: <a href=\"{url}\">{url}</a>" +
+                "<br>If you did not try to delete your account please change your password to prevent further unauthorised access" +
+                "of your account.</p>",
+                true
+            );
+            
             // Returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Delete account",
                 MessageTitle = "Delete account",
-                MessageContent = "A confirmation email has been sent to your email account."
+                MessageContent = "A confirmation email has been sent to your email account. This email is valid for oen hour."
+            };
+            return View("Message", model);
+        }
+
+        [Authorize]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> SendDelete(string code)
+        {
+            // Redirects to index if code is null
+            if (code == null) return Redirect("/");
+            
+            // Retrieves user and email and verified the correct user is signed in.
+            User user = await _context.Users.FindAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            EmailCode emailCode = await _context.EmailCodes.FindAsync(code);
+            if (user != emailCode.User) return Forbid();
+            
+            // Returns message if code is no longer valid
+            MessageViewModel model;
+            if (emailCode.ValidUntil < DateTime.Now)
+            {
+                model = new MessageViewModel()
+                {
+                    Title = "Link expired",
+                    MessageTitle = "Account deletion link expired",
+                    MessageContent = "To delete your account request another confirmation email"
+                };
+                return View("Message", model);
+            }
+
+            // Removes account from database and signs out user
+            user.Deleted = true;
+            await _context.SaveChangesAsync();
+            await HttpContext.SignOutAsync();
+
+            // Returns view
+            model = new MessageViewModel()
+            {
+                Title = "Account deleted",
+                MessageTitle = "Account deleted"
             };
             return View("Message", model);
         }

@@ -21,15 +21,6 @@ namespace SimpleForum.Web.Controllers
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
 
-        string generateCode(int length)
-        {
-            string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
-            Random random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
-
         public SignupController(ApplicationDbContext context, IEmailService emailService,
             IOptions<SimpleForumConfig> config)
         {
@@ -73,7 +64,7 @@ namespace SimpleForum.Web.Controllers
 
             // Creates a random 32 character long string and adds to the email codes table
             // TODO - Verify the generated code does not already exist
-            string code = generateCode(32);
+            string code = Tools.GenerateCode(32);
 
             EmailCode emailCode = new EmailCode()
             {
@@ -94,7 +85,8 @@ namespace SimpleForum.Web.Controllers
                 "SimpleForum email confirmation",
                 "<p>please confirm your email by clicking the following link: <a href='" + url +
                 "'>" + url + "</a></p>",
-                true);
+                true
+            );
 
             // Logs in the user
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -165,7 +157,7 @@ namespace SimpleForum.Web.Controllers
                 return Redirect("/");
             }
 
-            string code = generateCode(32);
+            string code = Tools.GenerateCode(32);
 
             EmailCode newEmailCode = new EmailCode()
             {

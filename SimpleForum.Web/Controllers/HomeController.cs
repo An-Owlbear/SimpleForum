@@ -26,7 +26,7 @@ namespace SimpleForum.Web.Controllers
         {
             // Creates a list of threads and replies and returns the view
             IEnumerable<Thread> threads = _context.Threads
-                .Where(x => x.Deleted == false)
+                .Where(x => !x.Deleted && !x.User.Deleted)
                 .OrderByDescending(x => x.Pinned)
                 .ThenByDescending(x => x.DatePosted)
                 .Skip((page - 1) * ThreadsPerPage)

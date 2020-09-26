@@ -39,7 +39,7 @@ namespace SimpleForum.Web.Controllers
                 return StatusCode(404);
             }
 
-            if (thread.Deleted)
+            if (thread.Deleted || thread.User.Deleted)
             {
                 MessageViewModel messageModel = new MessageViewModel()
                 {
@@ -60,6 +60,7 @@ namespace SimpleForum.Web.Controllers
             {
                 Thread = thread,
                 Comments = thread.Comments
+                    .Where(x => !x.Deleted && !x.User.Deleted)
                     .OrderBy(x => x.DatePosted)
                     .Skip((page - 1) * PostsPerPage)
                     .Take(PostsPerPage),
