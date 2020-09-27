@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API", "SimpleFo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Web", "SimpleForum.Web\SimpleForum.Web.csproj", "{F54AEB90-6273-47CB-9936-B0DDDB0D9878}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Internal.Tests", "SimpleForum.Internal.Tests\SimpleForum.Internal.Tests.csproj", "{92186F81-A78B-4D32-A73A-98906ADB2A18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,17 @@ Global
 		{F54AEB90-6273-47CB-9936-B0DDDB0D9878}.Release|x64.Build.0 = Release|Any CPU
 		{F54AEB90-6273-47CB-9936-B0DDDB0D9878}.Release|x86.ActiveCfg = Release|Any CPU
 		{F54AEB90-6273-47CB-9936-B0DDDB0D9878}.Release|x86.Build.0 = Release|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Debug|x64.Build.0 = Debug|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Debug|x86.Build.0 = Debug|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Release|x64.ActiveCfg = Release|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Release|x64.Build.0 = Release|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Release|x86.ActiveCfg = Release|Any CPU
+		{92186F81-A78B-4D32-A73A-98906ADB2A18}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
