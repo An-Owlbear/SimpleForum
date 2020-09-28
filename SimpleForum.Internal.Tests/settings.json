@@ -1,0 +1,5 @@
+﻿{
+    "InstanceName": "SimpleForum",
+    "InstanceURL": "https://localhost:5001",
+    "RequireEmailVerification": true
+}

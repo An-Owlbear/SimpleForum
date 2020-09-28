@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,13 +12,15 @@ namespace SimpleForum.Internal
     public class SimpleForumRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleForumConfig _config;
         private const int ThreadsPerPage = 30;
         private const int PostsPerPage = 30;
         private const int CommentsPerPage = 15;
 
-        public SimpleForumRepository(ApplicationDbContext context)
+        public SimpleForumRepository(ApplicationDbContext context, string filename)
         {
             _context = context;
+            _config = Tools.GetConfig(filename);
         }
 
         // Saves changes made
@@ -68,6 +71,12 @@ namespace SimpleForum.Internal
             return await _context.EmailCodes.FindAsync(id);
         }
         
+        // Returns a notification of the given id
+        public async Task<Notification> GetNotificationAsync(int id)
+        {
+            return await _context.Notifications.FindAsync(id);
+        }
+        
         
         
         //
@@ -109,7 +118,18 @@ namespace SimpleForum.Internal
             return addedEmailCode.Entity;
         }
         
+        // Adds a notification to the database
+        public async Task<Notification> AddNotificationAsync(Notification notification)
+        {
+            EntityEntry<Notification> addedNotification = await _context.Notifications.AddAsync(notification);
+            return addedNotification.Entity;
+        }
         
+        
+        
+        //
+        // Methods for more specific tasks
+        //
         
         // Returns a list of threads for the frontpage for the given page
         public async Task<IEnumerable<Thread>> GetFrontPageAsync(int page)
@@ -156,6 +176,60 @@ namespace SimpleForum.Internal
         {
             User user = await GetUserAsync(userID);
             return await GetUserCommentsAsync(user, page);
+        }
+        
+        // Posts a comment to a specific thread
+        public async Task<Comment> PostCommentAsync(Comment comment)
+        {
+            // Adds comment and updates the database
+            await AddCommentAsync(comment);
+            await SaveChangesAsync();
+            
+            // Creates a notification if the comment creator is not the thread creator
+            if (comment.UserID != comment.Thread.UserID)
+            {
+                Notification notification = new Notification()
+                {
+                    Title = $"{comment.User.Username} left a comment on your post.",
+                    Content = $"Click [here]({_config.InstanceURL}/Thread?id={comment.ThreadID}#{comment.ID}) to view.",
+                    DateCreated = DateTime.Now,
+                    UserID = comment.Thread.UserID
+                };
+                await AddNotificationAsync(notification);
+            }
+
+            await SaveChangesAsync();
+            return comment;
+        }
+
+        // Deletes a thread as an admin
+        public async Task AdminDeleteThreadAsync(Thread thread, string reason)
+        {
+            // Throws exception if deleted by user
+            if (thread.DeletedBy == "User") throw new InvalidOperationException("404 not found");
+
+            // Sets thread as deleted and gives a reason
+            thread.Deleted = true;
+            thread.DeleteReason = reason;
+            thread.DeletedBy = "Admin";
+            
+            // Creates and adds notification
+            Notification notification = new Notification()
+            {
+                Title = $"Your thread '{thread.Title}' was deleted",
+                Content = $"Reason: {reason}",
+                DateCreated = DateTime.Now,
+                UserID = thread.UserID
+            };
+            await AddNotificationAsync(notification);
+            await SaveChangesAsync();
+        }
+        
+        // Deletes a thread as an admin from a given id
+        public async Task AdminDeleteThreadAsync(int id, string reason)
+        {
+            Thread thread = await GetThreadAsync(id);
+            await AdminDeleteThreadAsync(thread, reason);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace SimpleForum.Web
+namespace SimpleForum.Internal
 {
     public class SimpleForumConfig
     {
