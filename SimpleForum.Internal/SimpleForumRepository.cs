@@ -21,7 +21,7 @@ namespace SimpleForum.Internal
         }
 
         // Saves changes made
-        public async Task SaveChanges()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
@@ -32,38 +32,38 @@ namespace SimpleForum.Internal
         //
         
         // Returns a user for the given id
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUserAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         } 
         
         // Returns a user for the given ClaimsPrincipal
-        public async Task<User> Get(ClaimsPrincipal principal)
+        public async Task<User> GetUserAsync(ClaimsPrincipal principal)
         {
             Claim claim = principal.FindFirst(ClaimTypes.NameIdentifier);
             return await _context.Users.FindAsync(int.Parse(claim.Value));
         }
         
         // Returns a thread of the given id
-        public async Task<Thread> GetThread(int id)
+        public async Task<Thread> GetThreadAsync(int id)
         {
             return await _context.Threads.FindAsync(id);
         }
         
         // Returns a comment of the given id
-        public async Task<Comment> GetComment(int id)
+        public async Task<Comment> GetCommentAsync(int id)
         {
             return await _context.Comments.FindAsync(id);
         }
         
         // Returns a UserComment of the give id
-        public async Task<UserComment> GetUserComment(int id)
+        public async Task<UserComment> GetUserCommentAsync(int id)
         {
             return await _context.UserComments.FindAsync(id);
         }
         
         // Returns an EmailCode of the give id
-        public async Task<EmailCode> GetEmailCode(int id)
+        public async Task<EmailCode> GetEmailCodeAsync(int id)
         {
             return await _context.EmailCodes.FindAsync(id);
         }
@@ -75,35 +75,35 @@ namespace SimpleForum.Internal
         //
         
         // Adds a user to the database
-        public async Task<User> AddUser(User user)
+        public async Task<User> AddUserAsync(User user)
         {
             EntityEntry<User> addedUser = await _context.Users.AddAsync(user);
             return addedUser.Entity;
         }
         
         // Adds a thread to the database
-        public async Task<Thread> AddThread(Thread thread)
+        public async Task<Thread> AddThreadAsync(Thread thread)
         {
             EntityEntry<Thread> addedThread = await _context.Threads.AddAsync(thread);
             return addedThread.Entity;
         }
         
         // Adds a comment to the database
-        public async Task<Comment> AddComment(Comment comment)
+        public async Task<Comment> AddCommentAsync(Comment comment)
         {
             EntityEntry<Comment> addedComment = await _context.Comments.AddAsync(comment);
             return addedComment.Entity;
         }
         
         // Adds a UserComment to the database
-        public async Task<UserComment> AddUserComment(UserComment userComment)
+        public async Task<UserComment> AddUserCommentAsync(UserComment userComment)
         {
             EntityEntry<UserComment> addedUserComment = await _context.UserComments.AddAsync(userComment);
             return addedUserComment.Entity;
         }
         
         // Adds an EmailCode to the database
-        public async Task<EmailCode> AddEmailCode(EmailCode emailCode)
+        public async Task<EmailCode> AddEmailCodeAsync(EmailCode emailCode)
         {
             EntityEntry<EmailCode> addedEmailCode = await _context.EmailCodes.AddAsync(emailCode);
             return addedEmailCode.Entity;
@@ -112,7 +112,7 @@ namespace SimpleForum.Internal
         
         
         // Returns a list of threads for the frontpage for the given page
-        public async Task<IEnumerable<Thread>> GetFrontPage(int page)
+        public async Task<IEnumerable<Thread>> GetFrontPageAsync(int page)
         {
             return await _context.Threads
                 .Where(x => !x.Deleted && !x.User.Deleted)
@@ -123,7 +123,7 @@ namespace SimpleForum.Internal
         }
         
         // Returns a list of replies to a thread
-        public async Task<IEnumerable<Comment>> GetThreadReplies(Thread thread, int page)
+        public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(Thread thread, int page)
         {
             return await thread.Comments
                 .Where(x => !x.Deleted && !x.User.Deleted)
@@ -134,14 +134,14 @@ namespace SimpleForum.Internal
         }
         
         // Returns a list of replies to a thread of a given id
-        public async Task<IEnumerable<Comment>> GetThreadReplies(int threadID, int page)
+        public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(int threadID, int page)
         {
-            Thread thread = await GetThread(threadID);
-            return await GetThreadReplies(thread, page);
+            Thread thread = await GetThreadAsync(threadID);
+            return await GetThreadRepliesAsync(thread, page);
         }
         
         // Returns a list of comments on a user's page
-        public async Task<IEnumerable<UserComment>> GetUserComments(User user, int page)
+        public async Task<IEnumerable<UserComment>> GetUserCommentsAsync(User user, int page)
         {
             return await user.UserPageComments
                 .Where(x => !x.Deleted && !x.User.Deleted)
@@ -152,10 +152,10 @@ namespace SimpleForum.Internal
         }
         
         // Returns a list of comments of a user's page of a given user id
-        public async Task<IEnumerable<UserComment>> GetUserComments(int userID, int page)
+        public async Task<IEnumerable<UserComment>> GetUserCommentsAsync(int userID, int page)
         {
-            User user = await GetUser(userID);
-            return await GetUserComments(user, page);
+            User user = await GetUserAsync(userID);
+            return await GetUserCommentsAsync(user, page);
         }
     }
 }

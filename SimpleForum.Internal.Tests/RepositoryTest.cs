@@ -26,10 +26,10 @@ namespace SimpleForum.Internal.Tests
             
             // Creates repository and adds data
             repository = new SimpleForumRepository(context);
-            repository.AddUser(new User() {Username = "user1", Password = "userpass", Email = "asp@asp.net"}).Wait();
-            repository.SaveChanges().Wait();
-            repository.AddThread(new Thread() {Title = "first thread", Content = "Thread content", UserID = 1}).Wait();
-            repository.SaveChanges().Wait();
+            repository.AddUserAsync(new User() {Username = "user1", Password = "userpass", Email = "asp@asp.net"}).Wait();
+            repository.SaveChangesAsync().Wait();
+            repository.AddThreadAsync(new Thread() {Title = "first thread", Content = "Thread content", UserID = 1}).Wait();
+            repository.SaveChangesAsync().Wait();
         }
 
         // Creates an in memory sqlite database
@@ -43,7 +43,7 @@ namespace SimpleForum.Internal.Tests
         [Fact]
         public async Task TestGetUser()
         {
-            User user = await repository.GetUser(1);
+            User user = await repository.GetUserAsync(1);
             Assert.Equal("user1", user.Username);
             Assert.Equal("asp@asp.net", user.Email);
         }
