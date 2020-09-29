@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SimpleForum.Models;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace SimpleForum.Internal
 {
@@ -196,9 +199,9 @@ namespace SimpleForum.Internal
                     UserID = comment.Thread.UserID
                 };
                 await AddNotificationAsync(notification);
+                await SaveChangesAsync();
             }
-
-            await SaveChangesAsync();
+            
             return comment;
         }
 
@@ -230,6 +233,71 @@ namespace SimpleForum.Internal
         {
             Thread thread = await GetThreadAsync(id);
             await AdminDeleteThreadAsync(thread, reason);
+        }
+        
+        // Posts a comment on an user's profile
+        public async Task<UserComment> PostUserCommentAsync(UserComment comment)
+        {
+            // Adds comment to database and saves changes
+            await AddUserCommentAsync(comment);
+            await SaveChangesAsync();
+
+            // Adds notification to the database if user is commenting on another profile 
+            if (comment.UserID != comment.UserPageID)
+            {
+                Notification notification = new Notification()
+                {
+                    Title = $"{comment.User.Username} left a comment on your profile",
+                    DateCreated = DateTime.Now,
+                    UserID = comment.UserPageID
+                };
+                await AddNotificationAsync(notification);
+                await SaveChangesAsync();
+            }
+
+            return comment;
+        }
+        
+        // Updates a user's profile information
+        public async Task UpdateProfileAsync(string email, string password, string bio, Stream profilePicture, 
+            User user)
+        {
+            // Changes information if required
+            if (email != null) user.Email = email;
+            if (password != null) user.Password = password;
+            if (bio != null) user.Bio = bio;
+
+            // Changes profile picture
+            if (profilePicture != null)
+            {
+                await using MemoryStream outputImage = new MemoryStream();
+                Image imageObject = await Image.LoadAsync(profilePicture);
+                
+                // Calculates values and crops image
+                int diff = Math.Abs(imageObject.Height - imageObject.Width);
+                int crop = (diff + 1) / 2;
+
+                if (imageObject.Width > imageObject.Height)
+                {
+                    imageObject.Mutate(x =>
+                        x.Crop(new Rectangle(crop, 0, imageObject.Height, imageObject.Height)));
+                }
+                else if (imageObject.Width < imageObject.Height)
+                {
+                    imageObject.Mutate(x =>
+                        x.Crop(new Rectangle(0, crop, imageObject.Width, imageObject.Width)));
+                }
+
+                // Resizes image to 1000x1000 px if greater
+                if (imageObject.Width > 1000)
+                    imageObject.Mutate(x => x.Resize(1000, 1000));
+
+                // Writes image to file
+                // TODO - Update method of saving files
+                await imageObject.SaveAsJpegAsync(outputImage);
+                await System.IO.File.WriteAllBytesAsync(
+                    $"UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
+            }
         }
     }
 }
