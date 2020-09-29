@@ -12,6 +12,9 @@ using SixLabors.ImageSharp.Processing;
 
 namespace SimpleForum.Internal
 {
+    /// <summary>
+    /// A repository for the SimpleForum database.
+    /// </summary>
     public class SimpleForumRepository
     {
         private readonly ApplicationDbContext _context;
@@ -20,13 +23,20 @@ namespace SimpleForum.Internal
         private const int PostsPerPage = 30;
         private const int CommentsPerPage = 15;
 
+        /// <summary>
+        /// Creates an instance of <see cref="SimpleForumRepository"/>
+        /// </summary>
+        /// <param name="context">The database context for which to initialise the repository with</param>
+        /// <param name="filename">The filename of settings file to use</param>
         public SimpleForumRepository(ApplicationDbContext context, string filename)
         {
             _context = context;
             _config = Tools.GetConfig(filename);
         }
 
-        // Saves changes made
+        /// <summary>
+        /// Saves any changes made to the database
+        /// </summary>
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
@@ -37,44 +47,72 @@ namespace SimpleForum.Internal
         // Methods for accessing a single item in the database
         //
         
-        // Returns a user for the given id
+        /// <summary>
+        /// Gets a user of the given ID from the database
+        /// </summary>
+        /// <param name="id">The id of user to find</param>
+        /// <returns><see cref="User"/></returns>
         public async Task<User> GetUserAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         } 
         
-        // Returns a user for the given ClaimsPrincipal
+        /// <summary>
+        /// Returns the user of the given ClaimsPrincipal
+        /// </summary>
+        /// <param name="principal">The ClaimsPrincipal of the user to find</param>
+        /// <returns><see cref="User"/></returns>
         public async Task<User> GetUserAsync(ClaimsPrincipal principal)
         {
             Claim claim = principal.FindFirst(ClaimTypes.NameIdentifier);
             return await _context.Users.FindAsync(int.Parse(claim.Value));
         }
         
-        // Returns a thread of the given id
+        /// <summary>
+        /// Returns a thread of the given ID.
+        /// </summary>
+        /// <param name="id">The id of the thread to find</param>
+        /// <returns><see cref="Thread"/></returns>
         public async Task<Thread> GetThreadAsync(int id)
         {
             return await _context.Threads.FindAsync(id);
         }
         
-        // Returns a comment of the given id
+        /// <summary>
+        /// Returns a comment of the given id
+        /// </summary>
+        /// <param name="id">The id of the comment to find</param>
+        /// <returns><see cref="Comment"/></returns>
         public async Task<Comment> GetCommentAsync(int id)
         {
             return await _context.Comments.FindAsync(id);
         }
         
-        // Returns a UserComment of the give id
+        /// <summary>
+        /// Returns a UserComment of the give id
+        /// </summary>
+        /// <param name="id">The id of the UserComment to find</param>
+        /// <returns><see cref="UserComment"/></returns>
         public async Task<UserComment> GetUserCommentAsync(int id)
         {
             return await _context.UserComments.FindAsync(id);
         }
         
-        // Returns an EmailCode of the give id
-        public async Task<EmailCode> GetEmailCodeAsync(int id)
+        /// <summary>
+        /// Returns an EmailCode matching the given code
+        /// </summary>
+        /// <param name="code">The code to find</param>
+        /// <returns><see cref="EmailCode"/></returns>
+        public async Task<EmailCode> GetEmailCodeAsync(string code)
         {
-            return await _context.EmailCodes.FindAsync(id);
+            return await _context.EmailCodes.FindAsync(code);
         }
         
-        // Returns a notification of the given id
+        /// <summary>
+        /// Returns a notification of the given id
+        /// </summary>
+        /// <param name="id">The id of the notification to find</param>
+        /// <returns><see cref="Notification"/></returns>
         public async Task<Notification> GetNotificationAsync(int id)
         {
             return await _context.Notifications.FindAsync(id);
@@ -86,42 +124,66 @@ namespace SimpleForum.Internal
         // Methods for adding a single item to the database
         //
         
-        // Adds a user to the database
+        /// <summary>
+        /// Adds a user to the database
+        /// </summary>
+        /// <param name="user">The user to add</param>
+        /// <returns>The added <see cref="User"/></returns>
         public async Task<User> AddUserAsync(User user)
         {
             EntityEntry<User> addedUser = await _context.Users.AddAsync(user);
             return addedUser.Entity;
         }
         
-        // Adds a thread to the database
+        /// <summary>
+        /// Adds a thread to the database
+        /// </summary>
+        /// <param name="thread">The thread to add</param>
+        /// <returns>The added <see cref="Thread"/></returns>
         public async Task<Thread> AddThreadAsync(Thread thread)
         {
             EntityEntry<Thread> addedThread = await _context.Threads.AddAsync(thread);
             return addedThread.Entity;
         }
         
-        // Adds a comment to the database
+        /// <summary>
+        /// Adds a comment to the database
+        /// </summary>
+        /// <param name="comment">The comment to add</param>
+        /// <returns>The added <see cref="Comment"/></returns>
         public async Task<Comment> AddCommentAsync(Comment comment)
         {
             EntityEntry<Comment> addedComment = await _context.Comments.AddAsync(comment);
             return addedComment.Entity;
         }
         
-        // Adds a UserComment to the database
+        /// <summary>
+        /// Adds a UserComment to the database
+        /// </summary>
+        /// <param name="userComment">The UserComment to add</param>
+        /// <returns>The added <see cref="UserComment"/></returns>
         public async Task<UserComment> AddUserCommentAsync(UserComment userComment)
         {
             EntityEntry<UserComment> addedUserComment = await _context.UserComments.AddAsync(userComment);
             return addedUserComment.Entity;
         }
         
-        // Adds an EmailCode to the database
+        /// <summary>
+        /// Adds an EmailCode to the database
+        /// </summary>
+        /// <param name="emailCode">The emailCode to add</param>
+        /// <returns>The added <see cref="EmailCode"/></returns>
         public async Task<EmailCode> AddEmailCodeAsync(EmailCode emailCode)
         {
             EntityEntry<EmailCode> addedEmailCode = await _context.EmailCodes.AddAsync(emailCode);
             return addedEmailCode.Entity;
         }
         
-        // Adds a notification to the database
+        /// <summary>
+        /// Adds a notification to the database
+        /// </summary>
+        /// <param name="notification">The notification to add</param>
+        /// <returns>the added <see cref="Notification"/></returns>
         public async Task<Notification> AddNotificationAsync(Notification notification)
         {
             EntityEntry<Notification> addedNotification = await _context.Notifications.AddAsync(notification);
@@ -134,7 +196,12 @@ namespace SimpleForum.Internal
         // Methods for more specific tasks
         //
         
-        // Returns a list of threads for the frontpage for the given page
+        /// <summary>
+        /// Get a list of threads for the give page, ordered newest to oldest, with pinned threads at the top.
+        /// </summary>
+        /// <param name="page">The page for which to get threads for</param>
+        /// <returns>The list of <see cref="Thread">threads</see> for the given page</returns>
+        /// <remarks>The number of threads on each page depends on the property <see cref="ThreadsPerPage"/></remarks>
         public async Task<IEnumerable<Thread>> GetFrontPageAsync(int page)
         {
             return await _context.Threads
@@ -145,7 +212,13 @@ namespace SimpleForum.Internal
                 .Take(ThreadsPerPage).ToListAsync();
         }
         
-        // Returns a list of replies to a thread
+        /// <summary>
+        /// Returns a list of replies to a thread
+        /// </summary>
+        /// <param name="thread">The thread to get replies from</param>
+        /// <param name="page">The page of which to get replies from</param>
+        /// <returns>The list of <see cref="Comment">comments</see> for the given thread and page</returns>
+        /// <remarks>The number of comments on each page depends on the property <see cref="PostsPerPage"/></remarks>
         public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(Thread thread, int page)
         {
             return await thread.Comments
@@ -156,14 +229,26 @@ namespace SimpleForum.Internal
                 .AsQueryable().ToListAsync();
         }
         
-        // Returns a list of replies to a thread of a given id
+        /// <summary>
+        /// Returns a list of replies to a thread of a given id
+        /// </summary>
+        /// <param name="threadID">The id of the thread to retrieve replies for</param>
+        /// <param name="page">The page of which to get replies from</param>
+        /// <returns>The list of <see cref="CommentsPerPage">comments</see> for the given id and page</returns>
+        /// <remarks>The number of comments on each page depends on the property <see cref="PostsPerPage"/></remarks>
         public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(int threadID, int page)
         {
             Thread thread = await GetThreadAsync(threadID);
             return await GetThreadRepliesAsync(thread, page);
         }
         
-        // Returns a list of comments on a user's page
+        /// <summary>
+        /// Returns a list of comments on a user's page
+        /// </summary>
+        /// <param name="user">The user to get UserComments from</param>
+        /// <param name="page">The page of which to get comments of</param>
+        /// <returns>The list of <see cref="UserComment">UserComments</see> for the profile</returns>
+        /// <remarks>The number of comments per page depends on the property <see cref="CommentsPerPage"/></remarks>
         public async Task<IEnumerable<UserComment>> GetUserCommentsAsync(User user, int page)
         {
             return await user.UserPageComments
@@ -174,14 +259,24 @@ namespace SimpleForum.Internal
                 .AsQueryable().ToListAsync();
         }
         
-        // Returns a list of comments of a user's page of a given user id
+        /// <summary>
+        /// Returns a list of comments on a user's page of a given id
+        /// </summary>
+        /// <param name="userID">The id to get UserComments from</param>
+        /// <param name="page">The page of which to get comments of</param>
+        /// <returns>The list of <see cref="UserComment">UserComments</see> for the profile</returns>
+        /// <remarks>The number of comments per page depends on the property <see cref="CommentsPerPage"/></remarks>
         public async Task<IEnumerable<UserComment>> GetUserCommentsAsync(int userID, int page)
         {
             User user = await GetUserAsync(userID);
             return await GetUserCommentsAsync(user, page);
         }
         
-        // Posts a comment to a specific thread
+        /// <summary>
+        /// Posts a comment
+        /// </summary>
+        /// <param name="comment">The comment to post</param>
+        /// <returns>The posted <see cref="Comment"/></returns>
         public async Task<Comment> PostCommentAsync(Comment comment)
         {
             // Adds comment and updates the database
@@ -204,7 +299,11 @@ namespace SimpleForum.Internal
             return comment;
         }
         
-        // Posts a comment on an user's profile
+        /// <summary>
+        /// Posts a UserComment
+        /// </summary>
+        /// <param name="comment">The UserComment to post</param>
+        /// <returns>The posted <see cref="UserComment"/></returns>
         public async Task<UserComment> PostUserCommentAsync(UserComment comment)
         {
             // Adds comment to database and saves changes
@@ -225,7 +324,12 @@ namespace SimpleForum.Internal
             return comment;
         }
 
-        // Deletes an IPost as an admin
+        /// <summary>
+        /// Deletes an IPost as an admin
+        /// </summary>
+        /// <param name="post">The post to delete</param>
+        /// <param name="reason">The reason for deleting the post</param>
+        /// <exception cref="InvalidOperationException">Thrown when the post has already been deleted by the origin author</exception>
         public async Task AdminDeleteIPost(IPost post, string reason)
         {
             // Throws exception if already deleted by user
@@ -257,32 +361,60 @@ namespace SimpleForum.Internal
             await AddNotificationAsync(notification);
         }
         
-        // Deletes a thread as an admin
+        /// <summary>
+        /// Deletes a thread as an admin
+        /// </summary>
+        /// <param name="thread">The thread to delete</param>
+        /// <param name="reason">The reason to delete the thread</param>
+        /// <exception cref="InvalidOperationException">Thrown when the thread has already been deleted by the original author</exception>
         public async Task AdminDeleteThreadAsync(Thread thread, string reason)
         {
             await AdminDeleteIPost(thread, reason);
         }
         
-        // Deletes a thread as an admin from a given id
+        /// <summary>
+        /// Deletes a thread as an admin from a given id
+        /// </summary>
+        /// <param name="id">The id of the thread to delete</param>
+        /// <param name="reason">The reason to delete the thread</param>
+        /// <exception cref="InvalidOperationException">Thrown when the thread has already been deleted by the original author</exception>
         public async Task AdminDeleteThreadAsync(int id, string reason)
         {
             Thread thread = await GetThreadAsync(id);
             await AdminDeleteThreadAsync(thread, reason);
         }
         
-        // Deletes a comment as an admin
+        /// <summary>
+        /// Deletes a comment as an admin
+        /// </summary>
+        /// <param name="comment">The comment to delete</param>
+        /// <param name="reason">The reason to delete the comment</param>
+        /// <exception cref="InvalidOperationException">Thrown when the comment has already been deleted by the original author</exception>
         public async Task AdminDeleteCommentAsync(Comment comment, string reason)
         {
             await AdminDeleteIPost(comment, reason);
         }
 
-        // Deletes a UserComment as an admin
+        /// <summary>
+        /// Deletes a UserComment as an admin
+        /// </summary>
+        /// <param name="comment">The UserComment to delete</param>
+        /// <param name="reason">The reason for the UserComment to be deleted</param>
+        /// <exception cref="InvalidOperationException">Thrown when the UserComment has already been deleted by the original author</exception>
         public async Task AdminDeleteUserComment(UserComment comment, string reason)
         {
             await AdminDeleteIPost(comment, reason);
         }
         
-        // Updates a user's profile information
+        /// <summary>
+        /// Updates the user's profile
+        /// </summary>
+        /// <param name="email">The new value for the email</param>
+        /// <param name="password">The new password</param>
+        /// <param name="bio">The new contents of the bio</param>
+        /// <param name="profilePicture">The new profile picture</param>
+        /// <param name="user">The user to update</param>
+        /// <remarks>Values which aren't to be updated should be passed as null</remarks>
         public async Task UpdateProfileAsync(string email, string password, string bio, Stream profilePicture, 
             User user)
         {
