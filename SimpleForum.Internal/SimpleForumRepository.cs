@@ -204,36 +204,6 @@ namespace SimpleForum.Internal
             
             return comment;
         }
-
-        // Deletes a thread as an admin
-        public async Task AdminDeleteThreadAsync(Thread thread, string reason)
-        {
-            // Throws exception if deleted by user
-            if (thread.DeletedBy == "User") throw new InvalidOperationException("404 not found");
-
-            // Sets thread as deleted and gives a reason
-            thread.Deleted = true;
-            thread.DeleteReason = reason;
-            thread.DeletedBy = "Admin";
-            
-            // Creates and adds notification
-            Notification notification = new Notification()
-            {
-                Title = $"Your thread '{thread.Title}' was deleted",
-                Content = $"Reason: {reason}",
-                DateCreated = DateTime.Now,
-                UserID = thread.UserID
-            };
-            await AddNotificationAsync(notification);
-            await SaveChangesAsync();
-        }
-        
-        // Deletes a thread as an admin from a given id
-        public async Task AdminDeleteThreadAsync(int id, string reason)
-        {
-            Thread thread = await GetThreadAsync(id);
-            await AdminDeleteThreadAsync(thread, reason);
-        }
         
         // Posts a comment on an user's profile
         public async Task<UserComment> PostUserCommentAsync(UserComment comment)
@@ -256,6 +226,64 @@ namespace SimpleForum.Internal
             }
 
             return comment;
+        }
+
+        // Deletes an IPost as an admin
+        public async Task AdminDeleteIPost(IPost post, string reason)
+        {
+            // Throws exception if already deleted by user
+            if (post.DeletedBy == "User") throw new InvalidOperationException("404 not found");
+            
+            // Sets post as deleted and sets reason
+            post.Deleted = true;
+            post.DeletedBy = "Admin";
+            post.DeleteReason = reason;
+            
+            // Sets notification message based on post type
+            string message = post switch
+            {
+                Thread thread => $"Your thread {thread.Title} has been deleted by an administrator",
+                Comment comment => $"Your comment on {comment.Thread.Title} has been deleted by an administrator",
+                UserComment userComment =>
+                    $"Your comment on {userComment.UserPage.Username}'s profile has been deleted by an administrator",
+                _ => "Your post has been removed"
+            };
+            
+            // Creates and adds notification to database
+            Notification notification = new Notification()
+            {
+                Title = message,
+                Content = $"Reason: {reason}",
+                DateCreated = DateTime.Now,
+                UserID = post.UserID
+            };
+            await AddNotificationAsync(notification);
+            await SaveChangesAsync();
+        }
+        
+        // Deletes a thread as an admin
+        public async Task AdminDeleteThreadAsync(Thread thread, string reason)
+        {
+            await AdminDeleteIPost(thread, reason);
+        }
+        
+        // Deletes a thread as an admin from a given id
+        public async Task AdminDeleteThreadAsync(int id, string reason)
+        {
+            Thread thread = await GetThreadAsync(id);
+            await AdminDeleteThreadAsync(thread, reason);
+        }
+        
+        // Deletes a comment as an admin
+        public async Task AdminDeleteCommentAsync(Comment comment, string reason)
+        {
+            await AdminDeleteIPost(comment, reason);
+        }
+
+        // Deletes a UserComment as an admin
+        public async Task AdminDeleteUserComment(UserComment comment, string reason)
+        {
+            await AdminDeleteIPost(comment, reason);
         }
         
         // Updates a user's profile information
@@ -295,7 +323,7 @@ namespace SimpleForum.Internal
                 // Writes image to file
                 // TODO - Update method of saving files
                 await imageObject.SaveAsJpegAsync(outputImage);
-                await System.IO.File.WriteAllBytesAsync(
+                await File.WriteAllBytesAsync(
                     $"UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
             }
         }
