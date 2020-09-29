@@ -186,10 +186,10 @@ namespace SimpleForum.Internal
         {
             // Adds comment and updates the database
             await AddCommentAsync(comment);
-            await SaveChangesAsync();
             
             // Creates a notification if the comment creator is not the thread creator
-            if (comment.UserID != comment.Thread.UserID)
+            Thread thread = await GetThreadAsync(comment.ThreadID);
+            if (comment.UserID != thread.UserID)
             {
                 Notification notification = new Notification()
                 {
@@ -199,7 +199,6 @@ namespace SimpleForum.Internal
                     UserID = comment.Thread.UserID
                 };
                 await AddNotificationAsync(notification);
-                await SaveChangesAsync();
             }
             
             return comment;
@@ -210,7 +209,6 @@ namespace SimpleForum.Internal
         {
             // Adds comment to database and saves changes
             await AddUserCommentAsync(comment);
-            await SaveChangesAsync();
 
             // Adds notification to the database if user is commenting on another profile 
             if (comment.UserID != comment.UserPageID)
@@ -222,7 +220,6 @@ namespace SimpleForum.Internal
                     UserID = comment.UserPageID
                 };
                 await AddNotificationAsync(notification);
-                await SaveChangesAsync();
             }
 
             return comment;
@@ -258,7 +255,6 @@ namespace SimpleForum.Internal
                 UserID = post.UserID
             };
             await AddNotificationAsync(notification);
-            await SaveChangesAsync();
         }
         
         // Deletes a thread as an admin
