@@ -325,12 +325,67 @@ namespace SimpleForum.Internal
         }
 
         /// <summary>
+        /// Deletes an IPost, checking the user is authorised to do so
+        /// </summary>
+        /// <param name="post">The <see cref="IPost"/> to delete</param>
+        /// <param name="claimsPrincipal">The user deleting the post</param>
+        /// <exception cref="InvalidOperationException">Thrown when the user does not own the poset</exception>
+        public void DeleteIPost(IPost post, ClaimsPrincipal claimsPrincipal)
+        {
+            // Checks user owns the thread
+            int userID = Tools.GetUserID(claimsPrincipal);
+            if (post.UserID != userID) throw new InvalidOperationException("403 access denied");
+            
+            // Sets value as deleted
+            post.Deleted = true;
+        }
+        
+        /// <summary>
+        /// Deletes a thread of the given id, ensuring the user is verified to do so
+        /// </summary>
+        /// <param name="threadID">The <see cref="Thread"/> to be deleted</param>
+        /// <param name="claimsPrincipal">The user deleting the thread</param>
+        /// <exception cref="InvalidOperationException">Thrown when the user does not own the thread</exception>
+        public async Task DeleteThreadAsync(int threadID, ClaimsPrincipal claimsPrincipal)
+        {
+            // Retrieves the thread and deletes thread
+            Thread thread = await GetThreadAsync(threadID);
+            DeleteIPost(thread, claimsPrincipal);
+        }
+
+        /// <summary>
+        /// Deletes a comment of the given id, ensuring the user is verified to do so
+        /// </summary>
+        /// <param name="commentID">The comment to delete</param>
+        /// <param name="claimsPrincipal">The user deleting the comment</param>
+        /// <exception cref="InvalidOperationException">Thrown when the user does not own the comment</exception>
+        public async Task DeleteCommentAsync(int commentID, ClaimsPrincipal claimsPrincipal)
+        {
+            // Retrieves comment and deletes thread
+            Comment comment = await GetCommentAsync(commentID);
+            DeleteIPost(comment, claimsPrincipal);
+        }
+
+        /// <summary>
+        /// Deletes a UserComment of the given id, ensuring the user is verified to do so
+        /// </summary>
+        /// <param name="userCommentID">The UserComment to delete</param>
+        /// <param name="claimsPrincipal">The user deleting the comment</param>
+        /// <exception cref="InvalidOperationException">Thrown when the user does not own the comment</exception>
+        public async Task DeleteUserCommentAsync(int userCommentID, ClaimsPrincipal claimsPrincipal)
+        {
+            // Retrieves the userComment and deletes the thread
+            UserComment comment = await GetUserCommentAsync(userCommentID);
+            DeleteIPost(comment, claimsPrincipal);
+        }
+        
+        /// <summary>
         /// Deletes an IPost as an admin
         /// </summary>
         /// <param name="post">The post to delete</param>
         /// <param name="reason">The reason for deleting the post</param>
         /// <exception cref="InvalidOperationException">Thrown when the post has already been deleted by the origin author</exception>
-        public async Task AdminDeleteIPost(IPost post, string reason)
+        public async Task AdminDeleteIPostAsync(IPost post, string reason)
         {
             // Throws exception if already deleted by user
             if (post.DeletedBy == "User") throw new InvalidOperationException("404 not found");
@@ -369,7 +424,7 @@ namespace SimpleForum.Internal
         /// <exception cref="InvalidOperationException">Thrown when the thread has already been deleted by the original author</exception>
         public async Task AdminDeleteThreadAsync(Thread thread, string reason)
         {
-            await AdminDeleteIPost(thread, reason);
+            await AdminDeleteIPostAsync(thread, reason);
         }
         
         /// <summary>
@@ -392,7 +447,7 @@ namespace SimpleForum.Internal
         /// <exception cref="InvalidOperationException">Thrown when the comment has already been deleted by the original author</exception>
         public async Task AdminDeleteCommentAsync(Comment comment, string reason)
         {
-            await AdminDeleteIPost(comment, reason);
+            await AdminDeleteIPostAsync(comment, reason);
         }
 
         /// <summary>
@@ -403,7 +458,7 @@ namespace SimpleForum.Internal
         /// <exception cref="InvalidOperationException">Thrown when the UserComment has already been deleted by the original author</exception>
         public async Task AdminDeleteUserComment(UserComment comment, string reason)
         {
-            await AdminDeleteIPost(comment, reason);
+            await AdminDeleteIPostAsync(comment, reason);
         }
         
         /// <summary>
