@@ -415,18 +415,7 @@ namespace SimpleForum.Internal
             };
             await AddNotificationAsync(notification);
         }
-        
-        /// <summary>
-        /// Deletes a thread as an admin
-        /// </summary>
-        /// <param name="thread">The thread to delete</param>
-        /// <param name="reason">The reason to delete the thread</param>
-        /// <exception cref="InvalidOperationException">Thrown when the thread has already been deleted by the original author</exception>
-        public async Task AdminDeleteThreadAsync(Thread thread, string reason)
-        {
-            await AdminDeleteIPostAsync(thread, reason);
-        }
-        
+
         /// <summary>
         /// Deletes a thread as an admin from a given id
         /// </summary>
@@ -436,28 +425,32 @@ namespace SimpleForum.Internal
         public async Task AdminDeleteThreadAsync(int id, string reason)
         {
             Thread thread = await GetThreadAsync(id);
-            await AdminDeleteThreadAsync(thread, reason);
+            await AdminDeleteIPostAsync(thread, reason);
         }
-        
+
         /// <summary>
-        /// Deletes a comment as an admin
+        /// Deletes a thread as an admin for the given id
         /// </summary>
-        /// <param name="comment">The comment to delete</param>
+        /// <param name="id">The id of the comment to delete</param>
         /// <param name="reason">The reason to delete the comment</param>
         /// <exception cref="InvalidOperationException">Thrown when the comment has already been deleted by the original author</exception>
-        public async Task AdminDeleteCommentAsync(Comment comment, string reason)
+        public async Task AdminDeleteCommentAsync(int id, string reason)
         {
+            Comment comment = await GetCommentAsync(id);
             await AdminDeleteIPostAsync(comment, reason);
         }
 
         /// <summary>
-        /// Deletes a UserComment as an admin
+        /// Deletes a UserComment as an admin for the given 
         /// </summary>
-        /// <param name="comment">The UserComment to delete</param>
-        /// <param name="reason">The reason for the UserComment to be deleted</param>
-        /// <exception cref="InvalidOperationException">Thrown when the UserComment has already been deleted by the original author</exception>
-        public async Task AdminDeleteUserComment(UserComment comment, string reason)
+        /// <param name="id">The id of the UserComment to delete</param>
+        /// <param name="reason">The reason to delete the UserComment</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the UserComment has already been deleted by the original
+        /// </exception>
+        public async Task AdminDeleteUserCommentAsync(int id, string reason)
         {
+            UserComment comment = await GetUserCommentAsync(id);
             await AdminDeleteIPostAsync(comment, reason);
         }
         
