@@ -25,7 +25,7 @@ namespace SimpleForum.Internal.Tests
             context.Database.EnsureCreated();
             
             // Creates repository and adds data
-            repository = new SimpleForumRepository(context, "");
+            repository = new SimpleForumRepository(context, null);
             repository.AddUserAsync(new User() {Username = "user1", Password = "userpass", Email = "asp@asp.net"}).Wait();
             repository.SaveChangesAsync().Wait();
             repository.AddThreadAsync(new Thread() {Title = "first thread", Content = "Thread content", UserID = 1}).Wait();

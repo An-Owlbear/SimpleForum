@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace SimpleForum.Internal
 {
@@ -21,13 +18,6 @@ namespace SimpleForum.Internal
         {
             Claim claim = user.FindFirst(ClaimTypes.NameIdentifier);
             return int.Parse(claim.Value);
-        }
-
-        public static SimpleForumConfig GetConfig(string filename)
-        {
-            using StreamReader reader = new StreamReader(filename);
-            string json = reader.ReadToEnd();
-            return JsonSerializer.Deserialize<SimpleForumConfig>(json);
         }
     }
 }

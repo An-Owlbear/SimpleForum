@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
 using SimpleForum.Models;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -27,11 +28,11 @@ namespace SimpleForum.Internal
         /// Creates an instance of <see cref="SimpleForumRepository"/>
         /// </summary>
         /// <param name="context">The database context for which to initialise the repository with</param>
-        /// <param name="filename">The filename of settings file to use</param>
-        public SimpleForumRepository(ApplicationDbContext context, string filename)
+        /// <param name="config">The filename of settings file to use</param>
+        public SimpleForumRepository(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
         {
             _context = context;
-            _config = Tools.GetConfig(filename);
+            _config = config.Value;
         }
 
         /// <summary>
