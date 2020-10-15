@@ -1,0 +1,13 @@
+﻿@model UserComment
+@{
+    ViewData["Title"] = "Ban user";
+}
+
+<div class="variable-container">
+    <span class="login-form-title">Remove comment from @Model.User.Username</span>
+    <form class="login-form" asp-action="SendBanUser" method="post">
+        <input type="hidden" name="userCommentID" value="@Model.UserCommentID">
+        <input class="login-input" type="text" placeholder="Ban reason" name="reason">
+        <button class="reset-password-button" type="submit">Ban user</button>
+    </form>
+</div>

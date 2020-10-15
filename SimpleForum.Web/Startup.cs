@@ -96,6 +96,8 @@ namespace SimpleForum.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
 
+            services.AddScoped<SimpleForumRepository>();
+            
             services.AddMailKit(options => options.UseMailKit(new MailKitOptions()
             {
                 Server = mailConnectionStrings[0].Trim(),

@@ -44,14 +44,14 @@
 
         @if (User.Identity.IsAuthenticated && Model.Page == 1)
         {
-            @if (User.Identity.IsAuthenticated && Model.User.Muted)
+            @if (User.Identity.IsAuthenticated && Model.CurrentUser.Muted)
             {
                 <div class="thread-message">
                     <h1 class="top-message-text">Your account is muted</h1>
                     <p class="top-message-text">Reason: @Model.User.MuteReason</p>
                 </div>
             }
-            else if (!Model.CurrentUser.CommentsLocked)
+            else if (!Model.User.CommentsLocked)
             {
                 <form class="post-form profile-post-form" asp-action="PostUserComment" method="post">
                     <textarea class="post-input" placeholder="Comment" name="content"></textarea>
@@ -74,7 +74,7 @@
                     <div class="post-user">
                         <a class="post-username" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
                         
-                        @if (Model.User.Banned)
+                        @if (comment.User.Banned)
                         {
                             <span class="ban-text post">(banned)</span>
                         }
@@ -92,10 +92,14 @@
                         <a class="footer-link" href="javascript:void(0)">Share</a>
                         @if (RazorMethods.IsOwner(User, comment))
                         {
-                            <form method="post">
-                                <input type="hidden" name="id" value="@comment.UserCommentID">
+                            <form method="post" asp-action="DeleteUserComment">
+                                <input type="hidden" name="userCommentID" value="@comment.UserCommentID">
                                 <button class="footer-link" type="submit">Delete</button>
                             </form>
+                        }
+                        else if (Model.CurrentUser.Role == "Admin")
+                        {
+                            <a class="footer-link">Delete (Admin)</a>
                         }
                     </div>
                 </li>

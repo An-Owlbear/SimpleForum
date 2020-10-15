@@ -21,15 +21,17 @@ namespace SimpleForum.Web.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
         private readonly IEmailService _emailService;
         private int CommentsPerPage = 15;
 
-        public UserController(ApplicationDbContext context, IOptions<SimpleForumConfig> config, IEmailService emailService)
+        public UserController(ApplicationDbContext context, IOptions<SimpleForumConfig> config, IEmailService emailService, SimpleForumRepository repository)
         {
             _context = context;
             _config = config.Value;
             _emailService = emailService;
+            _repository = repository;
         }
         
         public IActionResult Index(int? id, int page = 1)
@@ -112,6 +114,67 @@ namespace SimpleForum.Web.Controllers
             
             await _context.SaveChangesAsync();
             return Redirect("/User?id=" + userPageID);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ServiceFilter(typeof(CheckPassword))]
+        // Deletes a posted UserComment
+        public async Task<IActionResult> DeleteUserComment(int userCommentID)
+        {
+            // Deletes the comment and returns 403 in not authorised
+            try
+            {
+                await _repository.DeleteUserCommentAsync(userCommentID, User);
+                await _repository.SaveChangesAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return Forbid();
+            }
+            
+            // Returns the view
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comment deleted",
+                MessageTitle = "Comment deleted"
+            };
+            return View("Message", model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        // Returns the form for deleting a comment as an admin
+        public async Task<IActionResult> AdminDeleteUserComment(int userCommentID)
+        {
+            UserComment comment = await _repository.GetUserCommentAsync(userCommentID);
+            return View(comment);
+        }
+        
+        [Authorize]
+        [HttpPost]
+        [ServiceFilter(typeof(CheckPassword))]
+        // Deletes a UserComment as an admin
+        public async Task<IActionResult> AdminDeleteUserComment(int userCommentID, string reason)
+        {
+            // Deletes the comment and returns 404 if comment is already deleted
+            try
+            {
+                await _repository.AdminDeleteUserCommentAsync(userCommentID, reason);
+                await _repository.SaveChangesAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+            
+            // Returns view
+            MessageViewModel model = new MessageViewModel()
+            {
+                Title = "Comment deleted",
+                MessageTitle = "Comment deleted"
+            };
+            return View("Message", model);
         }
 
         [Authorize]
