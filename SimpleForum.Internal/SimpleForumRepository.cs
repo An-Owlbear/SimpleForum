@@ -65,6 +65,7 @@ namespace SimpleForum.Internal
         /// <returns><see cref="User"/></returns>
         public async Task<User> GetUserAsync(ClaimsPrincipal principal)
         {
+            if (!principal.Identity.IsAuthenticated) return null;
             Claim claim = principal.FindFirst(ClaimTypes.NameIdentifier);
             return await _context.Users.FindAsync(int.Parse(claim.Value));
         }
@@ -220,14 +221,13 @@ namespace SimpleForum.Internal
         /// <param name="page">The page of which to get replies from</param>
         /// <returns>The list of <see cref="Comment">comments</see> for the given thread and page</returns>
         /// <remarks>The number of comments on each page depends on the property <see cref="PostsPerPage"/></remarks>
-        public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(Thread thread, int page)
+        public IEnumerable<Comment> GetThreadReplies(Thread thread, int page)
         {
-            return await thread.Comments
+            return thread.Comments
                 .Where(x => !x.Deleted && !x.User.Deleted)
                 .OrderBy(x => x.DatePosted)
                 .Skip((page - 1) * PostsPerPage)
-                .Take(PostsPerPage)
-                .AsQueryable().ToListAsync();
+                .Take(PostsPerPage);
         }
         
         /// <summary>
@@ -240,7 +240,7 @@ namespace SimpleForum.Internal
         public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(int threadID, int page)
         {
             Thread thread = await GetThreadAsync(threadID);
-            return await GetThreadRepliesAsync(thread, page);
+            return GetThreadReplies(thread, page);
         }
         
         /// <summary>
@@ -250,14 +250,13 @@ namespace SimpleForum.Internal
         /// <param name="page">The page of which to get comments of</param>
         /// <returns>The list of <see cref="UserComment">UserComments</see> for the profile</returns>
         /// <remarks>The number of comments per page depends on the property <see cref="CommentsPerPage"/></remarks>
-        public async Task<IEnumerable<UserComment>> GetUserCommentsAsync(User user, int page)
+        public IEnumerable<UserComment> GetUserComments(User user, int page)
         {
-            return await user.UserPageComments
+            return user.UserPageComments
                 .Where(x => !x.Deleted && !x.User.Deleted)
                 .OrderByDescending(x => x.DatePosted)
                 .Skip((page - 1) * CommentsPerPage)
-                .Take(CommentsPerPage)
-                .AsQueryable().ToListAsync();
+                .Take(CommentsPerPage);
         }
         
         /// <summary>
@@ -270,11 +269,11 @@ namespace SimpleForum.Internal
         public async Task<IEnumerable<UserComment>> GetUserCommentsAsync(int userID, int page)
         {
             User user = await GetUserAsync(userID);
-            return await GetUserCommentsAsync(user, page);
+            return GetUserComments(user, page);
         }
         
         /// <summary>
-        /// Posts a comment
+        /// Posts a comment, creating a notification if needed
         /// </summary>
         /// <param name="comment">The comment to post</param>
         /// <returns>The posted <see cref="Comment"/></returns>
@@ -301,7 +300,7 @@ namespace SimpleForum.Internal
         }
         
         /// <summary>
-        /// Posts a UserComment
+        /// Posts a UserComment, creating a notification if needed
         /// </summary>
         /// <param name="comment">The UserComment to post</param>
         /// <returns>The posted <see cref="UserComment"/></returns>
