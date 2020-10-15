@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -20,99 +20,59 @@ namespace SimpleForum.Web.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
         private readonly IEmailService _emailService;
         private int CommentsPerPage = 15;
 
-        public UserController(ApplicationDbContext context, IOptions<SimpleForumConfig> config, IEmailService emailService, SimpleForumRepository repository)
+        public UserController(IOptions<SimpleForumConfig> config, IEmailService emailService, SimpleForumRepository repository)
         {
-            _context = context;
             _config = config.Value;
             _emailService = emailService;
             _repository = repository;
         }
         
-        public IActionResult Index(int? id, int page = 1)
+        // Returns a user's profile
+        public async Task<IActionResult> Index(int id, int page = 1)
         {
-            if (id == null) return Redirect("/");
-            User user;
-
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch (InvalidOperationException)
-            {
-                return StatusCode(404);
-            }
+            // Retrieves users and comments
+            User user = await _repository.GetUserAsync(id);
+            IEnumerable<UserComment> userComments = _repository.GetUserComments(user, page);
+            User currentUser = await _repository.GetUserAsync(User);
             
-            // Returns error if user is deleted
-            if (user.Deleted)
-            {
-                MessageViewModel messageViewModel = new MessageViewModel()
-                {
-                    Title = "User deleted",
-                    MessageTitle = "User deleted"
-                };
-                return View("Message", messageViewModel);
-            }
-
-            User currentUser = null;
-            if (User.Identity.IsAuthenticated)
-            {
-                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                currentUser = _context.Users.First(x => x.UserID == userID);
-            }
-            
+            // Creates model and returns view
             UserPageViewModel model = new UserPageViewModel()
             {
                 User = user,
                 Page = page,
                 PageCount = (user.UserPageComments.Count(x => !x.Deleted) + (CommentsPerPage - 1)) / CommentsPerPage,
                 CurrentUser = currentUser,
-                CurrentPageComments = user.UserPageComments
-                    .Where(x => !x.Deleted && !x.User.Deleted)
-                    .OrderByDescending(x => x.DatePosted)
-                    .Skip((page - 1) * CommentsPerPage)
-                    .Take(CommentsPerPage)
+                CurrentPageComments = userComments
             };
-            
             return View("User", model);
         }
 
         [Authorize(Policy = "UserPageReply")]
         [ServiceFilter(typeof(VerifiedEmail))]
         [ServiceFilter(typeof(PreventMuted))]
+        // Posts a comment to a user's profile
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {
+            // Redirects if content is null
             if (content == null) return Redirect("/");
-            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            User user = await _context.Users.FindAsync(userID);
             
+            // Creates and posts comment
             UserComment comment = new UserComment()
             {
                 Content = content,
                 DatePosted = DateTime.Now,
-                UserID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                UserID = Tools.GetUserID(User),
                 UserPageID = userPageID,
             };
-            await _context.UserComments.AddAsync(comment);
+            await _repository.PostUserCommentAsync(comment);
+            await _repository.SaveChangesAsync();
             
-            // Creates a notification if commenting on another user
-            if (userID != userPageID)
-            {
-                Notification notification = new Notification()
-                {
-                    Title = $"{user.Username} left a comment on your profile",
-                    DateCreated = DateTime.Now,
-                    UserID = userPageID
-                };
-                await _context.Notifications.AddAsync(notification);
-            }
-            
-            await _context.SaveChangesAsync();
+            // Redirects to posted comment
             return Redirect("/User?id=" + userPageID);
         }
 
@@ -147,6 +107,7 @@ namespace SimpleForum.Web.Controllers
         // Returns the form for deleting a comment as an admin
         public async Task<IActionResult> AdminDeleteUserComment(int userCommentID)
         {
+            // Retrieves comment and returns view
             UserComment comment = await _repository.GetUserCommentAsync(userCommentID);
             return View(comment);
         }
@@ -178,24 +139,25 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize]
+        // Returns a page for changing the comment settings of a user's profile
         public async Task<IActionResult> CommentSettings()
         {
-            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            User user = await _context.Users.FindAsync(userID);
+            // Retrieves user and returns view
+            User user = await _repository.GetUserAsync(User);
             return View(user);
         }
 
         [Authorize(Policy = "UserOwner")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> LockComments(int? id)
+        // Locks a user's comments
+        public async Task<IActionResult> LockComments(int id)
         {
-            if (id == null) return Redirect("/");
-            
-            User user = _context.Users.First(x => x.UserID == id);
-
+            // Retrieves user and sets comments as locked
+            User user = await _repository.GetUserAsync(id);
             user.CommentsLocked = true;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
             
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Comments locked",
@@ -206,19 +168,18 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Policy = "UserOwner")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> ClearComments(int? id)
+        // Clears a user's comments
+        public async Task<IActionResult> ClearComments(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user = _context.Users.First(x => x.UserID == id);
-            
+            // Retrieves user and deletes comments
+            User user = await _repository.GetUserAsync(id);
             foreach (UserComment userComment in user.UserPageComments)
             {
                 userComment.Deleted = true;
             }
+            await _repository.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
-
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Comments cleared",
@@ -229,14 +190,15 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Policy = "UserOwner")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> UnlockComments(int? id)
+        // Unlocks a user's comments
+        public async Task<IActionResult> UnlockComments(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user = _context.Users.First(x => x.UserID == id);
+            // Retrieves users and locks comments
+            User user = await _repository.GetUserAsync(id);
             user.CommentsLocked = false;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Comments unlocked",
@@ -246,61 +208,38 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminActions(int? id)
+        // Returns a page of actions an admin can make on a user's profile
+        public async Task<IActionResult> AdminActions(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-            
+            // Retrieves user and returns view
+            User user = await _repository.GetUserAsync(id);
             return View(user);
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult MuteUser(int? id)
+        // Returns a page for muting a user
+        public async Task<IActionResult> MuteUser(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-            
+            // Retrieves user and returns view
+            User user = await _repository.GetUserAsync(id);
             return View(user);
         }
 
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> SendMuteUser(int? id, string reason)
+        // Mutes a user
+        public async Task<IActionResult> SendMuteUser(int id, string reason)
         {
-            if (id == null || reason == null) return Redirect("/");
+            // Redirects if reason is empty
+            if (reason == null) return Redirect("/");
 
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-
+            // Retrieves and mutes user
+            User user = await _repository.GetUserAsync(id);
             user.Muted = true;
             user.MuteReason = reason;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "User muted",
@@ -311,24 +250,16 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> SendUnmuteUser(int? id)
+        // Unmutes a user
+        public async Task<IActionResult> SendUnmuteUser(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-
+            // Retrieves and unmutes user
+            User user = await _repository.GetUserAsync(id);
             user.Muted = false;
             user.MuteReason = null;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "User unmuted",
@@ -338,43 +269,26 @@ namespace SimpleForum.Web.Controllers
         }
         
         [Authorize(Roles = "Admin")]
-        public IActionResult BanUser(int? id)
+        // Returns a page for banning a user
+        public async Task<IActionResult> BanUser(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-            
+            // Retrieves user and returns view
+            User user = await _repository.GetUserAsync(id);
             return View(user);
         }
 
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> SendBanUser(int? id, string reason)
+        // Bans a user
+        public async Task<IActionResult> SendBanUser(int id, string reason)
         {
-            if (id == null || reason == null) return Redirect("/");
-
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-
+            // Retrieves and bans user
+            User user = await _repository.GetUserAsync(id);
             user.Banned = true;
             user.BanReason = reason;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "User banned",
@@ -385,24 +299,16 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> SendUnbanUser(int? id)
+        // Unbans a user
+        public async Task<IActionResult> SendUnbanUser(int id)
         {
-            if (id == null) return Redirect("/");
-
-            User user;
-            try
-            {
-                user = _context.Users.First(x => x.UserID == id);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-
+            // Retrieves and unbans user
+            User user = await _repository.GetUserAsync(id);
             user.Banned = false;
             user.BanReason = null;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "User unbanned",
@@ -413,50 +319,29 @@ namespace SimpleForum.Web.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Edit()
+        // Returns a page for editing the user's profile information
+        public async Task<IActionResult> Edit()
         {
-            User user;
-            try
-            {
-                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                user = _context.Users.First(x => x.UserID == userID);
-            }
-            catch
-            {
-                return new BadRequestResult();
-            }
-            
-            EditUserViewModel model = new EditUserViewModel()
-            {
-                User = user
-            };
-
-            return View(model);
+            // Retrieves user and returns view
+            User user = await _repository.GetUserAsync(User);
+            return View(new EditUserViewModel() { User = user });
         }
-
-        // Updates a user's account information
+        
         [HttpPost]
         [Authorize]
+        // Updates a user's account information
         public async Task<IActionResult> Edit(string email, string password, string confirmPassword, string bio,
             IFormFile profilePicture)
         {
             // Returns if submitted passwords do not match
             if (password != confirmPassword) return RedirectToAction("Edit");
             
-            // Retrieves user account
-            User user;
-            try
-            {
-                int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                user = await _context.Users.FindAsync(userID);
-            }
-            catch { return new BadRequestResult(); }
-
-            // Changes information where applicable
+            // Retrieves user account and changes information where applicable
+            User user = await _repository.GetUserAsync(User);
             if (email != null) user.Email = email;
             if (password != null) user.Password = password;
             if (bio != null) user.Bio = bio;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
 
             // Updates profile picture
             await using (MemoryStream outputImage = new MemoryStream())
@@ -497,31 +382,30 @@ namespace SimpleForum.Web.Controllers
         }
 
         [Authorize]
+        // Returns a list of the user's notifications
         public async Task<IActionResult> Notifications()
         {
-            int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            User user = await _context.Users.FindAsync(userID);
+            // Retrieves the user
+            User user = await _repository.GetUserAsync(User);
             
+            // Creates model and returns view
             NotificationsViewModel model = new NotificationsViewModel()
             {
                 Notifications = user.Notifications.OrderByDescending(x => x.DateCreated)
             };
-
             return View(model);
         }
 
         [Authorize(Policy = "NotificationOwner")]
-        public async Task<IActionResult> Notification(int? id)
+        // Displays a notification of the given id
+        public async Task<IActionResult> Notification(int id)
         {
-            // Redirects if id parameter is null
-            if (id == null) return Redirect("/");
-
             // Retrieves notification from database and sets to read if unread
-            Notification notification = await _context.Notifications.FindAsync(id);
+            Notification notification = await _repository.GetNotificationAsync(id);
             if (!notification.Read)
             {
                 notification.Read = true;
-                await _context.SaveChangesAsync();
+                await _repository.SaveChangesAsync();
             }
             
             // Returns view with notification
@@ -531,11 +415,12 @@ namespace SimpleForum.Web.Controllers
         [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
         [HttpPost]
+        // Initiates the deletion of a user's account
         public async Task<IActionResult> Delete()
         {
             // Creates a code to be used for the email
             DateTime now = DateTime.Now;
-            User user = await _context.Users.FindAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            User user = await _repository.GetUserAsync(User);
             EmailCode code = new EmailCode()
             {
                 Code = Tools.GenerateCode(32),
@@ -544,8 +429,8 @@ namespace SimpleForum.Web.Controllers
                 User = user,
                 ValidUntil = now.AddHours(1)
             };
-            await _context.EmailCodes.AddAsync(code);
-            await _context.SaveChangesAsync();
+            await _repository.AddEmailCodeAsync(code);
+            await _repository.SaveChangesAsync();
             
             // Sends the confirmation email is the user
             string url = _config.InstanceURL + "/User/SendDelete?code=" + code.Code;
@@ -558,7 +443,7 @@ namespace SimpleForum.Web.Controllers
                 true
             );
             
-            // Returns view
+            // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Delete account",
@@ -570,14 +455,15 @@ namespace SimpleForum.Web.Controllers
 
         [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
+        // Deletes the user's profile
         public async Task<IActionResult> SendDelete(string code)
         {
             // Redirects to index if code is null
             if (code == null) return Redirect("/");
             
             // Retrieves user and email and verified the correct user is signed in.
-            User user = await _context.Users.FindAsync(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            EmailCode emailCode = await _context.EmailCodes.FindAsync(code);
+            User user = await _repository.GetUserAsync(User);
+            EmailCode emailCode = await _repository.GetEmailCodeAsync(code);
             if (user != emailCode.User) return Forbid();
             
             // Returns message if code is no longer valid
@@ -595,7 +481,7 @@ namespace SimpleForum.Web.Controllers
 
             // Removes account from database and signs out user
             user.Deleted = true;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
             await HttpContext.SignOutAsync();
 
             // Returns view
