@@ -315,6 +315,7 @@ namespace SimpleForum.Internal
                 Notification notification = new Notification()
                 {
                     Title = $"{comment.User.Username} left a comment on your profile",
+                    Content = $"Click [here]({_config.InstanceURL}/User?id={comment.UserPageID}) to view.",
                     DateCreated = DateTime.Now,
                     UserID = comment.UserPageID
                 };
