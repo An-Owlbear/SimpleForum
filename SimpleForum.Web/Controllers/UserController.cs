@@ -52,10 +52,10 @@ namespace SimpleForum.Web.Controllers
             return View("User", model);
         }
 
+        // Posts a comment to a user's profile
         [Authorize(Policy = "UserPageReply")]
         [ServiceFilter(typeof(VerifiedEmail))]
         [ServiceFilter(typeof(PreventMuted))]
-        // Posts a comment to a user's profile
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
         {
             // Redirects if content is null
@@ -76,10 +76,10 @@ namespace SimpleForum.Web.Controllers
             return Redirect("/User?id=" + userPageID);
         }
 
+        // Deletes a posted UserComment
         [Authorize]
         [HttpPost]
         [ServiceFilter(typeof(CheckPassword))]
-        // Deletes a posted UserComment
         public async Task<IActionResult> DeleteUserComment(int userCommentID)
         {
             // Deletes the comment and returns 403 in not authorised
@@ -102,9 +102,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns the form for deleting a comment as an admin
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        // Returns the form for deleting a comment as an admin
         public async Task<IActionResult> AdminDeleteUserComment(int userCommentID)
         {
             // Retrieves comment and returns view
@@ -112,10 +112,10 @@ namespace SimpleForum.Web.Controllers
             return View(comment);
         }
         
+        // Deletes a UserComment as an admin
         [Authorize]
         [HttpPost]
         [ServiceFilter(typeof(CheckPassword))]
-        // Deletes a UserComment as an admin
         public async Task<IActionResult> AdminDeleteUserComment(int userCommentID, string reason)
         {
             // Deletes the comment and returns 404 if comment is already deleted
@@ -138,8 +138,8 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
-        [Authorize]
         // Returns a page for changing the comment settings of a user's profile
+        [Authorize]
         public async Task<IActionResult> CommentSettings()
         {
             // Retrieves user and returns view
@@ -147,9 +147,9 @@ namespace SimpleForum.Web.Controllers
             return View(user);
         }
 
+        // Locks a user's comments
         [Authorize(Policy = "UserOwner")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Locks a user's comments
         public async Task<IActionResult> LockComments(int id)
         {
             // Retrieves user and sets comments as locked
@@ -166,9 +166,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Clears a user's comments
         [Authorize(Policy = "UserOwner")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Clears a user's comments
         public async Task<IActionResult> ClearComments(int id)
         {
             // Retrieves user and deletes comments
@@ -188,9 +188,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Unlocks a user's comments
         [Authorize(Policy = "UserOwner")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Unlocks a user's comments
         public async Task<IActionResult> UnlockComments(int id)
         {
             // Retrieves users and locks comments
@@ -207,8 +207,8 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
-        [Authorize(Roles = "Admin")]
         // Returns a page of actions an admin can make on a user's profile
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AdminActions(int id)
         {
             // Retrieves user and returns view
@@ -216,8 +216,8 @@ namespace SimpleForum.Web.Controllers
             return View(user);
         }
 
-        [Authorize(Roles = "Admin")]
         // Returns a page for muting a user
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> MuteUser(int id)
         {
             // Retrieves user and returns view
@@ -225,9 +225,9 @@ namespace SimpleForum.Web.Controllers
             return View(user);
         }
 
+        // Mutes a user
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Mutes a user
         public async Task<IActionResult> SendMuteUser(int id, string reason)
         {
             // Redirects if reason is empty
@@ -248,9 +248,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Unmutes a user
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Unmutes a user
         public async Task<IActionResult> SendUnmuteUser(int id)
         {
             // Retrieves and unmutes user
@@ -268,8 +268,8 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
         
-        [Authorize(Roles = "Admin")]
         // Returns a page for banning a user
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> BanUser(int id)
         {
             // Retrieves user and returns view
@@ -277,9 +277,9 @@ namespace SimpleForum.Web.Controllers
             return View(user);
         }
 
+        // Bans a user
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Bans a user
         public async Task<IActionResult> SendBanUser(int id, string reason)
         {
             // Retrieves and bans user
@@ -297,9 +297,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Unbans a user
         [Authorize(Roles = "Admin")]
         [ServiceFilter(typeof(CheckPassword))]
-        // Unbans a user
         public async Task<IActionResult> SendUnbanUser(int id)
         {
             // Retrieves and unbans user
@@ -317,9 +317,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns a page for editing the user's profile information
         [HttpGet]
         [Authorize]
-        // Returns a page for editing the user's profile information
         public async Task<IActionResult> Edit()
         {
             // Retrieves user and returns view
@@ -327,9 +327,9 @@ namespace SimpleForum.Web.Controllers
             return View(new EditUserViewModel() { User = user });
         }
         
+        // Updates a user's account information
         [HttpPost]
         [Authorize]
-        // Updates a user's account information
         public async Task<IActionResult> Edit(string email, string password, string confirmPassword, string bio,
             IFormFile profilePicture)
         {
@@ -381,8 +381,8 @@ namespace SimpleForum.Web.Controllers
             return RedirectToAction("Index", new {id = user.UserID});
         }
 
-        [Authorize]
         // Returns a list of the user's notifications
+        [Authorize]
         public async Task<IActionResult> Notifications()
         {
             // Retrieves the user
@@ -396,8 +396,8 @@ namespace SimpleForum.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Policy = "NotificationOwner")]
         // Displays a notification of the given id
+        [Authorize(Policy = "NotificationOwner")]
         public async Task<IActionResult> Notification(int id)
         {
             // Retrieves notification from database and sets to read if unread
@@ -412,10 +412,10 @@ namespace SimpleForum.Web.Controllers
             return View(notification);
         }
 
+        // Initiates the deletion of a user's account
         [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
         [HttpPost]
-        // Initiates the deletion of a user's account
         public async Task<IActionResult> Delete()
         {
             // Creates a code to be used for the email
@@ -453,9 +453,9 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Deletes the user's profile
         [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
-        // Deletes the user's profile
         public async Task<IActionResult> SendDelete(string code)
         {
             // Redirects to index if code is null
