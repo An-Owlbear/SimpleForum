@@ -97,7 +97,7 @@
                                 <button class="footer-link" type="submit">Delete</button>
                             </form>
                         }
-                        else if (Model.CurrentUser.Role == "Admin")
+                        else if (User.Identity.IsAuthenticated && Model.CurrentUser.Role == "Admin")
                         {
                             <a class="footer-link">Delete (Admin)</a>
                         }
