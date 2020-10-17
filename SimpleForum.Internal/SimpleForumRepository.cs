@@ -522,6 +522,37 @@ namespace SimpleForum.Internal
         }
 
         /// <summary>
+        /// Initiates the deletion of a users' account
+        /// </summary>
+        /// <param name="user">The user to delete</param>
+        public async Task StartDeleteAccountAsync(User user)
+        {
+            // Creates and adds the email code
+            DateTime timeNow = DateTime.Now;
+            EmailCode code = new EmailCode()
+            {
+                Code = Tools.GenerateCode(32),
+                Valid = true,
+                DateCreated = timeNow,
+                ValidUntil = timeNow.AddHours(1),
+                UserID = user.UserID
+            };
+            await AddEmailCodeAsync(code);
+            
+            // Adds email to pending emails
+            string url = _config.InstanceURL + "/User/SendDelete?code=" + code.Code;
+            PendingEmail email = new PendingEmail()
+            {
+                MailTo = user.Email,
+                Subject = "SimpleForum account deletion confirmation",
+                Message = $"<p>Please click the following link to confirm your account deletion: <a href=\"{url}\">{url}</a>" +
+                          "<br>If you did not try to delete your account please change your password to prevent further unauthorised access" +
+                          "of your account.</p>",
+            };
+            PendingEmails.Add(email);
+        }
+
+        /// <summary>
         /// Signs up a new user
         /// </summary>
         /// <param name="user">The user to be signed up</param>

@@ -418,31 +418,10 @@ namespace SimpleForum.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete()
         {
-            // Creates a code to be used for the email
-            DateTime now = DateTime.Now;
+            // Retrieves user and starts account deletion
             User user = await _repository.GetUserAsync(User);
-            EmailCode code = new EmailCode()
-            {
-                Code = Tools.GenerateCode(32),
-                DateCreated = now,
-                Type = "AccountDelete",
-                User = user,
-                ValidUntil = now.AddHours(1)
-            };
-            await _repository.AddEmailCodeAsync(code);
-            await _repository.SaveChangesAsync();
-            
-            // Sends the confirmation email is the user
-            string url = _config.InstanceURL + "/User/SendDelete?code=" + code.Code;
-            await _emailService.SendAsync(
-                user.Email,
-                "SimpleForum account deletion confirmation",
-                $"<p>Please click the following link to confirm your account deletion: <a href=\"{url}\">{url}</a>" +
-                "<br>If you did not try to delete your account please change your password to prevent further unauthorised access" +
-                "of your account.</p>",
-                true
-            );
-            
+            await _repository.StartDeleteAccountAsync(user);
+
             // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
