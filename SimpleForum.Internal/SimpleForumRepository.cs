@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
+using NETCore.MailKit.Core;
 using SimpleForum.Models;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
@@ -19,28 +20,43 @@ namespace SimpleForum.Internal
     public class SimpleForumRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
+        
         private const int ThreadsPerPage = 30;
         private const int PostsPerPage = 30;
         private const int CommentsPerPage = 15;
+        private List<PendingEmail> PendingEmails = new List<PendingEmail>();
 
         /// <summary>
         /// Creates an instance of <see cref="SimpleForumRepository"/>
         /// </summary>
         /// <param name="context">The database context for which to initialise the repository with</param>
+        /// <param name="emailService">The email service used to send emails</param>
         /// <param name="config">The filename of settings file to use</param>
-        public SimpleForumRepository(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
+        public SimpleForumRepository(ApplicationDbContext context, IEmailService emailService, IOptions<SimpleForumConfig> config)
         {
             _context = context;
+            _emailService = emailService;
             _config = config.Value;
         }
 
         /// <summary>
-        /// Saves any changes made to the database
+        /// Saves any changes made to the database and sends pending emails
         /// </summary>
         public async Task SaveChangesAsync()
         {
+            // Saves database changes
             await _context.SaveChangesAsync();
+
+            // Creates list of tasks for sending pending emails
+            IEnumerable<Task> emailTasks = PendingEmails.Select(async x =>
+            {
+                await _emailService.SendAsync(x.MailTo, x.Subject, x.Message, x.IsHTML);
+            });
+
+            // Awaits sending emails
+            await Task.WhenAll(emailTasks);
         }
 
 
