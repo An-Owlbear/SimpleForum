@@ -504,5 +504,84 @@ namespace SimpleForum.Internal
                     $"UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
             }
         }
+
+        /// <summary>
+        /// Signs up a new user
+        /// </summary>
+        /// <param name="user">The user to be signed up</param>
+        /// <returns>The signed up user</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown in the following circumstances:
+        /// - when username, email or password is null
+        /// - when the email or username is already taken
+        /// </exception>
+        public async Task<(User, EmailCode)> SignupAsync(User user)
+        {
+            // Throws exception if any relevant details are null
+            if (user.Username == null || user.Email == null || user.Password == null)
+            {
+                throw new InvalidOperationException("Incomplete details");
+            }
+            
+            // Throws exception if the email or username are already in use
+            if (_context.Users.Any(x => x.Email == user.Email))
+            {
+                throw new InvalidOperationException("Duplicate email");
+            }
+
+            if (_context.Users.Any(x => x.Username == user.Username))
+            {
+                throw new InvalidOperationException("Duplicate username");
+            }
+
+            // Finds next user id and sets new user to it
+            int highestID = _context.Users.OrderByDescending(x => x.UserID).First().UserID;
+            user.UserID = highestID + 1;
+            
+            // Sets signup date and activated
+            user.SignupDate = DateTime.Now;
+            user.Activated = false;
+
+            // Creates EmailCode
+            string code = Tools.GenerateCode(32);
+            DateTime currentTime = DateTime.Now;
+            EmailCode emailCode = new EmailCode()
+            {
+                Code = code,
+                Type = "signup",
+                DateCreated = currentTime,
+                ValidUntil = currentTime.AddHours(24),
+                UserID = user.UserID
+            };
+
+            // Adds user and email code
+            await AddUserAsync(user);
+            await AddEmailCodeAsync(emailCode);
+
+            return (user, emailCode);
+        }
+
+        /// <summary>
+        /// Creates a new EmailCode for email verification
+        /// </summary>
+        /// <param name="userID">The user to send a new code for</param>
+        /// <returns>The created EmailCode</returns>
+        public async Task<EmailCode> ResendSignupCode(int userID)
+        {
+            // TODO - Set old emailCodes as no longer valid and check user exists
+            
+            // Retrieves user and creates new EmailCode
+            DateTime timeNow = DateTime.Now;
+            EmailCode newCode = new EmailCode()
+            {
+                Code = Tools.GenerateCode(32),
+                Type = "signup",
+                DateCreated = timeNow,
+                ValidUntil = timeNow.AddHours(24),
+                UserID = userID
+            };
+            await AddEmailCodeAsync(newCode);
+            return newCode;
+        }
     }
 }

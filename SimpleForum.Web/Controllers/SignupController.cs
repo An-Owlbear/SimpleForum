@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
 using NETCore.MailKit.Core;
 using SimpleForum.Internal;
@@ -17,18 +16,21 @@ namespace SimpleForum.Web.Controllers
 {
     public class SignupController : Controller
     {
+        private readonly SimpleForumRepository _repository;
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
 
-        public SignupController(ApplicationDbContext context, IEmailService emailService,
+        public SignupController(SimpleForumRepository repository, ApplicationDbContext context, IEmailService emailService,
             IOptions<SimpleForumConfig> config)
         {
+            _repository = repository;
             _context = context;
             _emailService = emailService;
             _config = config.Value;
         }
 
+        // Returns the main signup view
         [AnonymousOnly]
         public IActionResult Index(int? error)
         {
@@ -36,50 +38,26 @@ namespace SimpleForum.Web.Controllers
             {
                 Error = error
             };
-
             return View("Signup", model);
         }
 
+        // Creates a user account
         [AnonymousOnly]
         public async Task<IActionResult> SendSignup(string email, string username, string password)
         {
-            // Validates the user input and redirects them if necessary
-            if (User.Identity.IsAuthenticated) return Redirect("/");
-            if (email == null || username == null || password == null) return Redirect("/Signup?error=0");
-            if (_context.Users.Any(x => x.Email == email)) return Redirect("/Signup?error=1");
-            if (_context.Users.Any(x => x.Username == username)) return Redirect("/Signup?error=2");
-
-            // Creates a user object from user input and adds it to the database
+            // Creates and adds new user
             User user = new User()
             {
-                Email = email,
                 Username = username,
-                Password = password,
-                Activated = false,
-                SignupDate = DateTime.Now
+                Email = email,
+                Password = password
             };
-
-            EntityEntry<User> userAdded = await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-
-            // Creates a random 32 character long string and adds to the email codes table
-            // TODO - Verify the generated code does not already exist
-            string code = Tools.GenerateCode(32);
-
-            EmailCode emailCode = new EmailCode()
-            {
-                Code = code,
-                Type = "signup",
-                DateCreated = DateTime.Now,
-                ValidUntil = DateTime.Now.AddHours(24),
-                UserID = userAdded.Entity.UserID
-            };
-
-            await _context.EmailCodes.AddAsync(emailCode);
-            await _context.SaveChangesAsync();
+            (User addedUser, EmailCode emailCode) = await _repository.SignupAsync(user);
+            await _repository.SaveChangesAsync();
 
             // Sends an email containing the link to verify the email
-            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + code;
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode;
+
             await _emailService.SendAsync(
                 email,
                 "SimpleForum email confirmation",
@@ -107,7 +85,7 @@ namespace SimpleForum.Web.Controllers
             // Returns a signup complete page informing the user about email verification, containing a button to
             // resend the verification email.
             string resendUrl = _config.InstanceURL + "/Signup/ResendVerificationEmail?userID=" +
-                               userAdded.Entity.UserID;
+                               addedUser.UserID;
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Signup complete",
@@ -120,23 +98,18 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Verifies a user's email
         public async Task<IActionResult> VerifyEmail(string code)
         {
-            EmailCode emailCode;
-            try
-            {
-                emailCode = _context.EmailCodes.First(x => x.Code == code);
-            }
-            catch (InvalidOperationException)
-            {
-                return Redirect("/");
-            }
-
+            // Retrieves code and redirects if it has expired
+            EmailCode emailCode = await _repository.GetEmailCodeAsync(code);
             if (emailCode.ValidUntil < DateTime.Now) return Redirect("/");
 
+            // Sets the user as activated
             emailCode.User.Activated = true;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
             
+            // Creates the model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Email verified",
@@ -145,33 +118,14 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
-        public async Task<IActionResult> ResendVerificationEmail(int? userID)
+        // Resends the verification email
+        public async Task<IActionResult> ResendVerificationEmail(int userID)
         {
-            EmailCode emailCode;
-            try
-            {
-                emailCode = _context.EmailCodes.First(x => x.UserID == userID);
-            }
-            catch (InvalidOperationException)
-            {
-                return Redirect("/");
-            }
-
-            string code = Tools.GenerateCode(32);
-
-            EmailCode newEmailCode = new EmailCode()
-            {
-                Code = code,
-                Type = "Signup",
-                DateCreated = DateTime.Now,
-                ValidUntil = DateTime.Now.AddHours(24),
-                UserID = emailCode.UserID
-            };
-
-            await _context.EmailCodes.AddAsync(newEmailCode);
-            await _context.SaveChangesAsync();
+            // Creates new emailCode and saves changes
+            EmailCode emailCode = await _repository.ResendSignupCode(userID);
+            await _repository.SaveChangesAsync();
             
-            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + code;
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode.Code;
             await _emailService.SendAsync(
                 emailCode.User.Email,
                 "SimpleForum email confirmation",
