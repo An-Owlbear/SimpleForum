@@ -6,6 +6,7 @@ namespace SimpleForum.Models
     {
         public string Code { get; set; }
         public string Type { get; set; }
+        public bool Valid { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime ValidUntil { get; set; }
 

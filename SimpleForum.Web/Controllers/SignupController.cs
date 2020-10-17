@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -17,15 +16,12 @@ namespace SimpleForum.Web.Controllers
     public class SignupController : Controller
     {
         private readonly SimpleForumRepository _repository;
-        private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
 
-        public SignupController(SimpleForumRepository repository, ApplicationDbContext context, IEmailService emailService,
-            IOptions<SimpleForumConfig> config)
+        public SignupController(SimpleForumRepository repository, IEmailService emailService, IOptions<SimpleForumConfig> config)
         {
             _repository = repository;
-            _context = context;
             _emailService = emailService;
             _config = config.Value;
         }
@@ -105,7 +101,8 @@ namespace SimpleForum.Web.Controllers
             EmailCode emailCode = await _repository.GetEmailCodeAsync(code);
             if (emailCode.ValidUntil < DateTime.Now) return Redirect("/");
 
-            // Sets the user as activated
+            // Sets the user as activated and sets the code as invalid
+            emailCode.Valid = false;
             emailCode.User.Activated = true;
             await _repository.SaveChangesAsync();
             
@@ -121,8 +118,11 @@ namespace SimpleForum.Web.Controllers
         // Resends the verification email
         public async Task<IActionResult> ResendVerificationEmail(int userID)
         {
+            //  Retrieves the user to resend the code for
+            User user = await _repository.GetUserAsync(User);
+            
             // Creates new emailCode and saves changes
-            EmailCode emailCode = await _repository.ResendSignupCode(userID);
+            EmailCode emailCode = await _repository.ResendSignupCode(user);
             await _repository.SaveChangesAsync();
             
             string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode.Code;

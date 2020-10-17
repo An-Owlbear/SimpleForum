@@ -549,6 +549,7 @@ namespace SimpleForum.Internal
             {
                 Code = code,
                 Type = "signup",
+                Valid = true,
                 DateCreated = currentTime,
                 ValidUntil = currentTime.AddHours(24),
                 UserID = user.UserID
@@ -564,11 +565,16 @@ namespace SimpleForum.Internal
         /// <summary>
         /// Creates a new EmailCode for email verification
         /// </summary>
-        /// <param name="userID">The user to send a new code for</param>
+        /// <param name="user">The user to send a new code for</param>
         /// <returns>The created EmailCode</returns>
-        public async Task<EmailCode> ResendSignupCode(int userID)
+        public async Task<EmailCode> ResendSignupCode(User user)
         {
-            // TODO - Set old emailCodes as no longer valid and check user exists
+            // Retrieves a list of previous signup email codes and sets them as no longer valid
+            IEnumerable<EmailCode> codes = _context.EmailCodes.Where(x => x.Type == "signup" && x.UserID == user.UserID);
+            foreach (EmailCode emailCode in codes)
+            {
+                emailCode.Valid = false;
+            }
             
             // Retrieves user and creates new EmailCode
             DateTime timeNow = DateTime.Now;
@@ -576,9 +582,10 @@ namespace SimpleForum.Internal
             {
                 Code = Tools.GenerateCode(32),
                 Type = "signup",
+                Valid = true,
                 DateCreated = timeNow,
                 ValidUntil = timeNow.AddHours(24),
-                UserID = userID
+                UserID = user.UserID
             };
             await AddEmailCodeAsync(newCode);
             return newCode;
