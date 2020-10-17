@@ -531,7 +531,7 @@ namespace SimpleForum.Internal
         /// - when username, email or password is null
         /// - when the email or username is already taken
         /// </exception>
-        public async Task<(User, EmailCode)> SignupAsync(User user)
+        public async Task<User> SignupAsync(User user)
         {
             // Throws exception if any relevant details are null
             if (user.Username == null || user.Email == null || user.Password == null)
@@ -574,8 +574,20 @@ namespace SimpleForum.Internal
             // Adds user and email code
             await AddUserAsync(user);
             await AddEmailCodeAsync(emailCode);
+            
+            // Adds pending email to list
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode;
+            PendingEmail email = new PendingEmail()
+            {
+                MailTo = user.Email,
+                Subject = "SimpleForum email confirmation",
+                Message = "<p>please confirm your email by clicking the following link: <a href='" + url + "'>" + url
+                          + "</a></p>",
+                IsHTML = true
+            };
+            PendingEmails.Add(email);
 
-            return (user, emailCode);
+            return user;
         }
 
         /// <summary>
@@ -604,6 +616,19 @@ namespace SimpleForum.Internal
                 UserID = user.UserID
             };
             await AddEmailCodeAsync(newCode);
+            
+            // Adds email to pending emails
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + newCode.Code;
+            PendingEmail email = new PendingEmail()
+            {
+                MailTo = user.Email,
+                Subject = "SimpleForum email confirmation",
+                Message = "<p>please confirm your email by clicking the following link: <a href='" + url +
+                          "'>" + url + "</a></p>",
+                IsHTML = true
+            };
+            PendingEmails.Add(email);
+            
             return newCode;
         }
     }

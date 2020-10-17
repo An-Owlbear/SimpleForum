@@ -48,28 +48,17 @@ namespace SimpleForum.Web.Controllers
                 Email = email,
                 Password = password
             };
-            (User addedUser, EmailCode emailCode) = await _repository.SignupAsync(user);
+            User addedUser = await _repository.SignupAsync(user);
             await _repository.SaveChangesAsync();
-
-            // Sends an email containing the link to verify the email
-            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode;
-
-            await _emailService.SendAsync(
-                email,
-                "SimpleForum email confirmation",
-                "<p>please confirm your email by clicking the following link: <a href='" + url +
-                "'>" + url + "</a></p>",
-                true
-            );
-
-            // Logs in the user
+            
+            // Creates ClaimsIdentity
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme,
                 ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
+            // Signs in user
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                 new AuthenticationProperties
                 {
@@ -122,16 +111,8 @@ namespace SimpleForum.Web.Controllers
             User user = await _repository.GetUserAsync(User);
             
             // Creates new emailCode and saves changes
-            EmailCode emailCode = await _repository.ResendSignupCode(user);
+            await _repository.ResendSignupCode(user);
             await _repository.SaveChangesAsync();
-            
-            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode.Code;
-            await _emailService.SendAsync(
-                emailCode.User.Email,
-                "SimpleForum email confirmation",
-                "<p>please confirm your email by clicking the following link: <a href='" + url +
-                "'>" + url + "</a></p>",
-                true);
 
             MessageViewModel model = new MessageViewModel()
             {
