@@ -607,7 +607,7 @@ namespace SimpleForum.Internal
             await AddEmailCodeAsync(emailCode);
             
             // Adds pending email to list
-            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode;
+            string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode.Code;
             PendingEmail email = new PendingEmail()
             {
                 MailTo = user.Email,
