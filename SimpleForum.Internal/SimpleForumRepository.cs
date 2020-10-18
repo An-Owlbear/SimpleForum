@@ -582,7 +582,12 @@ namespace SimpleForum.Internal
             }
 
             // Finds next user id and sets new user to it
-            int highestID = _context.Users.OrderByDescending(x => x.UserID).First().UserID;
+            int highestID = 0;
+            if (_context.Users.Count() != 0)
+            {
+                highestID = _context.Users.OrderByDescending(x => x.UserID).First().UserID;
+            }
+            
             user.UserID = highestID + 1;
             
             // Sets signup date and activated
