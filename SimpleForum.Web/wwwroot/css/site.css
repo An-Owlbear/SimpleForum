@@ -167,6 +167,10 @@ textarea:focus, input:focus {
   padding-bottom: 2rem;
 }
 
+.content-container-title-container {
+  font-size: 0;
+}
+
 .content-container-title {
   display: inline-block;
   margin: 2rem 0 2rem 1rem;
@@ -520,6 +524,10 @@ textarea.thread-create-input {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.content-container-top-link-container {
+  font-size: 0;
 }
 
 .content-container-top-link {
