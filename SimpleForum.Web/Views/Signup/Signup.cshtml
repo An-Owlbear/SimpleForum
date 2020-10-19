@@ -5,7 +5,8 @@
     {
         "Enter email, username and password",
         "Email not available",
-        "Username not available"
+        "Username not available",
+        "Passwords do not match"
     };
 }
 
@@ -15,7 +16,7 @@
         <input class="login-input" type="text" placeholder="Email" name="email">
         <input class="login-input" type="text" placeholder="Username" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
-        <input class="login-input" type="password" placeholder="Confirm password" name="confirm_password">
+        <input class="login-input" type="password" placeholder="Confirm password" name="confirmPassword">
         
         @if (Model.Error != null)
         {
