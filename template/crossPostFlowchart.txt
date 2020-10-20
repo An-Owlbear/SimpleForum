@@ -1,0 +1,6 @@
+﻿graph TD
+    Start([Start]) -->
+    a[Send user<br>token and<br>post info]
+    --> c1{Is token<br>correct}
+    --no--> b[access denied]
+    c1 --yes--> c[Information stored]

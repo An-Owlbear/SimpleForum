@@ -1,0 +1,19 @@
+﻿graph TD
+    Start([Start]) -->
+    c1{Has instance2<br>been contacted<br>before}
+    c1 --no--> c1o1
+    c1 --yes--> c1o2
+
+    c1o1[Register and send<br>token to instance2] --> c3
+    c1o2[Send token<br>to instance2] -->
+    c2{Is token<br>valid}
+    c2 --no--> c2o1([Access denied])
+    c2 --yes-->
+
+    c3{Has user been<br>registered on<br>instance2}
+    c3o1[Register and send<br>token for when user<br>signs into ionstance2]
+
+    c3 --no--> c3o1 --> End
+    c3 --yes--> End
+
+    End([User signs in])
