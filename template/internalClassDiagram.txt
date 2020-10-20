@@ -1,52 +1,57 @@
 classDiagram
-  class User {
-    +int UserID
-    +string Username
-    +string Email
-    +string Password
-    +DateTime SignupDate
-    +bool Admin
+    class IPost {
+      +int ID
+      +int UserID
+      +bool Deleted
+      +string DeletedBy
+      +string DeleteReason
+    }
 
-    +ICollection~Threads~
-    +ICollection~Comments~
-    +ICollection~UserComments~
-    +ICollection~UserPageComments~
-  }
-  User o-- Thread
-  User o-- Comment
-  User o-- UserComment
+    class Thread {
+      +string Title
+      +DateTime DatePosted
+      +bool Pinned
+      +bool Locked
+    }
+    Thread <|-- IPost
 
-  class Thread {
-    +int ThreadID
-    +string Title
-    +DateTime DatePosted
-    +int UserID
-    +User User
+    class Comment {
+      +string Content
+      +DateTime DatePosted
+      +int ThreadID
+    }
+    Comment <|-- IPost
 
-    +ICollection~Comment~ Comments
-  }
-  Thread o-- User
-  Thread o-- Comment
+    class UserComment {
+      +string Content
+      +DateTime DatePosted
+      +int UserPageID
+    }
+    UserComment <|-- IPost
 
-	class Comment {
-    +int CommentID
-    +string Content
-    +DateTime DatePosted
-    +int UserID
-    +User User
-    +int ThreadID
-    +Thread Thread
-  }
-  Comment o-- User
-  Comment o-- Thread
+    class AuthToken {
+      +int AuthTokenID
+      +string AccessToken
+      +string RefreshToken
+      +int Time
+      +int UserID
+    }
 
-  class UserComment {
-    +int UserCommentID
-    +string Content
-    +DateTime DatePosted
-    +int UserID
-    +User User
-    +int UserPage
-    +User UserPage
-  }
-  UserComment o-- User
+    class EmailCode {
+      +string Code
+      +string Type
+      +bool Valid
+      +DateTime DateCreated
+      +DateTime ValidUntil
+      +int UserID
+    }
+
+    class Notification {
+      +int NotificationID
+      +string Title
+      +string Content
+      +DateTime DateCreated
+      +bool Read
+      +int UserID
+    }
+            
