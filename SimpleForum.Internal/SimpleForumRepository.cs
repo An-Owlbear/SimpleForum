@@ -26,7 +26,7 @@ namespace SimpleForum.Internal
         private const int ThreadsPerPage = 30;
         private const int PostsPerPage = 30;
         private const int CommentsPerPage = 15;
-        private List<PendingEmail> PendingEmails = new List<PendingEmail>();
+        private readonly List<PendingEmail> PendingEmails = new List<PendingEmail>();
 
         /// <summary>
         /// Creates an instance of <see cref="SimpleForumRepository"/>
@@ -69,10 +69,26 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="id">The id of user to find</param>
         /// <returns><see cref="User"/></returns>
+        /// <exception cref="InvalidOperationException">Thrown when there is no user of the given id</exception>
         public async Task<User> GetUserAsync(int id)
         {
             return await _context.Users.FindAsync(id);
-        } 
+        }
+
+        /// <summary>
+        /// Gets a user of the given username or email
+        /// </summary>
+        /// <param name="username">The username/email of the user to find</param>
+        /// <returns><see cref="User"/></returns>
+        /// <exception cref="InvalidOperationException">Thrown when there is no user of the given email</exception>
+        public async Task<User> GetUserAsync(string username)
+        {
+            return username switch
+            {
+                _ when username.Contains('@') => await _context.Users.FirstAsync(x => x.Email == username),
+                _ => await _context.Users.FirstAsync(x => x.Username == username)
+            };
+        }
         
         /// <summary>
         /// Returns the user of the given ClaimsPrincipal
@@ -666,6 +682,61 @@ namespace SimpleForum.Internal
             PendingEmails.Add(email);
             
             return newCode;
+        }
+
+        /// <summary>
+        /// Requests a user's password reset, sending an email
+        /// </summary>
+        /// <param name="user">The user to reset the password of</param>
+        public async Task RequestPasswordResetAsync(User user)
+        {
+            // Creates EmailCode
+            DateTime timeNow = DateTime.Now;
+            EmailCode emailCode = new EmailCode()
+            {
+                Code = Tools.GenerateCode(32),
+                DateCreated = timeNow,
+                Type = "password_reset",
+                Valid = true,
+                ValidUntil = timeNow.AddHours(1),
+                UserID = user.UserID
+            };
+            await AddEmailCodeAsync(emailCode);
+            
+            // Schedules password reset email
+            string url = _config.InstanceURL + "/Login/ResetPassword?code=" + emailCode.Code;
+            PendingEmail email = new PendingEmail()
+            {
+                MailTo = user.Email,
+                Subject = "SimpleForum password reset",
+                Message = "<p>To reset your password, please click the following link: <a href=\"" + url +
+                          "\">" + url + "</a></p>",
+                IsHTML = true
+            };
+            PendingEmails.Add(email);
+        }
+        
+        /// <summary>
+        /// Changes a user's password
+        /// </summary>
+        /// <param name="password">The new password</param>
+        /// <param name="code">The code to verify the change</param>
+        /// <param name="userID">The id of the user having their password changed</param>
+        /// <exception cref="InvalidCastException">Thrown when the code is invalid</exception>
+        public async Task ResetPasswordAsync(string password, string code, int userID)
+        {
+            // Retrieves user and EmailCode
+            User user = await GetUserAsync(userID);
+            EmailCode emailCode = await GetEmailCodeAsync(code);
+
+            // Throws exception if code is invalid
+            if (emailCode.Code != code || emailCode.User != user || emailCode.ValidUntil < DateTime.Now)
+            {
+                throw new InvalidCastException("403 access denied");
+            }
+
+            // Updates the password
+            user.Password = password;
         }
     }
 }

@@ -1,13 +1,10 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
@@ -17,25 +14,14 @@ namespace SimpleForum.Web.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly SimpleForumConfig _config;
-        private readonly IEmailService _emailService;
-        
-        string generateCode(int length)
-        {
-            string chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
-            Random random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+        private readonly SimpleForumRepository _repository;
 
-        public LoginController(ApplicationDbContext context, IOptions<SimpleForumConfig> config, IEmailService emailService)
+        public LoginController(SimpleForumRepository repository)
         {
-            _context = context;
-            _config = config.Value;
-            _emailService = emailService;
+            _repository = repository;
         }
         
+        // Returns the login page
         [AnonymousOnly]
         public IActionResult Index(int? error, string ReturnUrl)
         {
@@ -48,29 +34,28 @@ namespace SimpleForum.Web.Controllers
             return View("Login", model);
         }
 
+        // Logs in a user
         [AnonymousOnly]
         public async Task<IActionResult> SendLogin(string username, string password, string ReturnUrl)
         {
+            // Returns error if username or password are null
             if (username == null || password == null) return Redirect("/Login?error=0");
             
+            // Retrieves user, returning error if none are found
             User user;
-
             try
             {
-                user = username switch
-                {
-                    var x when x.Contains("@") => _context.Users.First(y => y.Email == username),
-                    var x when !x.Contains("@") => _context.Users.First(y => y.Username == username),
-                    _ => throw new InvalidOperationException()
-                };
+                user = await _repository.GetUserAsync(username);
             }
             catch (InvalidOperationException)
             {
                 return Redirect("/Login?error=1");
             }
 
+            // Returns error if password is incorrect
             if (user.Password != password) return Redirect("/Login?error=1");
 
+            // Returns error if user is banned
             if (user.Banned)
             {
                 MessageViewModel model = new MessageViewModel()
@@ -82,12 +67,13 @@ namespace SimpleForum.Web.Controllers
                 return View("Message", model);
             }
 
+            // Creates a ClaimIdentity for the user
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
             
+            // Signs in the user
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                 new AuthenticationProperties
                 {
@@ -96,10 +82,12 @@ namespace SimpleForum.Web.Controllers
                     AllowRefresh = false
                 });
 
+            // Redirects the user to the previously requested page if needed, otherwise returns to index
             if (Url.IsLocalUrl(ReturnUrl)) return Redirect(ReturnUrl);
             return Redirect("/");
         }
 
+        // Signs out a user
         [Authorize]
         public async Task<IActionResult> Logout()
         {
@@ -107,6 +95,7 @@ namespace SimpleForum.Web.Controllers
             return Redirect("/");
         }
 
+        // Returns the page for submitting a password reset request
         [AnonymousOnly]
         public IActionResult ForgotPassword(int? error)
         {
@@ -117,47 +106,29 @@ namespace SimpleForum.Web.Controllers
             return View(model);
         }
 
+        // Requests a password reset
         [AnonymousOnly]
         public async Task<IActionResult> SendForgotPassword(string email)
         {
             // Checks the entered email is valid
             if (email == null) return RedirectToAction("ForgotPassword", new {error = 0});
             
+            // Retrieves user and returns error if none found
             User user;
             try
             {
-                user = _context.Users.First(x => x.Email == email);
+                user = await _repository.GetUserAsync(email);
             }
             catch
             {
                 return RedirectToAction("ForgotPassword", new {error = 1});
             }
             
-            // Creates new EmailCode and adds it to database
-            string code = generateCode(32);
-            DateTime now = DateTime.Now;
+            // Requests the password reset
+            await _repository.RequestPasswordResetAsync(user);
+            await _repository.SaveChangesAsync();
             
-            EmailCode emailCode = new EmailCode()
-            {
-                Code = code,
-                DateCreated = DateTime.Now,
-                Type = "password_reset",
-                UserID = user.UserID,
-                ValidUntil = now.AddHours(1)
-            };
-            await _context.EmailCodes.AddAsync(emailCode);
-            await _context.SaveChangesAsync();
-
-            // Sends password reset email
-            string url = _config.InstanceURL + "/Login/ResetPassword?code=" + code;
-            await _emailService.SendAsync(
-                user.Email,
-                "SimpleForum password reset",
-                "<p>To reset your password, please click the following link: <a href=\"" + url +
-                "\">" + url + "</a></p>",
-                true
-            );
-
+            // Returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Email sent",
@@ -166,13 +137,14 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // The page for submitting password resets
         [AnonymousOnly]
-        public IActionResult ResetPassword(string code, int? error)
+        public async Task<IActionResult> ResetPassword(string code, int? error)
         {
             EmailCode emailCode;
             try
             {
-                emailCode = _context.EmailCodes.First(x => x.Code == code);
+                emailCode = await _repository.GetEmailCodeAsync(code);
             }
             catch
             {
@@ -188,35 +160,29 @@ namespace SimpleForum.Web.Controllers
             
             return View(model);
         }
-
+        
+        // Resets a user's password
+        [AnonymousOnly]
         public async Task<IActionResult> SendResetPassword(string password, string confirmPassword,
-            string code, int? userID)
+            string code, int userID)
         {
             // Checks the parameters are valid and handles errors accordingly
-            if (code == null || userID == null) return Redirect("/");
+            if (code == null) return Redirect("/");
             if (password == null || confirmPassword == null) return RedirectToAction("ResetPassword", new {code, error = 0}); 
             if (password != confirmPassword) return RedirectToAction("ResetPassword", new {code, error = 1});
 
-            // Checks the submitted userID and code are valid
-            User user;
-            EmailCode emailCode;
+            // Changes the password, returning an error if permission is denied
             try
             {
-                user = _context.Users.First(x => x.UserID == userID);
-                emailCode = _context.EmailCodes.First(x => x.Code == code);
+                await _repository.ResetPasswordAsync(password, code, userID);
+                await _repository.SaveChangesAsync();
             }
-            catch
+            catch (InvalidOperationException)
             {
-                return Redirect("/");
+                return Forbid();
             }
 
-            if (user.UserID != emailCode.UserID) return Redirect("/");
-            if (emailCode.ValidUntil < DateTime.Now) return Redirect("/");
-
-            // Changed password and returns message
-            user.Password = password;
-            await _context.SaveChangesAsync();
-            
+            // Returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Password changed",
