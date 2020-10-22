@@ -7,28 +7,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
 using SimpleForum.Web.Policies;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace SimpleForum.Web.Controllers
 {
     public class UserController : Controller
     {
         private readonly SimpleForumRepository _repository;
-        private readonly SimpleForumConfig _config;
-        private readonly IEmailService _emailService;
         private int CommentsPerPage = 15;
 
-        public UserController(IOptions<SimpleForumConfig> config, IEmailService emailService, SimpleForumRepository repository)
+        public UserController(SimpleForumRepository repository)
         {
-            _config = config.Value;
-            _emailService = emailService;
             _repository = repository;
         }
         
@@ -336,48 +328,12 @@ namespace SimpleForum.Web.Controllers
             // Returns if submitted passwords do not match
             if (password != confirmPassword) return RedirectToAction("Edit");
             
-            // Retrieves user account and changes information where applicable
+            // Retrieves user account and updates information
             User user = await _repository.GetUserAsync(User);
-            if (email != null) user.Email = email;
-            if (password != null) user.Password = password;
-            if (bio != null) user.Bio = bio;
-            await _repository.SaveChangesAsync();
-
-            // Updates profile picture
-            await using (MemoryStream outputImage = new MemoryStream())
-            {
-                if (profilePicture != null)
-                {
-                    // Creates image object to edit
-                    
-                    Image imageObject = await Image.LoadAsync(profilePicture.OpenReadStream());
-
-                    // Calculates values and crops image
-                    int diff = Math.Abs(imageObject.Height - imageObject.Width);
-                    int crop = (diff + 1) / 2;
-
-                    if (imageObject.Width > imageObject.Height)
-                    {
-                        imageObject.Mutate(x =>
-                            x.Crop(new Rectangle(crop, 0, imageObject.Height, imageObject.Height)));
-                    }
-                    else if (imageObject.Width < imageObject.Height)
-                    {
-                        imageObject.Mutate(x =>
-                            x.Crop(new Rectangle(0, crop, imageObject.Width, imageObject.Width)));
-                    }
-
-                    // Resizes image to 1000x1000 px if greater
-                    if (imageObject.Width > 1000)
-                        imageObject.Mutate(x => x.Resize(1000, 1000));
-
-                    // Writes image to file
-                    await imageObject.SaveAsJpegAsync(outputImage);
-                    await System.IO.File.WriteAllBytesAsync(
-                        $"UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
-                }
-            }
+            Stream stream = profilePicture.OpenReadStream();
+            await _repository.UpdateProfileAsync(email, password, bio, stream, user);
             
+            // Redirects to profile
             return RedirectToAction("Index", new {id = user.UserID});
         }
 
