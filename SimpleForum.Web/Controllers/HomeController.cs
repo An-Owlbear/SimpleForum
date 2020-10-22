@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SimpleForum.Web.Models;
@@ -12,41 +10,27 @@ namespace SimpleForum.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
-        private int ThreadsPerPage = 30;
 
-        public HomeController(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
+        public HomeController(SimpleForumRepository repository, IOptions<SimpleForumConfig> config)
         {
-            _context = context;
+            _repository = repository;
             _config = config.Value;
         }
 
-        public IActionResult Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1)
         {
-            // Creates a list of threads and replies and returns the view
-            IEnumerable<Thread> threads = _context.Threads
-                .Where(x => !x.Deleted && !x.User.Deleted)
-                .OrderByDescending(x => x.Pinned)
-                .ThenByDescending(x => x.DatePosted)
-                .Skip((page - 1) * ThreadsPerPage)
-                .Take(ThreadsPerPage).ToList();
+            // Retrieves the threads at the front page
+            IEnumerable<Thread> threads = await _repository.GetFrontPageAsync(page);
 
             // Checks if the user's email is verified and sets EmailVerified accordingly
             bool emailVerified = false;
             bool emailVerificationRequired = _config.RequireEmailVerification;
             if (User.Identity.IsAuthenticated)
             {
-                try
-                {
-                    int userID = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                    User user = _context.Users.First(x => x.UserID == userID);
-                    emailVerified = user.Activated;
-                }
-                catch
-                {
-                    emailVerified = false;
-                }
+                User user = await _repository.GetUserAsync(User);
+                emailVerified = user.Activated;
             }
             
             // Sets thread and page variables and returns view
@@ -54,7 +38,7 @@ namespace SimpleForum.Web.Controllers
             {
                 Threads = threads,
                 Page = page,
-                PageCount = (_context.Threads.Count(x => !x.Deleted) + (ThreadsPerPage - 1)) / ThreadsPerPage,
+                PageCount = await _repository.GetPageCountAsync(),
                 EmailVerified = emailVerified,
                 EmailVerificationRequired = emailVerificationRequired
             };

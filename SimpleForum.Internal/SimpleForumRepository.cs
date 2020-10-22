@@ -245,7 +245,16 @@ namespace SimpleForum.Internal
                 .Skip((page - 1) * ThreadsPerPage)
                 .Take(ThreadsPerPage).ToListAsync();
         }
-        
+
+        /// <summary>
+        /// Returns the number of pages of threads
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetPageCountAsync()
+        {
+            return (await _context.Threads.CountAsync(x => !x.Deleted) + (ThreadsPerPage - 1)) / ThreadsPerPage;
+        }
+
         /// <summary>
         /// Returns a list of replies to a thread
         /// </summary>
