@@ -14,7 +14,7 @@ namespace SimpleForum.Web.Policies
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public CheckPassword(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public CheckPassword(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

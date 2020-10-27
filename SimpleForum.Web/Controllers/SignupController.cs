@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using NETCore.MailKit.Core;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
@@ -16,13 +15,11 @@ namespace SimpleForum.Web.Controllers
     public class SignupController : Controller
     {
         private readonly SimpleForumRepository _repository;
-        private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
 
-        public SignupController(SimpleForumRepository repository, IEmailService emailService, IOptions<SimpleForumConfig> config)
+        public SignupController(SimpleForumRepository repository, IOptions<SimpleForumConfig> config)
         {
             _repository = repository;
-            _emailService = emailService;
             _config = config.Value;
         }
 

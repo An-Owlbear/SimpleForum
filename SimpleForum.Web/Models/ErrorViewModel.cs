@@ -1,5 +1,3 @@
-using System;
-
 namespace SimpleForum.Web.Models
 {
     public class ErrorViewModel

@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using MimeKit;
 using SimpleForum.Internal;
 
 namespace SimpleForum.Web.Policies

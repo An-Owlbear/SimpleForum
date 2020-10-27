@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SimpleForum.Internal;
 using SimpleForum.Models;
-using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web
 {
@@ -34,7 +33,7 @@ namespace SimpleForum.Web
                 urlExceptions.All(x => x != httpContext.Request.Path.Value)
             };
             
-            if (conditions.All(x => x == true))
+            if (conditions.All(x => x))
             {
                 User user;
                 int userID = int.Parse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
