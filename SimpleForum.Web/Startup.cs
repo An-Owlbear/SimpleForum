@@ -29,8 +29,8 @@ namespace SimpleForum.Web
         public void ConfigureServices(IServiceCollection services)
         {
             string dbConnectionString = Environment.GetEnvironmentVariable("DbConnectionString");
-            string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString").Split(";");
-            if (dbConnectionString == null) throw new NullReferenceException();
+            string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString")?.Split(";");
+            if (dbConnectionString == null || mailConnectionStrings == null) throw new NullReferenceException();
 
             services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
