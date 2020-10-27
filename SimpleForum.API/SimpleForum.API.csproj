@@ -4,5 +4,14 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
+      <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
+    </ItemGroup>
+
 
 </Project>

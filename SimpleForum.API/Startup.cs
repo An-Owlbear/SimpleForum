@@ -1,8 +1,14 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
+using SimpleForum.Internal;
 
 namespace SimpleForum.API
 {
@@ -18,6 +24,31 @@ namespace SimpleForum.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string dbConnectionString = Environment.GetEnvironmentVariable("DbConnectionString");
+            string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString")?.Split(";");
+            if (dbConnectionString == null || mailConnectionStrings == null) throw new NullReferenceException();
+            
+            services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
+            services.AddMailKit(options => options.UseMailKit(new MailKitOptions()
+            {
+                Server = mailConnectionStrings[0].Trim(),
+                Port = int.Parse(mailConnectionStrings[1].Trim()),
+                SenderName = mailConnectionStrings[2].Trim(),
+                SenderEmail = mailConnectionStrings[3].Trim(),
+                Account = mailConnectionStrings[4].Trim(),
+                Password = mailConnectionStrings[5].Trim(),
+                Security = true
+            }));
+
+            services.AddScoped<SimpleForumRepository>();
+                
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });;
+
             services.AddControllers();
         }
 
@@ -35,7 +66,12 @@ namespace SimpleForum.API
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}=Index/{id?}");
+            });
         }
     }
 }
