@@ -47,7 +47,7 @@ namespace SimpleForum.API
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });;
+            });
 
             services.AddControllers();
         }
