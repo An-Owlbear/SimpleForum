@@ -5,12 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
       <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
       <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
     </ItemGroup>
 
 
