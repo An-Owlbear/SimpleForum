@@ -18,10 +18,16 @@ namespace SimpleForum.API.Controllers
         
         [Route("Threads/")]
         [HttpGet]
-        public async Task<IEnumerable<Thread>> Index(int page = 1)
+        public async Task<IEnumerable<Thread>> GetFrontPage(int page = 1)
         {
             IEnumerable<SimpleForum.Models.Thread> threads = await _repository.GetFrontPageAsync(page);
             return threads.Select(x => new Thread(x));
+        }
+
+        [Route("Threads/{id}")]
+        public async Task<Thread> GetThread(int id)
+        {
+            return new Thread(await _repository.GetThreadAsync(id));
         }
     }
 }
