@@ -7,6 +7,8 @@ using SimpleForum.Internal;
 
 namespace SimpleForum.API.Controllers
 {
+    [ApiController]
+    [Route("Threads")]
     public class ThreadsController : ControllerBase
     {
         private readonly SimpleForumRepository _repository;
@@ -16,15 +18,14 @@ namespace SimpleForum.API.Controllers
             _repository = repository;
         }
         
-        [Route("Threads/")]
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IEnumerable<Thread>> GetFrontPage(int page = 1)
         {
             IEnumerable<SimpleForum.Models.Thread> threads = await _repository.GetFrontPageAsync(page);
             return threads.Select(x => new Thread(x));
         }
 
-        [Route("Threads/{id}")]
+        [HttpGet("{id}")]
         public async Task<Thread> GetThread(int id)
         {
             return new Thread(await _repository.GetThreadAsync(id));
