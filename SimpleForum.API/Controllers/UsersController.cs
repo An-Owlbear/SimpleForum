@@ -12,10 +12,12 @@ namespace SimpleForum.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly SimpleForumRepository _repository;
+        private readonly IAuthenticationManager _manager;
 
-        public UserController(SimpleForumRepository repository)
+        public UserController(SimpleForumRepository repository, IAuthenticationManager manager)
         {
             _repository = repository;
+            _manager = manager;
         }
         
         // Gets a user of the given ID
