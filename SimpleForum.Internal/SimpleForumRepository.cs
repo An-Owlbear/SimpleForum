@@ -22,7 +22,7 @@ namespace SimpleForum.Internal
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
-        
+
         private const int ThreadsPerPage = 30;
         private const int PostsPerPage = 30;
         private const int CommentsPerPage = 15;
@@ -34,7 +34,8 @@ namespace SimpleForum.Internal
         /// <param name="context">The database context for which to initialise the repository with</param>
         /// <param name="emailService">The email service used to send emails</param>
         /// <param name="config">The filename of settings file to use</param>
-        public SimpleForumRepository(ApplicationDbContext context, IEmailService emailService, IOptions<SimpleForumConfig> config)
+        public SimpleForumRepository(ApplicationDbContext context, IEmailService emailService,
+            IOptions<SimpleForumConfig> config)
         {
             _context = context;
             _emailService = emailService;
@@ -63,7 +64,7 @@ namespace SimpleForum.Internal
         //
         // Methods for accessing a single item in the database
         //
-        
+
         /// <summary>
         /// Gets a user of the given ID from the database
         /// </summary>
@@ -89,7 +90,7 @@ namespace SimpleForum.Internal
                 _ => await _context.Users.FirstAsync(x => x.Username == username)
             };
         }
-        
+
         /// <summary>
         /// Returns the user of the given ClaimsPrincipal
         /// </summary>
@@ -101,7 +102,7 @@ namespace SimpleForum.Internal
             Claim claim = principal.FindFirst(ClaimTypes.NameIdentifier);
             return await _context.Users.FindAsync(int.Parse(claim.Value));
         }
-        
+
         /// <summary>
         /// Returns a thread of the given ID.
         /// </summary>
@@ -111,7 +112,7 @@ namespace SimpleForum.Internal
         {
             return await _context.Threads.FindAsync(id);
         }
-        
+
         /// <summary>
         /// Returns a comment of the given id
         /// </summary>
@@ -121,7 +122,7 @@ namespace SimpleForum.Internal
         {
             return await _context.Comments.FindAsync(id);
         }
-        
+
         /// <summary>
         /// Returns a UserComment of the give id
         /// </summary>
@@ -131,7 +132,7 @@ namespace SimpleForum.Internal
         {
             return await _context.UserComments.FindAsync(id);
         }
-        
+
         /// <summary>
         /// Returns an EmailCode matching the given code
         /// </summary>
@@ -141,7 +142,7 @@ namespace SimpleForum.Internal
         {
             return await _context.EmailCodes.FindAsync(code);
         }
-        
+
         /// <summary>
         /// Returns a notification of the given id
         /// </summary>
@@ -151,13 +152,21 @@ namespace SimpleForum.Internal
         {
             return await _context.Notifications.FindAsync(id);
         }
-        
-        
-        
+
+        /// <summary>
+        /// Returns the matching authentication token
+        /// </summary>
+        /// <param name="token">The token to return</param>
+        /// <returns><see cref="AuthToken"/></returns>
+        public async Task<AuthToken> GetAuthTokenAsync(string token)
+        {
+            return await _context.AuthTokens.FindAsync(token);
+        }
+
         //
         // Methods for adding a single item to the database
         //
-        
+
         /// <summary>
         /// Adds a user to the database
         /// </summary>
@@ -168,7 +177,7 @@ namespace SimpleForum.Internal
             EntityEntry<User> addedUser = await _context.Users.AddAsync(user);
             return addedUser.Entity;
         }
-        
+
         /// <summary>
         /// Adds a thread to the database
         /// </summary>
@@ -179,7 +188,7 @@ namespace SimpleForum.Internal
             EntityEntry<Thread> addedThread = await _context.Threads.AddAsync(thread);
             return addedThread.Entity;
         }
-        
+
         /// <summary>
         /// Adds a comment to the database
         /// </summary>
@@ -190,7 +199,7 @@ namespace SimpleForum.Internal
             EntityEntry<Comment> addedComment = await _context.Comments.AddAsync(comment);
             return addedComment.Entity;
         }
-        
+
         /// <summary>
         /// Adds a UserComment to the database
         /// </summary>
@@ -201,7 +210,7 @@ namespace SimpleForum.Internal
             EntityEntry<UserComment> addedUserComment = await _context.UserComments.AddAsync(userComment);
             return addedUserComment.Entity;
         }
-        
+
         /// <summary>
         /// Adds an EmailCode to the database
         /// </summary>
@@ -212,7 +221,7 @@ namespace SimpleForum.Internal
             EntityEntry<EmailCode> addedEmailCode = await _context.EmailCodes.AddAsync(emailCode);
             return addedEmailCode.Entity;
         }
-        
+
         /// <summary>
         /// Adds a notification to the database
         /// </summary>
@@ -223,13 +232,23 @@ namespace SimpleForum.Internal
             EntityEntry<Notification> addedNotification = await _context.Notifications.AddAsync(notification);
             return addedNotification.Entity;
         }
-        
-        
-        
+
+        /// <summary>
+        /// Adds an authentication token to the database 
+        /// </summary>
+        /// <param name="authToken">The authentication token to be added</param>
+        /// <returns>the added <see cref="AuthToken"/></returns>
+        public async Task<AuthToken> AddAuthTokenAsync(AuthToken authToken)
+        {
+            EntityEntry<AuthToken> addedToken = await _context.AuthTokens.AddAsync(authToken);
+            return addedToken.Entity;
+        }
+
+
         //
         // Methods for more specific tasks
         //
-        
+
         /// <summary>
         /// Get a list of threads for the give page, ordered newest to oldest, with pinned threads at the top.
         /// </summary>
@@ -270,7 +289,7 @@ namespace SimpleForum.Internal
                 .Skip((page - 1) * PostsPerPage)
                 .Take(PostsPerPage);
         }
-        
+
         /// <summary>
         /// Returns a list of replies to a thread of a given id
         /// </summary>
@@ -283,7 +302,7 @@ namespace SimpleForum.Internal
             Thread thread = await GetThreadAsync(threadID);
             return GetThreadReplies(thread, page);
         }
-        
+
         /// <summary>
         /// Returns a list of comments on a user's page
         /// </summary>
@@ -299,7 +318,7 @@ namespace SimpleForum.Internal
                 .Skip((page - 1) * CommentsPerPage)
                 .Take(CommentsPerPage);
         }
-        
+
         /// <summary>
         /// Returns a list of comments on a user's page of a given id
         /// </summary>
@@ -312,7 +331,7 @@ namespace SimpleForum.Internal
             User user = await GetUserAsync(userID);
             return GetUserComments(user, page);
         }
-        
+
         /// <summary>
         /// Posts a comment, creating a notification if needed
         /// </summary>
@@ -322,7 +341,7 @@ namespace SimpleForum.Internal
         {
             // Adds comment and updates the database
             await AddCommentAsync(comment);
-            
+
             // Creates a notification if the comment creator is not the thread creator
             Thread thread = await GetThreadAsync(comment.ThreadID);
             if (comment.UserID != thread.UserID)
@@ -336,10 +355,10 @@ namespace SimpleForum.Internal
                 };
                 await AddNotificationAsync(notification);
             }
-            
+
             return comment;
         }
-        
+
         /// <summary>
         /// Posts a UserComment, creating a notification if needed
         /// </summary>
@@ -377,11 +396,11 @@ namespace SimpleForum.Internal
             // Checks user owns the thread
             int userID = Tools.GetUserID(claimsPrincipal);
             if (post.UserID != userID) throw new InvalidOperationException("403 access denied");
-            
+
             // Sets value as deleted
             post.Deleted = true;
         }
-        
+
         /// <summary>
         /// Deletes a thread of the given id, ensuring the user is verified to do so
         /// </summary>
@@ -420,7 +439,7 @@ namespace SimpleForum.Internal
             UserComment comment = await GetUserCommentAsync(userCommentID);
             DeleteIPost(comment, claimsPrincipal);
         }
-        
+
         /// <summary>
         /// Deletes an IPost as an admin
         /// </summary>
@@ -431,12 +450,12 @@ namespace SimpleForum.Internal
         {
             // Throws exception if already deleted by user
             if (post.DeletedBy == "User") throw new InvalidOperationException("404 not found");
-            
+
             // Sets post as deleted and sets reason
             post.Deleted = true;
             post.DeletedBy = "Admin";
             post.DeleteReason = reason;
-            
+
             // Sets notification message based on post type
             string message = post switch
             {
@@ -446,7 +465,7 @@ namespace SimpleForum.Internal
                     $"Your comment on {userComment.UserPage.Username}'s profile has been deleted by an administrator",
                 _ => "Your post has been removed"
             };
-            
+
             // Creates and adds notification to database
             Notification notification = new Notification()
             {
@@ -495,7 +514,7 @@ namespace SimpleForum.Internal
             UserComment comment = await GetUserCommentAsync(id);
             await AdminDeleteIPostAsync(comment, reason);
         }
-        
+
         /// <summary>
         /// Updates the user's profile
         /// </summary>
@@ -505,7 +524,7 @@ namespace SimpleForum.Internal
         /// <param name="profilePicture">The new profile picture</param>
         /// <param name="user">The user to update</param>
         /// <remarks>Values which aren't to be updated should be passed as null</remarks>
-        public async Task UpdateProfileAsync(string email, string password, string bio, Stream profilePicture, 
+        public async Task UpdateProfileAsync(string email, string password, string bio, Stream profilePicture,
             User user)
         {
             // Changes information if required
@@ -518,7 +537,7 @@ namespace SimpleForum.Internal
             {
                 await using MemoryStream outputImage = new MemoryStream();
                 Image imageObject = await Image.LoadAsync(profilePicture);
-                
+
                 // Calculates values and crops image
                 int diff = Math.Abs(imageObject.Height - imageObject.Width);
                 int crop = (diff + 1) / 2;
@@ -563,16 +582,17 @@ namespace SimpleForum.Internal
                 UserID = user.UserID
             };
             await AddEmailCodeAsync(code);
-            
+
             // Adds email to pending emails
             string url = _config.InstanceURL + "/User/SendDelete?code=" + code.Code;
             PendingEmail email = new PendingEmail()
             {
                 MailTo = user.Email,
                 Subject = "SimpleForum account deletion confirmation",
-                Message = $"<p>Please click the following link to confirm your account deletion: <a href=\"{url}\">{url}</a>" +
-                          "<br>If you did not try to delete your account please change your password to prevent further unauthorised access" +
-                          "of your account.</p>",
+                Message =
+                    $"<p>Please click the following link to confirm your account deletion: <a href=\"{url}\">{url}</a>" +
+                    "<br>If you did not try to delete your account please change your password to prevent further unauthorised access" +
+                    "of your account.</p>",
             };
             PendingEmails.Add(email);
         }
@@ -594,7 +614,7 @@ namespace SimpleForum.Internal
             {
                 throw new InvalidOperationException("Incomplete details");
             }
-            
+
             // Throws exception if the email or username are already in use
             if (_context.Users.Any(x => x.Email == user.Email))
             {
@@ -612,9 +632,9 @@ namespace SimpleForum.Internal
             {
                 highestID = _context.Users.OrderByDescending(x => x.UserID).First().UserID;
             }
-            
+
             user.UserID = highestID + 1;
-            
+
             // Sets signup date and activated
             user.SignupDate = DateTime.Now;
             user.Activated = false;
@@ -635,7 +655,7 @@ namespace SimpleForum.Internal
             // Adds user and email code
             await AddUserAsync(user);
             await AddEmailCodeAsync(emailCode);
-            
+
             // Adds pending email to list
             string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + emailCode.Code;
             PendingEmail email = new PendingEmail()
@@ -659,12 +679,13 @@ namespace SimpleForum.Internal
         public async Task<EmailCode> ResendSignupCode(User user)
         {
             // Retrieves a list of previous signup email codes and sets them as no longer valid
-            IEnumerable<EmailCode> codes = _context.EmailCodes.Where(x => x.Type == "signup" && x.UserID == user.UserID);
+            IEnumerable<EmailCode> codes =
+                _context.EmailCodes.Where(x => x.Type == "signup" && x.UserID == user.UserID);
             foreach (EmailCode emailCode in codes)
             {
                 emailCode.Valid = false;
             }
-            
+
             // Retrieves user and creates new EmailCode
             DateTime timeNow = DateTime.Now;
             EmailCode newCode = new EmailCode()
@@ -677,7 +698,7 @@ namespace SimpleForum.Internal
                 UserID = user.UserID
             };
             await AddEmailCodeAsync(newCode);
-            
+
             // Adds email to pending emails
             string url = _config.InstanceURL + "/Signup/VerifyEmail?code=" + newCode.Code;
             PendingEmail email = new PendingEmail()
@@ -689,7 +710,7 @@ namespace SimpleForum.Internal
                 IsHTML = true
             };
             PendingEmails.Add(email);
-            
+
             return newCode;
         }
 
@@ -711,7 +732,7 @@ namespace SimpleForum.Internal
                 UserID = user.UserID
             };
             await AddEmailCodeAsync(emailCode);
-            
+
             // Schedules password reset email
             string url = _config.InstanceURL + "/Login/ResetPassword?code=" + emailCode.Code;
             PendingEmail email = new PendingEmail()
@@ -724,7 +745,7 @@ namespace SimpleForum.Internal
             };
             PendingEmails.Add(email);
         }
-        
+
         /// <summary>
         /// Changes a user's password
         /// </summary>
@@ -746,6 +767,34 @@ namespace SimpleForum.Internal
 
             // Updates the password
             user.Password = password;
+        }
+
+        /// <summary>
+        /// Creates an authentication token, ensuring it is unique
+        /// </summary>
+        /// <param name="userID">The user to create an authentication token for</param>
+        /// <returns>The created <see cref="AuthToken"/></returns>
+        public async Task<AuthToken> CreateAuthTokenAsync(int userID)
+        {
+            // Loops until a unique auth token is created
+            while (true)
+            {
+                // Creates and adds auth token if token is unique
+                string code = Tools.GenerateCode(32);
+                if (await GetAuthTokenAsync(code) == null)
+                {
+                    AuthToken token = new AuthToken()
+                    {
+                        Token = code,
+                        ValidUntil = DateTime.Now.AddMonths(1),
+                        UserID = userID
+                    };
+                    await AddAuthTokenAsync(token);
+                    
+                    // Returns auth token
+                    return token;
+                }
+            }
         }
     }
 }
