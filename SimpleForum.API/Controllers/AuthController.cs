@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models;
 using SimpleForum.API.RequestModels;
@@ -30,6 +31,13 @@ namespace SimpleForum.API.Controllers
             };
 
             return Json(response);
+        }
+
+        [HttpGet("Test")]
+        [Authorize]
+        public IActionResult Test()
+        {
+            return Ok("Authorization successful");
         }
     }
 }
