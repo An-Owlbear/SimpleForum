@@ -38,6 +38,11 @@ textarea:focus, input:focus {
   outline: none;
 }
 
+img {
+  font-size: 0 !important;
+  background-color: white;
+}
+
 #navbar-header {
   position: sticky;
   top: 0;
