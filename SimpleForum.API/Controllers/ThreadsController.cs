@@ -30,5 +30,12 @@ namespace SimpleForum.API.Controllers
         {
             return new Thread(await _repository.GetThreadAsync(id));
         }
+
+        [HttpGet("{id}/Comments")]
+        public async Task<IEnumerable<Comment>> GetComments(int id, int page = 1)
+        {
+            IEnumerable<SimpleForum.Models.Comment> comments = await _repository.GetThreadRepliesAsync(id, page);
+            return comments.Select(x => new Comment(x));
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace SimpleForum.API.Models
     public class Comment
     {
         public int ID { get; set; }
+        public string Type { get; set; }
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
         public User User { get; set; }
@@ -19,6 +20,16 @@ namespace SimpleForum.API.Models
         public Comment(SimpleForum.Models.Comment comment)
         {
             ID = comment.CommentID;
+            Type = "Comment";
+            Content = comment.Content;
+            DatePosted = comment.DatePosted;
+            User = new User(comment.User);
+        }
+
+        public Comment(SimpleForum.Models.UserComment comment)
+        {
+            ID = comment.UserCommentID;
+            Type = "UserComment";
             Content = comment.Content;
             DatePosted = comment.DatePosted;
             User = new User(comment.User);
