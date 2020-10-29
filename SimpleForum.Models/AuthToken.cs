@@ -1,11 +1,13 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace SimpleForum.Models
 {
     public class AuthToken
     {
-        public int AuthTokenID { get; set; }
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
-        public int Time { get; set;}
+        [Key]
+        public string Token { get; set; }
+        public DateTime ValidUntil { get; set;}
         
         public int UserID { get; set; }
         public virtual User User { get; set; }
