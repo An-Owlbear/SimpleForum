@@ -18,6 +18,7 @@ namespace SimpleForum.API.Controllers
             _repository = repository;
         }
         
+        // Returns a list of threads for the given page
         [HttpGet("")]
         public async Task<IEnumerable<Thread>> GetFrontPage(int page = 1)
         {
@@ -25,12 +26,14 @@ namespace SimpleForum.API.Controllers
             return threads.Select(x => new Thread(x));
         }
 
+        // Returns a thread of the given ID
         [HttpGet("{id}")]
         public async Task<Thread> GetThread(int id)
         {
             return new Thread(await _repository.GetThreadAsync(id));
         }
 
+        // Gets a list of comments for a thread of the given ID
         [HttpGet("{id}/Comments")]
         public async Task<IEnumerable<Comment>> GetComments(int id, int page = 1)
         {

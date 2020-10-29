@@ -16,6 +16,7 @@ namespace SimpleForum.API.Controllers
             _repository = repository;
         }
         
+        // Gets a comment of the given ID
         [HttpGet("{id}")]
         public async Task<Comment> GetComment(int id)
         {

@@ -26,6 +26,10 @@ namespace SimpleForum.API.Models
             User = new User(comment.User);
         }
 
+        /// <summary>
+        /// Creates an API model comment from a database model UserComment
+        /// </summary>
+        /// <param name="comment">The database model UserComment</param>
         public Comment(SimpleForum.Models.UserComment comment)
         {
             ID = comment.UserCommentID;
