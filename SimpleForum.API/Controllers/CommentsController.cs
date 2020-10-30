@@ -7,7 +7,7 @@ namespace SimpleForum.API.Controllers
 {
     [ApiController]
     [Route("Comments")]
-    public class CommentsController : ControllerBase
+    public class CommentsController : ApiController
     {
         private readonly SimpleForumRepository _repository;
 

@@ -79,6 +79,7 @@ namespace SimpleForum.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

@@ -9,7 +9,7 @@ namespace SimpleForum.API.Controllers
 {
     [ApiController]
     [Route("Threads")]
-    public class ThreadsController : ControllerBase
+    public class ThreadsController : ApiController
     {
         private readonly SimpleForumRepository _repository;
 
@@ -31,8 +31,8 @@ namespace SimpleForum.API.Controllers
         public async Task<IActionResult> GetThread(int id)
         {
              SimpleForum.Models.Thread thread = await _repository.GetThreadAsync(id);
-             if (thread == null) return NotFound();
-             
+             if (thread == null) return NotFound("Requested thread not found");
+
              return new JsonResult(new Thread(thread));
         }
 

@@ -9,7 +9,7 @@ namespace SimpleForum.API.Controllers
 {
     [ApiController]
     [Route("Auth")]
-    public class AuthController : Controller
+    public class AuthController : ApiController
     {
         private readonly IAuthenticationManager _manager;
 

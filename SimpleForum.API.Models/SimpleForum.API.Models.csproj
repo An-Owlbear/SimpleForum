@@ -8,4 +8,8 @@
       <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    </ItemGroup>
+
 </Project>

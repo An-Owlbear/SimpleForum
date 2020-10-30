@@ -9,7 +9,7 @@ namespace SimpleForum.API.Controllers
 {
     [ApiController]
     [Route("Users")]
-    public class UserController : ControllerBase
+    public class UserController : ApiController
     {
         private readonly SimpleForumRepository _repository;
 
