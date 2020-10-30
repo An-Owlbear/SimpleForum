@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SimpleForum.API.Models;
+using SimpleForum.API.Models.Responses;
 using SimpleForum.Internal;
 
 namespace SimpleForum.API.Controllers
@@ -28,9 +28,12 @@ namespace SimpleForum.API.Controllers
 
         // Returns a thread of the given ID
         [HttpGet("{id}")]
-        public async Task<Thread> GetThread(int id)
+        public async Task<IActionResult> GetThread(int id)
         {
-            return new Thread(await _repository.GetThreadAsync(id));
+             SimpleForum.Models.Thread thread = await _repository.GetThreadAsync(id);
+             if (thread == null) return NotFound();
+             
+             return new JsonResult(new Thread(thread));
         }
 
         // Gets a list of comments for a thread of the given ID

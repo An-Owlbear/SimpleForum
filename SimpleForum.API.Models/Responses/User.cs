@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleForum.API.Models
+namespace SimpleForum.API.Models.Responses
 {
     /// <summary>
     /// A user object

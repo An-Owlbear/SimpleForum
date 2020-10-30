@@ -1,4 +1,4 @@
-﻿namespace SimpleForum.API.Models
+﻿namespace SimpleForum.API.Models.Responses
 {
     public class Error
     {

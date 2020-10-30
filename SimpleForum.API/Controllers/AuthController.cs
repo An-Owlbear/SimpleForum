@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SimpleForum.API.Models;
-using SimpleForum.API.RequestModels;
+using SimpleForum.API.Models.Requests;
+using SimpleForum.API.Models.Responses;
 
 namespace SimpleForum.API.Controllers
 {

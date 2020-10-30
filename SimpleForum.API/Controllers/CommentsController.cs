@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SimpleForum.API.Models;
+using SimpleForum.API.Models.Responses;
 using SimpleForum.Internal;
 
 namespace SimpleForum.API.Controllers

@@ -1,4 +1,4 @@
-﻿namespace SimpleForum.API.RequestModels
+﻿namespace SimpleForum.API.Models.Requests
 {
     public class LoginRequest
     {
