@@ -20,9 +20,12 @@ namespace SimpleForum.API.Controllers
         
         // Gets a user of the given ID
         [HttpGet("{id}")]
-        public async Task<User> GetUser(int id)
+        public async Task<IActionResult> GetUser(int id)
         {
-            return new User(await _repository.GetUserAsync(id));
+            SimpleForum.Models.User user = await _repository.GetUserAsync(id);
+            if (user == null) return NotFound("User not found");
+
+            return Json(new User(user));
         }
 
         // Gets a list of UserComments for a user of the given ID

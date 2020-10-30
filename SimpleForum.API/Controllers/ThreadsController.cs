@@ -33,7 +33,7 @@ namespace SimpleForum.API.Controllers
              SimpleForum.Models.Thread thread = await _repository.GetThreadAsync(id);
              if (thread == null) return NotFound("Requested thread not found");
 
-             return new JsonResult(new Thread(thread));
+             return Json(new Thread(thread));
         }
 
         // Gets a list of comments for a thread of the given ID

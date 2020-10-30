@@ -20,7 +20,7 @@ namespace SimpleForum.API.Controllers
 
         // Logs in the user
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
             string token = await _manager.Authenticate(loginRequest.Username, loginRequest.Password);
             if (token == null) return Unauthorized();

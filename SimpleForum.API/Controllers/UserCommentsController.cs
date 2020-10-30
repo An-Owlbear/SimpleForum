@@ -18,9 +18,13 @@ namespace SimpleForum.API.Controllers
 
         // Gets a UserComment of the given ID
         [HttpGet("{id}")]
-        public async Task<Comment> GetUserComment(int id)
+        public async Task<IActionResult> GetUserComment(int id)
         {
-            return new Comment(await _repository.GetUserCommentAsync(id));
+            // Retrieves comment and returns 404 if null
+            SimpleForum.Models.UserComment comment = await _repository.GetUserCommentAsync(id);
+            if (comment == null) return NotFound("UserComment not found");
+            
+            return Json(new Comment(comment));
         }
     }
 }
