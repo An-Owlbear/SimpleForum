@@ -283,6 +283,10 @@ namespace SimpleForum.Internal
         /// <remarks>The number of comments on each page depends on the property <see cref="PostsPerPage"/></remarks>
         public IEnumerable<Comment> GetThreadReplies(Thread thread, int page)
         {
+            // Returns empty list if thread is null
+            if (thread == null) return Enumerable.Empty<Comment>();
+            
+            // Returns list of comments
             return thread.Comments
                 .Where(x => !x.Deleted && !x.User.Deleted)
                 .OrderBy(x => x.DatePosted)
@@ -312,6 +316,10 @@ namespace SimpleForum.Internal
         /// <remarks>The number of comments per page depends on the property <see cref="CommentsPerPage"/></remarks>
         public IEnumerable<UserComment> GetUserComments(User user, int page)
         {
+            // Returns empty list of user is null
+            if (user == null) return Enumerable.Empty<UserComment>();
+            
+            // Returns list of user comments
             return user.UserPageComments
                 .Where(x => !x.Deleted && !x.User.Deleted)
                 .OrderByDescending(x => x.DatePosted)
