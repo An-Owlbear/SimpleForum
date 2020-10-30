@@ -22,17 +22,31 @@ namespace SimpleForum.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            string token = await _manager.Authenticate(loginRequest.Username, loginRequest.Password);
-            if (token == null) return Unauthorized();
+            // Attempts to create token, returns error if login details are incorrect
+            string token;
+            try
+            {
+                token = await _manager.Authenticate(loginRequest.Username, loginRequest.Password);
+            }
+            catch (InvalidOperationException e) when (e.Message == "username incorrect")
+            {
+                return BadRequest("Username is incorrect");
+            }
+            catch (InvalidOperationException e) when (e.Message == "password incorrect")
+            {
+                return BadRequest("Password is incorrect");
+            }
+
+            // Creates and returns response
             LoginResponse response = new LoginResponse()
             {
                 Token = token,
                 ValidUntil = DateTime.Now.AddMonths(1)
             };
-
             return Json(response);
         }
 
+        // Tests authorisation is working
         [HttpGet("Test")]
         [Authorize]
         public IActionResult Test()

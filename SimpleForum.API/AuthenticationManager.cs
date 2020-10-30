@@ -29,10 +29,19 @@ namespace SimpleForum.API
         // Authenticates a user
         public async Task<string> Authenticate(string username, string password)
         {
-            // Gets a user and returns null if not valid
-            User user = await _repository.GetUserAsync(username);
-            if (user == null || user.Password != password) return null;
+            // Gets a user and throws exception if username or password is incorrect
+            User user;
+            try
+            {
+                user = await _repository.GetUserAsync(username);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidOperationException("username incorrect");
+            }
+            if (user.Password != password) throw new InvalidOperationException("password incorrect");
             
+            // Creates and returns a JWT token
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             byte[] tokenKey = Encoding.ASCII.GetBytes(_config.PrivateKey);
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()
