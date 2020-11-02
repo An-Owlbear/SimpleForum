@@ -6,7 +6,7 @@ namespace SimpleForum.Web
     {
         public static IApplicationBuilder UseRevokeBannedUsers(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<RevokeBannedUsersMiddleware>();
+            return builder.UseMiddleware<RevokeUsersMiddleware>();
         }
     }
 }
