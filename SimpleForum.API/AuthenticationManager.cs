@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Core;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SimpleForum.Internal;
@@ -40,6 +41,7 @@ namespace SimpleForum.API
                 throw new InvalidOperationException("username incorrect");
             }
             if (user.Password != password) throw new InvalidOperationException("password incorrect");
+            if (user.Deleted) throw new InvalidOperationException("username incorrect");
             
             // Creates and returns a JWT token
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

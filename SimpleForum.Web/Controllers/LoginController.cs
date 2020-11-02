@@ -53,7 +53,7 @@ namespace SimpleForum.Web.Controllers
             }
 
             // Returns error if password is incorrect
-            if (user.Password != password) return Redirect("/Login?error=1");
+            if (user.Password != password || user.Deleted) return Redirect("/Login?error=1");
 
             // Returns error if user is banned
             if (user.Banned)
