@@ -380,13 +380,14 @@ namespace SimpleForum.Web.Controllers
             // Retrieves user and starts account deletion
             User user = await _repository.GetUserAsync(User);
             await _repository.StartDeleteAccountAsync(user);
+            await _repository.SaveChangesAsync();
 
             // Creates model and returns view
             MessageViewModel model = new MessageViewModel()
             {
                 Title = "Delete account",
                 MessageTitle = "Delete account",
-                MessageContent = "A confirmation email has been sent to your email account. This email is valid for oen hour."
+                MessageContent = "A confirmation email has been sent to your email account. This email is valid for one hour."
             };
             return View("Message", model);
         }

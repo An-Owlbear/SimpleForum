@@ -601,6 +601,7 @@ namespace SimpleForum.Internal
                     $"<p>Please click the following link to confirm your account deletion: <a href=\"{url}\">{url}</a>" +
                     "<br>If you did not try to delete your account please change your password to prevent further unauthorised access" +
                     "of your account.</p>",
+                IsHTML = true
             };
             PendingEmails.Add(email);
         }
