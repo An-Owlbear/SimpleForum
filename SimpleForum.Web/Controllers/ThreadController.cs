@@ -25,6 +25,9 @@ namespace SimpleForum.Web.Controllers
         {
             // Retrieves the requested thread
             Thread thread = await _repository.GetThreadAsync(id);
+            
+            // Returns 404 if thread is null
+            if (thread == null) return NotFound();
 
             // Returns message of thread has been removed
             if (thread.Deleted || thread.User.Deleted)

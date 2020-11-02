@@ -27,8 +27,11 @@ namespace SimpleForum.Web.Controllers
         // Returns a user's profile
         public async Task<IActionResult> Index(int id, int page = 1)
         {
-            // Retrieves users and comments
+            // Retrieves users and return 404 if null
             User user = await _repository.GetUserAsync(id);
+            if (user == null) return NotFound();
+            
+            // Retrieves comments and logged in user
             IEnumerable<UserComment> userComments = _repository.GetUserComments(user, page);
             User currentUser = await _repository.GetUserAsync(User);
             
