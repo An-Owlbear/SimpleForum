@@ -14,6 +14,10 @@
                 {
                     <span class="ban-text profile">(banned)</span>
                 }
+                @if (Model.User.Deleted)
+                {
+                    <span class="ban-text profile">(deleted)</span>
+                }
                 
                 <img class="profile-info-image" src="/Files/ProfileImg?id=@Model.User.UserID" alt="@Model.User.Username">
             </div>
