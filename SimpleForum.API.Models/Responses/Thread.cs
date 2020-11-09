@@ -7,8 +7,8 @@ namespace SimpleForum.API.Models.Responses
     /// </summary>
     public class Thread
     {
-        public string Title;
         public int ID { get; set; }
+        public string Title { get; set; }
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
         public User User { get; set;}
