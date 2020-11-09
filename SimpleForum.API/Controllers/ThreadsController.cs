@@ -82,7 +82,7 @@ namespace SimpleForum.API.Controllers
             // Retrieves thread and returns not found if no thread found
             SimpleForum.Models.User user = await _repository.GetUserAsync(User);
             SimpleForum.Models.Thread thread = await _repository.GetThreadAsync(id);
-            if (thread == null) return NotFound("Requested thread not found");
+            if (thread == null || thread.Deleted) return NotFound("Requested thread not found");
 
             // Creates and adds comment to database
             SimpleForum.Models.Comment comment = new SimpleForum.Models.Comment()

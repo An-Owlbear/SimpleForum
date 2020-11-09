@@ -50,7 +50,7 @@ namespace SimpleForum.API.Controllers
             // Retrieves user and return not found if thread not found
             SimpleForum.Models.User currentUser = await _repository.GetUserAsync(User);
             SimpleForum.Models.User profileUser = await _repository.GetUserAsync(id);
-            if (profileUser == null) return NotFound("Requested user not found");
+            if (profileUser == null || profileUser.Deleted) return NotFound("Requested user not found");
             
             // Creates user comment and adds it to database
             SimpleForum.Models.UserComment userComment = new SimpleForum.Models.UserComment()
