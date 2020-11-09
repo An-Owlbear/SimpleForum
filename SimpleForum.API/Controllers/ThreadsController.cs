@@ -70,5 +70,33 @@ namespace SimpleForum.API.Controllers
             // Returns JSON response
             return Json(new Thread(thread));
         }
+
+        // Posts a comment to the thread
+        [HttpPut("{id}/Comments")]
+        [Authorize]
+        public async Task<IActionResult> PostComment(int id, PostCommentRequest request)
+        {
+            // Returns error if comment is null
+            if (request.Content == null) return BadRequest("Comment cannot be empty");
+
+            // Retrieves thread and returns not found if no thread found
+            SimpleForum.Models.User user = await _repository.GetUserAsync(User);
+            SimpleForum.Models.Thread thread = await _repository.GetThreadAsync(id);
+            if (thread == null) return NotFound("Requested thread not found");
+
+            // Creates and adds comment to database
+            SimpleForum.Models.Comment comment = new SimpleForum.Models.Comment()
+            {
+                Content = request.Content,
+                DatePosted = DateTime.Now,
+                Thread = thread,
+                User = user
+            };
+            await _repository.AddCommentAsync(comment);
+            await _repository.SaveChangesAsync();
+
+            // Returns JSON response
+            return Json(new Comment(comment));
+        }
     }
 }
