@@ -11,6 +11,7 @@ namespace SimpleForum.API.Models.Responses
         public int ID { get; set; }
         public int Posts { get; set; }
         public int Comments { get; set; }
+        public bool CommentsLocked { get; set; }
         public bool Banned { get; set; }
         public DateTime DateJoined { get; set; }
 
@@ -24,7 +25,8 @@ namespace SimpleForum.API.Models.Responses
             ID = user.UserID;
             Posts = user.Threads.Count;
             Comments = user.Comments.Count + user.UserComments.Count;
-            Banned = Banned;
+            CommentsLocked = user.CommentsLocked;
+            Banned = user.Banned;
             DateJoined = user.SignupDate;
         }
     }

@@ -11,6 +11,8 @@ namespace SimpleForum.API.Models.Responses
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
+        public bool Pinned { get; set; }
+        public bool Locked { get; set; }
         public User User { get; set;}
 
         public Thread(SimpleForum.Models.Thread thread)
@@ -19,6 +21,8 @@ namespace SimpleForum.API.Models.Responses
             ID = thread.ThreadID;
             Content = thread.Content;
             DatePosted = thread.DatePosted;
+            Pinned = thread.Pinned;
+            Locked = thread.Locked;
             User = new User(thread.User);
         }
     }
