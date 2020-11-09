@@ -92,7 +92,7 @@ namespace SimpleForum.API.Controllers
                 Thread = thread,
                 User = user
             };
-            await _repository.AddCommentAsync(comment);
+            await _repository.PostCommentAsync(comment);
             await _repository.SaveChangesAsync();
 
             // Returns JSON response
