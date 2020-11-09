@@ -531,10 +531,6 @@ textarea.thread-create-input {
   justify-content: space-between;
 }
 
-.content-container-top-link-container {
-  font-size: 0;
-}
-
 .content-container-top-link {
   display: inline-block;
   text-decoration: none;
@@ -807,6 +803,8 @@ textarea.edit-container-item {
 }
 
 .content-container-top-link-container {
+  display: flex;
+  font-size: 0;
   margin-right: 2rem;
 }
 
