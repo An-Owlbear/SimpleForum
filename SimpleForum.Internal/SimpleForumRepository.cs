@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,7 @@ namespace SimpleForum.Internal
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
         private readonly SimpleForumConfig _config;
+        private readonly HttpContext _httpContext;
 
         private const int ThreadsPerPage = 30;
         private const int PostsPerPage = 30;
@@ -34,12 +36,14 @@ namespace SimpleForum.Internal
         /// <param name="context">The database context for which to initialise the repository with</param>
         /// <param name="emailService">The email service used to send emails</param>
         /// <param name="config">The filename of settings file to use</param>
+        /// <param name="contextAccessor">Used to access the HTTP context</param>
         public SimpleForumRepository(ApplicationDbContext context, IEmailService emailService,
-            IOptions<SimpleForumConfig> config)
+            IOptions<SimpleForumConfig> config, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _emailService = emailService;
             _config = config.Value;
+            _httpContext = contextAccessor.HttpContext;
         }
 
         /// <summary>
@@ -347,7 +351,9 @@ namespace SimpleForum.Internal
         /// <returns>The posted <see cref="Comment"/></returns>
         public async Task<Comment> PostCommentAsync(Comment comment)
         {
-            // Adds comment and updates the database
+            // Retrieves user and adds comment to database
+            User user = await GetUserAsync(_httpContext.User);
+            comment.User = user;
             await AddCommentAsync(comment);
 
             // Creates a notification if the comment creator is not the thread creator

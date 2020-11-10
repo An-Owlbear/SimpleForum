@@ -78,19 +78,22 @@ namespace SimpleForum.API.Controllers
         {
             // Returns error if comment is null
             if (request.Content == null) return BadRequest("Comment cannot be empty");
-
-            // Retrieves thread and returns not found if no thread found
+            
+            // Retrieves user and returns error if muted
             SimpleForum.Models.User user = await _repository.GetUserAsync(User);
+            if (user.Muted) return Unauthorized("Your account is muted, you cannot post comments or create threads");
+            
+            // Retrieves thread and returns error if locked or not found / deleted
             SimpleForum.Models.Thread thread = await _repository.GetThreadAsync(id);
-            if (thread == null || thread.Deleted) return NotFound("Requested thread not found");
+            if (thread == null || thread.Deleted) return NotFound("Thread not found");
+            if (thread.Locked) return Forbid("Cannot reply, thread is locked");
 
             // Creates and adds comment to database
             SimpleForum.Models.Comment comment = new SimpleForum.Models.Comment()
             {
                 Content = request.Content,
                 DatePosted = DateTime.Now,
-                Thread = thread,
-                User = user
+                ThreadID = id
             };
             await _repository.PostCommentAsync(comment);
             await _repository.SaveChangesAsync();

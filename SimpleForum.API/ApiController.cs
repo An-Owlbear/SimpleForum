@@ -64,5 +64,20 @@ namespace SimpleForum.API
         {
             return new BadRequestObjectResult(new Error(400, message));
         }
+
+        public new ObjectResult Forbid()
+        {
+            return new ObjectResult(new Error(403)) {StatusCode = 403};
+        }
+        
+        /// <summary>
+        /// Returns a access denied JSON result for a message
+        /// </summary>
+        /// <param name="message">The message to send</param>
+        /// <returns></returns>
+        public ObjectResult Forbid(string message)
+        {
+            return new ObjectResult(new Error(403, message)) {StatusCode = 403};
+        }
     }
 }
