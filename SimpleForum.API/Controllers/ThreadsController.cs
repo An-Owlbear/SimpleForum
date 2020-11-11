@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
+using SimpleForum.API.Policies;
 using SimpleForum.Internal;
 
 namespace SimpleForum.API.Controllers
@@ -49,7 +49,7 @@ namespace SimpleForum.API.Controllers
 
         // Creates a new thread
         [HttpPut("")]
-        [Authorize]
+        [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> CreateThread(CreateThreadRequest request)
         {
             // Returns error if either parameter is null
@@ -73,7 +73,7 @@ namespace SimpleForum.API.Controllers
 
         // Posts a comment to the thread
         [HttpPut("{id}/Comments")]
-        [Authorize]
+        [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(int id, PostCommentRequest request)
         {
             // Returns error if comment is null

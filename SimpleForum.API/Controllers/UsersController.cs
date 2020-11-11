@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
+using SimpleForum.API.Policies;
 using SimpleForum.Internal;
 
 namespace SimpleForum.API.Controllers
@@ -41,7 +42,7 @@ namespace SimpleForum.API.Controllers
         
         // Posts a comment to a user's profile
         [HttpPut("{id}/Comments")]
-        [Authorize]
+        [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(int id, PostCommentRequest request)
         {
             // Returns error if comment is empty
