@@ -138,7 +138,7 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             // Deletes thread and saves changes
-            await _repository.DeleteThreadAsync(id, User);
+            await _repository.DeleteThreadAsync(id);
             await _repository.SaveChangesAsync();
             
             // Creates model and returns view
@@ -280,7 +280,7 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> DeleteComment(int id)
         {
             // Deletes the comment and saves changes
-            await _repository.DeleteCommentAsync(id, User);
+            await _repository.DeleteCommentAsync(id);
             await _repository.SaveChangesAsync();
 
             // Creates model and returns view

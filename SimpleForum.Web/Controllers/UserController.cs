@@ -80,7 +80,7 @@ namespace SimpleForum.Web.Controllers
             // Deletes the comment and returns 403 in not authorised
             try
             {
-                await _repository.DeleteUserCommentAsync(userCommentID, User);
+                await _repository.DeleteUserCommentAsync(userCommentID);
                 await _repository.SaveChangesAsync();
             }
             catch (InvalidOperationException)
