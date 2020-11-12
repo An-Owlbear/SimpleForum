@@ -1,12 +1,10 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SimpleForum.API.Models.Responses;
 using SimpleForum.Internal;
 
 namespace SimpleForum.API.Policies
 {
-    public class PreventMuted : IAsyncActionFilter
+    public class PreventMuted : ApiFilter, IAsyncActionFilter
     {
         private readonly SimpleForumRepository _repository;
 
@@ -21,7 +19,7 @@ namespace SimpleForum.API.Policies
             SimpleForum.Models.User user = await _repository.GetUserAsync(context.HttpContext.User);
             if (user.Muted)
             {
-                context.Result = new JsonResult(new Error(403, "Account muted, access denied"));
+                context.Result = Forbid("Account muted, access denied");
                 return;
             }
 
