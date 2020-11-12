@@ -5,7 +5,7 @@ namespace SimpleForum.API.Models.Responses
     /// <summary>
     /// A thread object 
     /// </summary>
-    public class Thread
+    public class ApiThread
     {
         public int ID { get; set; }
         public string Title { get; set; }
@@ -13,9 +13,9 @@ namespace SimpleForum.API.Models.Responses
         public DateTime DatePosted { get; set; }
         public bool Pinned { get; set; }
         public bool Locked { get; set; }
-        public User User { get; set;}
+        public ApiUser ApiUser { get; set;}
 
-        public Thread(SimpleForum.Models.Thread thread)
+        public ApiThread(SimpleForum.Models.Thread thread)
         {
             Title = thread.Title;
             ID = thread.ThreadID;
@@ -23,7 +23,7 @@ namespace SimpleForum.API.Models.Responses
             DatePosted = thread.DatePosted;
             Pinned = thread.Pinned;
             Locked = thread.Locked;
-            User = new User(thread.User);
+            ApiUser = new ApiUser(thread.User);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace SimpleForum.API.Controllers
         {
             return new Error(code);
         }
-        
+
         // Returns a JSON error
         [Route("/Error")]
         public Error Error()

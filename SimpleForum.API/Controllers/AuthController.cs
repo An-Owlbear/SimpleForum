@@ -16,7 +16,7 @@ namespace SimpleForum.API.Controllers
         public AuthController(IAuthenticationManager manager)
         {
             _manager = manager;
-        } 
+        }
 
         // Logs in the user
         [HttpPost("Login")]
@@ -25,7 +25,7 @@ namespace SimpleForum.API.Controllers
             // Returns error if username or password are null
             if (loginRequest.Username == null || loginRequest.Password == null)
                 return BadRequest("Username and password must not be null");
-            
+
             // Attempts to create token, returns error if login details are incorrect
             string token;
             try

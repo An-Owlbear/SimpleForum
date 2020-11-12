@@ -5,7 +5,7 @@ namespace SimpleForum.API.Models.Responses
     /// <summary>
     /// A user object
     /// </summary>
-    public class User
+    public class ApiUser
     {
         public string Username { get; set; }
         public int ID { get; set; }
@@ -19,7 +19,7 @@ namespace SimpleForum.API.Models.Responses
         /// Creates an API model user from a database model user
         /// </summary>
         /// <param name="user">The database model user</param>
-        public User(SimpleForum.Models.User user)
+        public ApiUser(SimpleForum.Models.User user)
         {
             Username = user.Username;
             ID = user.UserID;

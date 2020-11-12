@@ -5,38 +5,38 @@ namespace SimpleForum.API.Models.Responses
     /// <summary>
     /// A comment object
     /// </summary>
-    public class Comment
+    public class ApiComment
     {
         public int ID { get; set; }
         public string Type { get; set; }
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
-        public User User { get; set; }
+        public ApiUser ApiUser { get; set; }
 
         /// <summary>
         /// Creates an API model comment from a database model comment
         /// </summary>
         /// <param name="comment">The database model comment</param>
-        public Comment(SimpleForum.Models.Comment comment)
+        public ApiComment(SimpleForum.Models.Comment comment)
         {
             ID = comment.CommentID;
             Type = "Comment";
             Content = comment.Content;
             DatePosted = comment.DatePosted;
-            User = new User(comment.User);
+            ApiUser = new ApiUser(comment.User);
         }
 
         /// <summary>
         /// Creates an API model comment from a database model UserComment
         /// </summary>
         /// <param name="comment">The database model UserComment</param>
-        public Comment(SimpleForum.Models.UserComment comment)
+        public ApiComment(SimpleForum.Models.UserComment comment)
         {
             ID = comment.UserCommentID;
             Type = "UserComment";
             Content = comment.Content;
             DatePosted = comment.DatePosted;
-            User = new User(comment.User);
+            ApiUser = new ApiUser(comment.User);
         }
     }
 }

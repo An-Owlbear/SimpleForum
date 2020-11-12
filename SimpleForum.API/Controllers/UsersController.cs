@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.API.Policies;
 using SimpleForum.Internal;
+using SimpleForum.Models;
 
 namespace SimpleForum.API.Controllers
 {
@@ -21,25 +21,25 @@ namespace SimpleForum.API.Controllers
         {
             _repository = repository;
         }
-        
+
         // Gets a user of the given ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
-            SimpleForum.Models.User user = await _repository.GetUserAsync(id);
+            User user = await _repository.GetUserAsync(id);
             if (user == null) return NotFound("User not found");
 
-            return Json(new User(user));
+            return Json(new ApiUser(user));
         }
 
         // Gets a list of UserComments for a user of the given ID
         [HttpGet("{id}/Comments")]
-        public async Task<IEnumerable<Comment>> GetUserComments(int id, int page = 1)
+        public async Task<IEnumerable<ApiComment>> GetUserComments(int id, int page = 1)
         {
-            IEnumerable<SimpleForum.Models.UserComment> comments = await _repository.GetUserCommentsAsync(id, page);
-            return comments.Select(x => new Comment(x));
+            IEnumerable<UserComment> comments = await _repository.GetUserCommentsAsync(id, page);
+            return comments.Select(x => new ApiComment(x));
         }
-        
+
         // Posts a comment to a user's profile
         [HttpPut("{id}/Comments")]
         [ServiceFilter(typeof(PreventMuted))]
@@ -49,13 +49,13 @@ namespace SimpleForum.API.Controllers
             if (request.Content == null) return BadRequest("Comment cannot be null");
 
             // Retrieves user and returns error if user is not found, deleted or locked
-            SimpleForum.Models.User currentUser = await _repository.GetUserAsync(User);
-            SimpleForum.Models.User profileUser = await _repository.GetUserAsync(id);
+            User currentUser = await _repository.GetUserAsync(User);
+            User profileUser = await _repository.GetUserAsync(id);
             if (profileUser == null || profileUser.Deleted) return NotFound("Requested user not found");
             if (profileUser.CommentsLocked) return Forbid("The user's comments are locked");
-            
+
             // Creates user comment and adds it to database
-            SimpleForum.Models.UserComment userComment = new SimpleForum.Models.UserComment()
+            UserComment userComment = new UserComment()
             {
                 Content = request.Content,
                 DatePosted = DateTime.Now,
@@ -64,9 +64,9 @@ namespace SimpleForum.API.Controllers
             };
             await _repository.PostUserCommentAsync(userComment);
             await _repository.SaveChangesAsync();
-            
+
             // Returns JSON response
-            return Json(new Comment(userComment));
+            return Json(new ApiComment(userComment));
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Internal;
+using SimpleForum.Models;
 
 namespace SimpleForum.API.Controllers
 {
@@ -21,10 +22,10 @@ namespace SimpleForum.API.Controllers
         public async Task<IActionResult> GetUserComment(int id)
         {
             // Retrieves comment and returns 404 if null
-            SimpleForum.Models.UserComment comment = await _repository.GetUserCommentAsync(id);
+            UserComment comment = await _repository.GetUserCommentAsync(id);
             if (comment == null) return NotFound("UserComment not found");
-            
-            return Json(new Comment(comment));
+
+            return Json(new ApiComment(comment));
         }
     }
 }
