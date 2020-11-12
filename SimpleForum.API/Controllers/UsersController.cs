@@ -48,10 +48,11 @@ namespace SimpleForum.API.Controllers
             // Returns error if comment is empty
             if (request.Content == null) return BadRequest("Comment cannot be null");
 
-            // Retrieves user and return not found if thread not found
+            // Retrieves user and returns error if user is not found, deleted or locked
             SimpleForum.Models.User currentUser = await _repository.GetUserAsync(User);
             SimpleForum.Models.User profileUser = await _repository.GetUserAsync(id);
             if (profileUser == null || profileUser.Deleted) return NotFound("Requested user not found");
+            if (profileUser.CommentsLocked) return Forbid("The user's comments are locked");
             
             // Creates user comment and adds it to database
             SimpleForum.Models.UserComment userComment = new SimpleForum.Models.UserComment()
