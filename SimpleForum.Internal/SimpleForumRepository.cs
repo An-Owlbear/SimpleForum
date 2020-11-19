@@ -403,15 +403,16 @@ namespace SimpleForum.Internal
         /// Deletes an IPost, checking the user is authorised to do so
         /// </summary>
         /// <param name="post">The <see cref="IPost"/> to delete</param>
-        /// <exception cref="InvalidOperationException">Thrown when the user does not own the poset</exception>
-        public void DeleteIPost(IPost post)
+        /// <returns>Returns failure result when user tries to delete a post which they do not own</returns>
+        public Result DeleteIPost(IPost post)
         {
             // Checks user owns the thread
             int userID = Tools.GetUserID(_httpContext.User);
-            if (post.UserID != userID) throw new InvalidOperationException("403 access denied");
+            if (post.UserID != userID) return Result.Fail("Access denied");
 
             // Sets value as deleted
             post.Deleted = true;
+            return Result.Ok();
         }
 
         /// <summary>
@@ -419,11 +420,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="threadID">The <see cref="Thread"/> to be deleted</param>
         /// <exception cref="InvalidOperationException">Thrown when the user does not own the thread</exception>
-        public async Task DeleteThreadAsync(int threadID)
+        public async Task<Result> DeleteThreadAsync(int threadID)
         {
             // Retrieves the thread and deletes thread
             Thread thread = await GetThreadAsync(threadID);
-            DeleteIPost(thread);
+            return DeleteIPost(thread);
         }
 
         /// <summary>
@@ -431,11 +432,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="commentID">The comment to delete</param>
         /// <exception cref="InvalidOperationException">Thrown when the user does not own the comment</exception>
-        public async Task DeleteCommentAsync(int commentID)
+        public async Task<Result> DeleteCommentAsync(int commentID)
         {
             // Retrieves comment and deletes thread
             Comment comment = await GetCommentAsync(commentID);
-            DeleteIPost(comment);
+            return DeleteIPost(comment);
         }
 
         /// <summary>
@@ -443,11 +444,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="userCommentID">The UserComment to delete</param>
         /// <exception cref="InvalidOperationException">Thrown when the user does not own the comment</exception>
-        public async Task DeleteUserCommentAsync(int userCommentID)
+        public async Task<Result> DeleteUserCommentAsync(int userCommentID)
         {
             // Retrieves the userComment and deletes the thread
             UserComment comment = await GetUserCommentAsync(userCommentID);
-            DeleteIPost(comment);
+            return DeleteIPost(comment);
         }
 
         /// <summary>

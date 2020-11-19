@@ -77,16 +77,12 @@ namespace SimpleForum.Web.Controllers
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> DeleteUserComment(int userCommentID)
         {
-            // Deletes the comment and returns 403 in not authorised
-            try
-            {
-                await _repository.DeleteUserCommentAsync(userCommentID);
-                await _repository.SaveChangesAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return Forbid();
-            }
+            // Deletes comment and returns error if access denied
+            Result result = await _repository.DeleteUserCommentAsync(userCommentID);
+            if (result.Failure) return Forbid();
+            
+            await _repository.SaveChangesAsync();
+            
             
             // Returns the view
             MessageViewModel model = new MessageViewModel()

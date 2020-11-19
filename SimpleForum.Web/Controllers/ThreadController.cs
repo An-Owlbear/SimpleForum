@@ -137,8 +137,10 @@ namespace SimpleForum.Web.Controllers
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Delete(int id)
         {
-            // Deletes thread and saves changes
-            await _repository.DeleteThreadAsync(id);
+            // Deletes thread and returns error if needed
+            Result result = await _repository.DeleteThreadAsync(id);
+            if (result.Failure) return Forbid();
+            
             await _repository.SaveChangesAsync();
             
             // Creates model and returns view
