@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using SimpleForum.Internal;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
@@ -29,8 +30,8 @@ namespace SimpleForum.Web.Controllers
         {
             MessageViewModel model = new MessageViewModel()
             {
-                Title = $"Error {code}",
-                MessageTitle = $"Error {code}"
+                Title = $"Error {code} - {ReasonPhrases.GetReasonPhrase(code)}",
+                MessageTitle = $"Error {code} - {ReasonPhrases.GetReasonPhrase(code)}"
             };
             return View("Message", model);
         }
