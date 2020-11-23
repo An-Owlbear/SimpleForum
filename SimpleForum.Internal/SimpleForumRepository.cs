@@ -74,7 +74,6 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="id">The id of user to find</param>
         /// <returns><see cref="User"/></returns>
-        /// <exception cref="InvalidOperationException">Thrown when there is no user of the given id</exception>
         public async Task<User> GetUserAsync(int id)
         {
             return await _context.Users.FindAsync(id);
@@ -85,13 +84,12 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="username">The username/email of the user to find</param>
         /// <returns><see cref="User"/></returns>
-        /// <exception cref="InvalidOperationException">Thrown when there is no user of the given email</exception>
         public async Task<User> GetUserAsync(string username)
         {
             return username switch
             {
-                _ when username.Contains('@') => await _context.Users.FirstAsync(x => x.Email == username),
-                _ => await _context.Users.FirstAsync(x => x.Username == username)
+                _ when username.Contains('@') => await _context.Users.FirstOrDefaultAsync(x => x.Email == username),
+                _ => await _context.Users.FirstOrDefaultAsync(x => x.Username == username)
             };
         }
 
@@ -798,21 +796,22 @@ namespace SimpleForum.Internal
         /// <param name="password">The new password</param>
         /// <param name="code">The code to verify the change</param>
         /// <param name="userID">The id of the user having their password changed</param>
-        /// <exception cref="InvalidCastException">Thrown when the code is invalid</exception>
-        public async Task ResetPasswordAsync(string password, string code, int userID)
+        /// <returns>Returns failure when the code or user is invalid</returns>
+        public async Task<Result> ResetPasswordAsync(string password, string code, int userID)
         {
             // Retrieves user and EmailCode
             User user = await GetUserAsync(userID);
             EmailCode emailCode = await GetEmailCodeAsync(code);
 
-            // Throws exception if code is invalid
+            // Returns failure if code is invalid
             if (emailCode.Code != code || emailCode.User != user || emailCode.ValidUntil < DateTime.Now)
             {
-                throw new InvalidCastException("403 access denied");
+                return Result.Fail("Access denied", 403);
             }
 
             // Updates the password
             user.Password = password;
+            return Result.Ok();
         }
 
         /// <summary>

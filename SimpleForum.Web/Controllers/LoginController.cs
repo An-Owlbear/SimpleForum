@@ -114,16 +114,9 @@ namespace SimpleForum.Web.Controllers
             if (email == null) return RedirectToAction("ForgotPassword", new {error = 0});
             
             // Retrieves user and returns error if none found
-            User user;
-            try
-            {
-                user = await _repository.GetUserAsync(email);
-            }
-            catch
-            {
-                return RedirectToAction("ForgotPassword", new {error = 1});
-            }
-            
+            User user = await _repository.GetUserAsync(email);
+            if (user == null) return RedirectToAction("ForgotPassword", new {error = 1});
+
             // Requests the password reset
             await _repository.RequestPasswordResetAsync(user);
             await _repository.SaveChangesAsync();
@@ -141,16 +134,10 @@ namespace SimpleForum.Web.Controllers
         [AnonymousOnly]
         public async Task<IActionResult> ResetPassword(string code, int? error)
         {
-            EmailCode emailCode;
-            try
-            {
-                emailCode = await _repository.GetEmailCodeAsync(code);
-            }
-            catch
-            {
-                return Redirect("/");
-            }
-            
+            // Retrieves email code and redirects if null
+            EmailCode emailCode = await _repository.GetEmailCodeAsync(code);
+            if (emailCode == null) return Redirect("/");
+
             ResetPasswordViewModel model = new ResetPasswordViewModel()
             {
                 Error = error,
@@ -172,15 +159,10 @@ namespace SimpleForum.Web.Controllers
             if (password != confirmPassword) return RedirectToAction("ResetPassword", new {code, error = 1});
 
             // Changes the password, returning an error if permission is denied
-            try
-            {
-                await _repository.ResetPasswordAsync(password, code, userID);
-                await _repository.SaveChangesAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return Forbid();
-            }
+            Result result = await _repository.ResetPasswordAsync(password, code, userID);
+            if (result.Failure) return new StatusCodeResult(result.Code);
+            await _repository.SaveChangesAsync();
+            
 
             // Returns view
             MessageViewModel model = new MessageViewModel()

@@ -110,15 +110,10 @@ namespace SimpleForum.Web.Controllers
         public async Task<IActionResult> AdminDeleteUserComment(int userCommentID, string reason)
         {
             // Deletes the comment and returns 404 if comment is already deleted
-            try
-            {
-                await _repository.AdminDeleteUserCommentAsync(userCommentID, reason);
-                await _repository.SaveChangesAsync();
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound();
-            }
+            Result result = await _repository.AdminDeleteUserCommentAsync(userCommentID, reason);
+            if (result.Failure) return new StatusCodeResult(result.Code);
+            await _repository.SaveChangesAsync();
+            
             
             // Returns view
             MessageViewModel model = new MessageViewModel()
