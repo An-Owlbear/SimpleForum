@@ -13,7 +13,9 @@ namespace SimpleForum.API.Models.Responses
         public DateTime DatePosted { get; set; }
         public bool Pinned { get; set; }
         public bool Locked { get; set; }
-        public ApiUser ApiUser { get; set;}
+        public int Replies { get; set; }
+        public ApiUser User { get; set;}
+        
 
         public ApiThread(SimpleForum.Models.Thread thread)
         {
@@ -23,7 +25,8 @@ namespace SimpleForum.API.Models.Responses
             DatePosted = thread.DatePosted;
             Pinned = thread.Pinned;
             Locked = thread.Locked;
-            ApiUser = new ApiUser(thread.User);
+            Replies = thread.Comments.Count;
+            User = new ApiUser(thread.User);
         }
     }
 }

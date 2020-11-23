@@ -11,7 +11,7 @@ namespace SimpleForum.API.Models.Responses
         public string Type { get; set; }
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
-        public ApiUser ApiUser { get; set; }
+        public ApiUser User { get; set; }
 
         /// <summary>
         /// Creates an API model comment from a database model comment
@@ -23,7 +23,7 @@ namespace SimpleForum.API.Models.Responses
             Type = "Comment";
             Content = comment.Content;
             DatePosted = comment.DatePosted;
-            ApiUser = new ApiUser(comment.User);
+            User = new ApiUser(comment.User);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace SimpleForum.API.Models.Responses
             Type = "UserComment";
             Content = comment.Content;
             DatePosted = comment.DatePosted;
-            ApiUser = new ApiUser(comment.User);
+            User = new ApiUser(comment.User);
         }
     }
 }
