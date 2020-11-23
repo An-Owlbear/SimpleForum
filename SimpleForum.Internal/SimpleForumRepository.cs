@@ -406,9 +406,12 @@ namespace SimpleForum.Internal
         /// <returns>Returns failure result when user tries to delete a post which they do not own</returns>
         public Result DeleteIPost(IPost post)
         {
+            // Returns 404 if post null
+            if (post == null) return Result.Fail("Not found", 404);
+            
             // Checks user owns the thread
             int userID = Tools.GetUserID(_httpContext.User);
-            if (post.UserID != userID) return Result.Fail("Access denied");
+            if (post.UserID != userID) return Result.Fail("Access denied", 403);
 
             // Sets value as deleted
             post.Deleted = true;
@@ -457,10 +460,10 @@ namespace SimpleForum.Internal
         /// <param name="post">The post to delete</param>
         /// <param name="reason">The reason for deleting the post</param>
         /// <exception cref="InvalidOperationException">Thrown when the post has already been deleted by the origin author</exception>
-        public async Task AdminDeleteIPostAsync(IPost post, string reason)
+        public async Task<Result> AdminDeleteIPostAsync(IPost post, string reason)
         {
-            // Throws exception if already deleted by user
-            if (post.DeletedBy == "User") throw new InvalidOperationException("404 not found");
+            // Returns error if already deleted by user
+            if (post.DeletedBy == "User") return Result.Fail("Post not found", 404);
 
             // Sets post as deleted and sets reason
             post.Deleted = true;
@@ -486,6 +489,7 @@ namespace SimpleForum.Internal
                 UserID = post.UserID
             };
             await AddNotificationAsync(notification);
+            return Result.Ok();
         }
 
         /// <summary>
@@ -494,10 +498,10 @@ namespace SimpleForum.Internal
         /// <param name="id">The id of the thread to delete</param>
         /// <param name="reason">The reason to delete the thread</param>
         /// <exception cref="InvalidOperationException">Thrown when the thread has already been deleted by the original author</exception>
-        public async Task AdminDeleteThreadAsync(int id, string reason)
+        public async Task<Result> AdminDeleteThreadAsync(int id, string reason)
         {
             Thread thread = await GetThreadAsync(id);
-            await AdminDeleteIPostAsync(thread, reason);
+            return await AdminDeleteIPostAsync(thread, reason);
         }
 
         /// <summary>
@@ -506,10 +510,10 @@ namespace SimpleForum.Internal
         /// <param name="id">The id of the comment to delete</param>
         /// <param name="reason">The reason to delete the comment</param>
         /// <exception cref="InvalidOperationException">Thrown when the comment has already been deleted by the original author</exception>
-        public async Task AdminDeleteCommentAsync(int id, string reason)
+        public async Task<Result> AdminDeleteCommentAsync(int id, string reason)
         {
             Comment comment = await GetCommentAsync(id);
-            await AdminDeleteIPostAsync(comment, reason);
+            return await AdminDeleteIPostAsync(comment, reason);
         }
 
         /// <summary>
@@ -520,10 +524,10 @@ namespace SimpleForum.Internal
         /// <exception cref="InvalidOperationException">
         /// Thrown when the UserComment has already been deleted by the original
         /// </exception>
-        public async Task AdminDeleteUserCommentAsync(int id, string reason)
+        public async Task<Result> AdminDeleteUserCommentAsync(int id, string reason)
         {
             UserComment comment = await GetUserCommentAsync(id);
-            await AdminDeleteIPostAsync(comment, reason);
+            return await AdminDeleteIPostAsync(comment, reason);
         }
 
         /// <summary>

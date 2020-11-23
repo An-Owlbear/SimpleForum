@@ -139,7 +139,7 @@ namespace SimpleForum.Web.Controllers
         {
             // Deletes thread and returns error if needed
             Result result = await _repository.DeleteThreadAsync(id);
-            if (result.Failure) return Forbid();
+            if (result.Failure) return new StatusCodeResult(result.Code);
             
             await _repository.SaveChangesAsync();
             
