@@ -79,5 +79,10 @@ namespace SimpleForum.API
         {
             return new ObjectResult(new Error(403, message)) {StatusCode = 403};
         }
+
+        public ObjectResult StatusCode(int statusCode, string value)
+        {
+            return base.StatusCode(statusCode, new Error(statusCode, value));
+        }
     }
 }
