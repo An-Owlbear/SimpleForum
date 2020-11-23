@@ -403,7 +403,11 @@ namespace SimpleForum.Internal
         /// Deletes an IPost, checking the user is authorised to do so
         /// </summary>
         /// <param name="post">The <see cref="IPost"/> to delete</param>
-        /// <returns>Returns failure result when user tries to delete a post which they do not own</returns>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - Post does not exist - 404
+        /// - User does not own post - 403
+        /// </returns>
         public Result DeleteIPost(IPost post)
         {
             // Returns 404 if post null
@@ -422,7 +426,11 @@ namespace SimpleForum.Internal
         /// Deletes a thread of the given id, ensuring the user is verified to do so
         /// </summary>
         /// <param name="threadID">The <see cref="Thread"/> to be deleted</param>
-        /// <exception cref="InvalidOperationException">Thrown when the user does not own the thread</exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - Thread does not exist - 404
+        /// - User does not own thread - 403
+        /// </returns>
         public async Task<Result> DeleteThreadAsync(int threadID)
         {
             // Retrieves the thread and deletes thread
@@ -434,7 +442,11 @@ namespace SimpleForum.Internal
         /// Deletes a comment of the given id, ensuring the user is verified to do so
         /// </summary>
         /// <param name="commentID">The comment to delete</param>
-        /// <exception cref="InvalidOperationException">Thrown when the user does not own the comment</exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - Comment does not exist - 404
+        /// - User does not own comment - 403
+        /// </returns>
         public async Task<Result> DeleteCommentAsync(int commentID)
         {
             // Retrieves comment and deletes thread
@@ -446,7 +458,11 @@ namespace SimpleForum.Internal
         /// Deletes a UserComment of the given id, ensuring the user is verified to do so
         /// </summary>
         /// <param name="userCommentID">The UserComment to delete</param>
-        /// <exception cref="InvalidOperationException">Thrown when the user does not own the comment</exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - UserComment does not exist - 404
+        /// - User does not own UserComment - 403
+        /// </returns>
         public async Task<Result> DeleteUserCommentAsync(int userCommentID)
         {
             // Retrieves the userComment and deletes the thread
@@ -459,10 +475,14 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="post">The post to delete</param>
         /// <param name="reason">The reason for deleting the post</param>
-        /// <exception cref="InvalidOperationException">Thrown when the post has already been deleted by the origin author</exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - Post does not exist - 404
+        /// - User has already deleted post - 404
+        /// </returns>
         public async Task<Result> AdminDeleteIPostAsync(IPost post, string reason)
         {
-            // Returns error if already deleted by user
+            // Returns error if post doesn't exist or is already deleted by user
             if (post.DeletedBy == "User") return Result.Fail("Post not found", 404);
 
             // Sets post as deleted and sets reason
@@ -497,7 +517,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="id">The id of the thread to delete</param>
         /// <param name="reason">The reason to delete the thread</param>
-        /// <exception cref="InvalidOperationException">Thrown when the thread has already been deleted by the original author</exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - Thread does not exist - 404
+        /// - User has already deleted thread - 404
+        /// </returns>
         public async Task<Result> AdminDeleteThreadAsync(int id, string reason)
         {
             Thread thread = await GetThreadAsync(id);
@@ -509,7 +533,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="id">The id of the comment to delete</param>
         /// <param name="reason">The reason to delete the comment</param>
-        /// <exception cref="InvalidOperationException">Thrown when the comment has already been deleted by the original author</exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - Comment does not exist - 404
+        /// - User has already deleted comment - 404
+        /// </returns>
         public async Task<Result> AdminDeleteCommentAsync(int id, string reason)
         {
             Comment comment = await GetCommentAsync(id);
@@ -521,9 +549,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="id">The id of the UserComment to delete</param>
         /// <param name="reason">The reason to delete the UserComment</param>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the UserComment has already been deleted by the original
-        /// </exception>
+        /// <returns>
+        /// Returns failure under the following circumstances:
+        /// - UserComment does not exist - 404
+        /// - User has already deleted UserComment - 404
+        /// </returns>
         public async Task<Result> AdminDeleteUserCommentAsync(int id, string reason)
         {
             UserComment comment = await GetUserCommentAsync(id);
