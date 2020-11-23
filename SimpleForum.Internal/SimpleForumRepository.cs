@@ -646,28 +646,23 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="user">The user to be signed up</param>
         /// <returns>The signed up user</returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown in the following circumstances:
-        /// - when username, email or password is null
-        /// - when the email or username is already taken
-        /// </exception>
-        public async Task<User> SignupAsync(User user)
+        public async Task<Result<User>> SignupAsync(User user)
         {
-            // Throws exception if any relevant details are null
+            // Returns failure if any relevant details are null
             if (user.Username == null || user.Email == null || user.Password == null)
             {
-                throw new InvalidOperationException("Incomplete details");
+                return Result.Fail<User>("Incomplete details", 400);
             }
 
-            // Throws exception if the email or username are already in use
+            // Returns failure if the email or username are already in use
             if (_context.Users.Any(x => x.Email == user.Email))
             {
-                throw new InvalidOperationException("Duplicate email");
+                return Result.Fail<User>("Duplicate email", 400);
             }
 
             if (_context.Users.Any(x => x.Username == user.Username))
             {
-                throw new InvalidOperationException("Duplicate username");
+                return Result.Fail<User>("Duplicate username", 400);
             }
 
             // Finds next user id and sets new user to it
@@ -712,7 +707,7 @@ namespace SimpleForum.Internal
             };
             PendingEmails.Add(email);
 
-            return user;
+            return Result.Ok(user);
         }
 
         /// <summary>

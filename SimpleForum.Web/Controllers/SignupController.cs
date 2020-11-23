@@ -50,7 +50,12 @@ namespace SimpleForum.Web.Controllers
                 Email = email,
                 Password = password
             };
-            User addedUser = await _repository.SignupAsync(user);
+            Result<User> result = await _repository.SignupAsync(user);
+            
+            // Returns error if unsuccessful
+            if (result.Failure) return new StatusCodeResult(result.Code);
+
+            User addedUser = result.Value;
             await _repository.SaveChangesAsync();
             
             // Creates ClaimsIdentity
