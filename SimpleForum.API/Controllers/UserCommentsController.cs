@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Internal;
@@ -26,6 +27,20 @@ namespace SimpleForum.API.Controllers
             if (comment == null) return NotFound("UserComment not found");
 
             return Json(new ApiComment(comment));
+        }
+
+        // Deletes a UserComment of the given ID
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            // Deletes the comment and returns error if unsuccessful
+            Result result = await _repository.DeleteUserCommentAsync(id);
+            if (result.Failure) return StatusCode(result.Code, result.Error);
+            
+            // Saves changes and return
+            await _repository.SaveChangesAsync();
+            return Ok();
         }
     }
 }
