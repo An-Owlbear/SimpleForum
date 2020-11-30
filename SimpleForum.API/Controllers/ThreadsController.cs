@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.API.Policies;
@@ -101,6 +102,21 @@ namespace SimpleForum.API.Controllers
 
             // Returns JSON response
             return Json(new ApiComment(comment));
+        }
+
+        // Updates the information of the thread as an admin
+        [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminUpdate(int id, UpdateThreadRequest request)
+        {
+            // Retrieves thread and updates information
+            Thread thread = await _repository.GetThreadAsync(id);
+            thread.Pinned = request.Pinned;
+            thread.Locked = request.Locked;
+            await _repository.SaveChangesAsync();
+
+            // Returns response
+            return Json(new ApiThread(thread));
         }
     }
 }
