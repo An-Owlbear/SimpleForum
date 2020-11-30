@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using SimpleForum.Internal;
+using SimpleForum.Internal.Policies;
 using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web

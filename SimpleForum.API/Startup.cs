@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +14,7 @@ using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using SimpleForum.API.Policies;
 using SimpleForum.Internal;
+using SimpleForum.Internal.Policies;
 
 namespace SimpleForum.API
 {
@@ -72,7 +72,8 @@ namespace SimpleForum.API
                         ValidateAudience = false
                     };
                 });
-
+            
+            services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
             services.AddControllers();
             services.AddHttpContextAccessor();
         }

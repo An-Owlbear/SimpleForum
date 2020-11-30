@@ -4,10 +4,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
-using SimpleForum.Internal;
 using SimpleForum.Models;
 
-namespace SimpleForum.Web.Policies
+namespace SimpleForum.Internal.Policies
 {
     public class RolesAuthorizationHandler : AuthorizationHandler<RolesAuthorizationRequirement>
     {
@@ -24,7 +23,7 @@ namespace SimpleForum.Web.Policies
 
             IEnumerable<string> roles = requirement.AllowedRoles;
             User user = _context.Users.First(x =>
-                x.UserID.ToString() == context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                x.UserID.ToString() == context.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             
             if (roles.Contains(user.Role)) context.Succeed(requirement);
 
