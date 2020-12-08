@@ -111,8 +111,8 @@ namespace SimpleForum.API.Controllers
         {
             // Retrieves thread and updates information
             Thread thread = await _repository.GetThreadAsync(id);
-            thread.Pinned = request.Pinned;
-            thread.Locked = request.Locked;
+            thread.Pinned = request.Pinned ?? thread.Pinned;
+            thread.Locked = request.Locked ?? thread.Locked;
             await _repository.SaveChangesAsync();
 
             // Returns response
