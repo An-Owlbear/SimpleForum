@@ -417,6 +417,7 @@ namespace SimpleForum.Internal
 
             // Sets value as deleted
             post.Deleted = true;
+            post.DeletedBy = "User";
             return Result.Ok();
         }
 
