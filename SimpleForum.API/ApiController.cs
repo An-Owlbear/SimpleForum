@@ -80,6 +80,12 @@ namespace SimpleForum.API
             return new ObjectResult(new Error(403, message)) {StatusCode = 403};
         }
 
+        /// <summary>
+        /// Returns a result of the given status code
+        /// </summary>
+        /// <param name="statusCode">The status code to use for the result</param>
+        /// <param name="value">The accompanying message</param>
+        /// <returns></returns>
         public ObjectResult StatusCode(int statusCode, string value)
         {
             return base.StatusCode(statusCode, new Error(statusCode, value));
