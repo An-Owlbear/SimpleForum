@@ -12,7 +12,7 @@ namespace SimpleForum.API
 {
     public interface IAuthenticationManager
     {
-        Task<string> Authenticate(string username, string password);
+        Task<Result<string>> Authenticate(string username, string password);
     }
     
     public class AuthenticationManager : IAuthenticationManager
@@ -27,20 +27,17 @@ namespace SimpleForum.API
         }
         
         // Authenticates a user
-        public async Task<string> Authenticate(string username, string password)
+        public async Task<Result<string>> Authenticate(string username, string password)
         {
-            // Gets a user and throws exception if username or password is incorrect
-            User user;
-            try
+            // Gets a user and returns failure if details are incorrect
+            User user = await _repository.GetUserAsync(username);
+            if (user == null)
             {
-                user = await _repository.GetUserAsync(username);
+                return Result.Fail<string>("username incorrect", 400);
             }
-            catch (InvalidOperationException)
-            {
-                throw new InvalidOperationException("username incorrect");
-            }
-            if (user.Password != password) throw new InvalidOperationException("password incorrect");
-            if (user.Deleted) throw new InvalidOperationException("username incorrect");
+
+            if (user.Password != password) return Result.Fail<string>("password incorrect", 400);
+            if (user.Deleted) return Result.Fail<string>("username incorrect", 400);
             
             // Creates and returns a JWT token
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -57,7 +54,7 @@ namespace SimpleForum.API
                     new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return Result.Ok(tokenHandler.WriteToken(token));
         }
     }
 }
