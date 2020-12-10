@@ -104,21 +104,6 @@ namespace SimpleForum.API.Controllers
             return Json(new ApiComment(comment));
         }
 
-        // Updates the information of the thread as an admin
-        [HttpPatch("{id}/Admin")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminUpdate(int id, UpdateThreadRequest request)
-        {
-            // Retrieves thread and updates information
-            Thread thread = await _repository.GetThreadAsync(id);
-            thread.Pinned = request.Pinned ?? thread.Pinned;
-            thread.Locked = request.Locked ?? thread.Locked;
-            await _repository.SaveChangesAsync();
-
-            // Returns response
-            return Json(new ApiThread(thread));
-        }
-        
         // Deletes the thread as the owner
         [HttpDelete("{id}")]
         [Authorize]
@@ -126,23 +111,6 @@ namespace SimpleForum.API.Controllers
         {
             // Deletes thread and returns 403 if unauthorized
             Result result = await _repository.DeleteThreadAsync(id);
-            if (result.Failure) return StatusCode(result.Code, result.Error);
-            
-            // Saves changes and returns
-            await _repository.SaveChangesAsync();
-            return Ok();
-        }
-        
-        // Deletes thread as an admin
-        [HttpDelete("{id}/Admin")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminDeleteThread(int id, AdminDeleteRequest request)
-        {
-            // Returns error if reason is null
-            if (request.Reason == null) return BadRequest("Reason cannot be null");
-            
-            // Deletes thread and returns 403 if unauthorized
-            Result result = await _repository.AdminDeleteThreadAsync(id, request.Reason);
             if (result.Failure) return StatusCode(result.Code, result.Error);
             
             // Saves changes and returns
