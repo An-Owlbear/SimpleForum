@@ -8,4 +8,10 @@
       <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Threads.cs">
+        <DependentUpon>SimpleForumClient.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
