@@ -14,6 +14,9 @@ namespace SimpleForum.API.Models.Responses
         public bool CommentsLocked { get; set; }
         public bool Banned { get; set; }
         public DateTime DateJoined { get; set; }
+        
+        // Parameterless constructor for use with json deserialization
+        public ApiUser() : base() { }
 
         /// <summary>
         /// Creates an API model user from a database model user

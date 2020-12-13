@@ -13,6 +13,9 @@ namespace SimpleForum.API.Models.Responses
         public string Content { get; set; }
         public DateTime DateCreated { get; set; }
         public bool Read { get; set; }
+        
+        // Parameterless constructor for use with json deserialization
+        public ApiNotification() : base() { }
 
         /// <summary>
         /// Creates an API model from internal notification model

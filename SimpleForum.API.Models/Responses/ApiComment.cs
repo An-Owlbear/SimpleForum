@@ -13,6 +13,9 @@ namespace SimpleForum.API.Models.Responses
         public DateTime DatePosted { get; set; }
         public ApiUser User { get; set; }
 
+        // Parameterless constructor for use with json deserialization
+        public ApiComment() : base() { }
+        
         /// <summary>
         /// Creates an API model comment from a database model comment
         /// </summary>
