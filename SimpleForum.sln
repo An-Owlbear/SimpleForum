@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API.Models", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API.Client", "SimpleForum.API.Client\SimpleForum.API.Client.csproj", "{2EB3AF51-4882-4901-94B0-0A1D6087F58B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API.Client.Tests", "SimpleForum.API.Client.Tests\SimpleForum.API.Client.Tests.csproj", "{750D09C6-CF09-48E6-882E-FC8794A12358}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,5 +116,17 @@ Global
 		{2EB3AF51-4882-4901-94B0-0A1D6087F58B}.Release|x64.Build.0 = Release|Any CPU
 		{2EB3AF51-4882-4901-94B0-0A1D6087F58B}.Release|x86.ActiveCfg = Release|Any CPU
 		{2EB3AF51-4882-4901-94B0-0A1D6087F58B}.Release|x86.Build.0 = Release|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Debug|x64.Build.0 = Debug|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Debug|x86.Build.0 = Debug|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Release|x64.ActiveCfg = Release|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Release|x64.Build.0 = Release|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Release|x86.ActiveCfg = Release|Any CPU
+		{750D09C6-CF09-48E6-882E-FC8794A12358}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
