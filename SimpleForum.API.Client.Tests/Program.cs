@@ -1,25 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using SimpleForum.API.Models.Responses;
 
 namespace SimpleForum.API.Client.Tests
 {
-    class Program
+    static partial class Tests
     {
-        // TODO - Add more tests and test selection
-        static async Task Main(string[] args)
+        private const string separator = "-----------------------------------------------------------------";
+        
+        static async Task Main()
         {
-            SimpleForumClient client = new SimpleForumClient("http://localhost:5002");
-            List<ApiThread> response = await client.GetFrontPage();
-
-            foreach (ApiThread thread in response)
+            while (true)
             {
-                Console.WriteLine($"Title - {thread.Title}\n" +
-                                  $"Content - {thread.Content}\n" +
-                                  $"Pinned - {thread.Pinned}\n" +
-                                  $"Locked - {thread.Locked}\n" +
-                                  $"Replies - {thread.Replies}\n");
+                // Gets the user's choice
+                Console.Write("Enter an option\n" +
+                                  "1 - Get front page\n" +
+                                  "> ");
+
+                int choice = int.Parse(Console.ReadLine());
+                Console.Clear();
+
+                switch (choice)
+                {
+                    case 1:
+                        await TestFrontPage();
+                        break;
+                }
+
+                Console.WriteLine("Press enter to continue");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
     }
