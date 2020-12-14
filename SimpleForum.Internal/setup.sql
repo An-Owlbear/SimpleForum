@@ -60,12 +60,9 @@ CREATE TABLE `UserComments` (
 );
 
 CREATE TABLE `AuthTokens` (
-    `AuthTokenID` int NOT NULL AUTO_INCREMENT,
-    `AccessToken` longtext CHARACTER SET utf8mb4 NULL,
-    `RefreshToken` longtext CHARACTER SET utf8mb4 NULL,
-    `Time` int NOT NULL,
-    `UserID` int NOT NULL,
-    CONSTRAINT `PK_AuthTokens` PRIMARY KEY (`AuthTokenID`),
+    `Token` longtext CHARACTER SET utf8mb4 NULL,
+    `ValidUntil` datetime(6) NOT NULL,
+    CONSTRAINT `PK_AuthTokens` PRIMARY KEY (`Token`),
     CONSTRAINT `FK_AuthTokens_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
 
