@@ -12,19 +12,28 @@ namespace SimpleForum.API.Client.Tests
             // Retrieves list of threads for the given page
             Console.Write("Select a page to view\n> ");
             int page = int.Parse(Console.ReadLine());
-            SimpleForumClient client = new SimpleForumClient("http://localhost:5002");
+            Console.Clear();
             List<ApiThread> response = await client.GetFrontPage();
     
             // Outputs result
+            Console.WriteLine(separator);
             foreach (ApiThread thread in response)
             {
-                Console.WriteLine($"Title - {thread.Title}\n" +
-                                  $"Content - {thread.Content}\n" +
-                                  $"Pinned - {thread.Pinned}\n" +
-                                  $"Locked - {thread.Locked}\n" +
-                                  $"Replies - {thread.Replies}\n" +
-                                  separator);
+                DisplayItems.DisplayThread(thread);
+                Console.WriteLine(separator);
             }
+        }
+
+        public static async Task TestThreads()
+        {
+            // Retrieves threads and displays result
+            Console.Write("Enter the ID of the thread to view\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Console.Clear();
+            Result<ApiThread> response = await client.GetThread(id);
+            
+            if (response.Success) DisplayItems.DisplayThread(response.Value);
+            else DisplayItems.DisplayError(response);
         }
     }
 }

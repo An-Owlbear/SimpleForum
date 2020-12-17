@@ -6,6 +6,7 @@ namespace SimpleForum.API.Client.Tests
     static partial class Tests
     {
         private const string separator = "-----------------------------------------------------------------";
+        private static readonly SimpleForumClient client = new SimpleForumClient("http://localhost:5002");
         
         static async Task Main()
         {
@@ -14,6 +15,7 @@ namespace SimpleForum.API.Client.Tests
                 // Gets the user's choice
                 Console.Write("Enter an option\n" +
                                   "1 - Get front page\n" +
+                                  "2 - Get thread\n" +
                                   "> ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -23,6 +25,9 @@ namespace SimpleForum.API.Client.Tests
                 {
                     case 1:
                         await TestFrontPage();
+                        break;
+                    case 2:
+                        await TestThreads();
                         break;
                 }
 
