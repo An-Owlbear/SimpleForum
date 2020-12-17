@@ -36,7 +36,7 @@ namespace SimpleForum.API.Client
 
             // Creates a list of parameters in the url path
             Dictionary<string, string> pathParameters = parameters
-                .Where(x => Regex.IsMatch(endpoint.Path, $@":{x.Key}\W"))
+                .Where(x => Regex.IsMatch(endpoint.Path, $@":{x.Key}(?!\w)"))
                 .ToDictionary(x => x.Key, x => x.Value);
 
             // Creates a list of remaining parameters
