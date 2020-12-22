@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -60,7 +62,8 @@ namespace SimpleForum.API.Client
             else
             {
                 request.RequestUri = new Uri(url);
-                request.Content = new FormUrlEncodedContent(remainingParams);
+                string jsonBody = JsonSerializer.Serialize(remainingParams);
+                request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             }
 
             // Returns response
