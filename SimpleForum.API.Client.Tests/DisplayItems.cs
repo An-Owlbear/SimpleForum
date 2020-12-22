@@ -17,7 +17,7 @@ namespace SimpleForum.API.Client.Tests
 
         public static void DisplayError(Result error)
         {
-            Console.WriteLine($"Error code - {error.Code}" +
+            Console.WriteLine($"Error code - {error.Code}\n" +
                               $"Error message - {error.Error}");
         }
     }
