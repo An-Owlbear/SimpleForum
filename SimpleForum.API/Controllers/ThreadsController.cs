@@ -51,6 +51,7 @@ namespace SimpleForum.API.Controllers
 
         // Creates a new thread
         [HttpPut("")]
+        [Authorize]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> CreateThread(CreateThreadRequest request)
         {
@@ -75,6 +76,7 @@ namespace SimpleForum.API.Controllers
 
         // Posts a comment to the thread
         [HttpPut("{id}/Comments")]
+        [Authorize]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(int id, PostCommentRequest request)
         {
