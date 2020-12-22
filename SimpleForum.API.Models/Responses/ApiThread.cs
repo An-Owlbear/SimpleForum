@@ -27,7 +27,7 @@ namespace SimpleForum.API.Models.Responses
             DatePosted = thread.DatePosted;
             Pinned = thread.Pinned;
             Locked = thread.Locked;
-            Replies = thread.Comments.Count;
+            Replies = thread.Comments?.Count ?? 0;
             User = new ApiUser(thread.User);
         }
     }
