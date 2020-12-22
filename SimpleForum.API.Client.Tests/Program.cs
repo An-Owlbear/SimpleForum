@@ -16,6 +16,7 @@ namespace SimpleForum.API.Client.Tests
                 Console.Write("Enter an option\n" +
                                   "1 - Get front page\n" +
                                   "2 - Get thread\n" +
+                                  "3 - Login\n" +
                                   "> ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -28,6 +29,9 @@ namespace SimpleForum.API.Client.Tests
                         break;
                     case 2:
                         await TestThreads();
+                        break;
+                    case 3:
+                        await TestLogin();
                         break;
                 }
 
