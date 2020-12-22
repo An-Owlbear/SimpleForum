@@ -38,5 +38,20 @@ namespace SimpleForum.API.Client.Tests
             if (response.Success) DisplayItems.DisplayThread(response.Value);
             else DisplayItems.DisplayError(response);
         }
+        
+        // Tests creating a thread
+        private static async Task TestCreateThread()
+        {
+            // Receives user input and creates thread
+            Console.Write("Thread title: ");
+            string title = Console.ReadLine();
+            Console.Write("Thread contents: ");
+            string contents = Console.ReadLine();
+            Result<ApiThread> result = await client.CreateThread(title, contents);
+            
+            // Output result
+            if (result.Success) DisplayItems.DisplayThread(result.Value);
+            else DisplayItems.DisplayError(result);
+        }
     }
 }
