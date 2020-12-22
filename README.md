@@ -21,4 +21,4 @@ This program is built using the following open source libraries and software
 - [NetCore.MailKit](https://github.com/myloveCc/NETCore.MailKit)
 
 ## Notes
-This project was written for an extended school project, and thus some functions which are typically achieved with the use of libraries are implemented manually.
+This project was written for an extended college project, and thus some functions which are typically achieved with the use of libraries are implemented manually.
