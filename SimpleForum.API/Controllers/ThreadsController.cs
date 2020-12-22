@@ -56,7 +56,7 @@ namespace SimpleForum.API.Controllers
         public async Task<IActionResult> CreateThread(CreateThreadRequest request)
         {
             // Returns error if either parameter is null
-            if (request.Title == null || request.Content == null) return NotFound("Title and content cannot be null");
+            if (request.Title == null || request.Content == null) return BadRequest("Title and content cannot be null");
 
             // Creates and adds thread to database
             User user = await _repository.GetUserAsync(User);
