@@ -53,5 +53,28 @@ namespace SimpleForum.API.Client
             Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
             return Result.Fail<ApiThread>(error.Message, error.Type);
         }
+
+        public async Task<Result<ApiThread>> CreateThread(string title, string contents)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "title", title },
+                { "content", contents }
+            };
+            
+            // Retrieves response, and converts it to a stream
+            HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.CreateThread, parameters).ConfigureAwait(false);
+            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            
+            // Converts to a thread if successful, otherwise converts to error
+            if (response.IsSuccessStatusCode)
+            {
+                ApiThread thread = await JsonSerializer.DeserializeAsync<ApiThread>(streamResult, jsonOptions).ConfigureAwait(false);
+                return Result.Ok(thread);
+            }
+
+            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
+            return Result.Fail<ApiThread>(error.Message, error.Type);
+        }
     }
 }
