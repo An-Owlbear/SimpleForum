@@ -10,9 +10,9 @@ namespace SimpleForum.API.Client.Tests
         private static async Task TestLogin()
         {
             // User enters username and password
-            Console.Write("Username\n> ");
+            Console.Write("Username: ");
             string username = Console.ReadLine();
-            Console.Write("Password\n> ");
+            Console.Write("Password: ");
             string password = Console.ReadLine();
             Console.Clear();
 
