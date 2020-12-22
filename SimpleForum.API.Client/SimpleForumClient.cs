@@ -17,8 +17,8 @@ namespace SimpleForum.API.Client
         public SimpleForumClient(string fqdn, ITokenStorage tokenStorage = null)
         {
             _fqdn = fqdn;
-            _requestsClient = new RequestsClient(_fqdn);
             _tokenStorage = tokenStorage ?? new TokenStorage();
+            _requestsClient = new RequestsClient(_fqdn, _tokenStorage);
         }
     }
 }

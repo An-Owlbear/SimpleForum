@@ -12,13 +12,15 @@ namespace SimpleForum.API.Client
 {
     public class RequestsClient
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
+        private readonly ITokenStorage _tokenStorage;
         private string _fqdn;
 
-        public RequestsClient(string fqdn)
+        public RequestsClient(string fqdn, ITokenStorage tokenStorage)
         {
-            // Sets FQDN
+            // Sets FQDN and token storage
             _fqdn = fqdn;
+            _tokenStorage = tokenStorage;
             
             // Configures and creates HttpClient
             HttpClientHandler handler = new HttpClientHandler();
@@ -64,6 +66,12 @@ namespace SimpleForum.API.Client
                 request.RequestUri = new Uri(url);
                 string jsonBody = JsonSerializer.Serialize(remainingParams);
                 request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            }
+
+            // Adds authentication
+            if (endpoint.AuthRequired)
+            {
+                request.Headers.Add("Authorization", $"Bearer {_tokenStorage.GetToken()}");
             }
 
             // Returns response
