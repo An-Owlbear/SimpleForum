@@ -60,8 +60,9 @@ CREATE TABLE `UserComments` (
 );
 
 CREATE TABLE `AuthTokens` (
-    `Token` longtext CHARACTER SET utf8mb4 NULL,
+    `Token` varchar(255) CHARACTER SET utf8mb4 NULL,
     `ValidUntil` datetime(6) NOT NULL,
+    `UserID` int NOT NULL,
     CONSTRAINT `PK_AuthTokens` PRIMARY KEY (`Token`),
     CONSTRAINT `FK_AuthTokens_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
