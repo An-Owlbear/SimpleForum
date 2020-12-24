@@ -1,4 +1,6 @@
-﻿namespace SimpleForum.API.Client
+﻿using System;
+
+namespace SimpleForum.API.Client
 {
     /// <summary>
     /// A basic implementation of ITokenStorage
@@ -14,7 +16,7 @@
 
         public string GetToken()
         {
-            return _token;
+            return _token ?? String.Empty;
         }
     }
 }

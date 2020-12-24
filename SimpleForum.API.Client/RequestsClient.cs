@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -10,13 +12,15 @@ namespace SimpleForum.API.Client
 {
     public class RequestsClient
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
+        private readonly ITokenStorage _tokenStorage;
         private string _fqdn;
 
-        public RequestsClient(string fqdn)
+        public RequestsClient(string fqdn, ITokenStorage tokenStorage)
         {
-            // Sets FQDN
+            // Sets FQDN and token storage
             _fqdn = fqdn;
+            _tokenStorage = tokenStorage;
             
             // Configures and creates HttpClient
             HttpClientHandler handler = new HttpClientHandler();
@@ -36,7 +40,7 @@ namespace SimpleForum.API.Client
 
             // Creates a list of parameters in the url path
             Dictionary<string, string> pathParameters = parameters
-                .Where(x => Regex.IsMatch(endpoint.Path, $@":{x.Key}\W"))
+                .Where(x => Regex.IsMatch(endpoint.Path, $@":{x.Key}(?!\w)"))
                 .ToDictionary(x => x.Key, x => x.Value);
 
             // Creates a list of remaining parameters
@@ -60,7 +64,14 @@ namespace SimpleForum.API.Client
             else
             {
                 request.RequestUri = new Uri(url);
-                request.Content = new FormUrlEncodedContent(remainingParams);
+                string jsonBody = JsonSerializer.Serialize(remainingParams);
+                request.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            }
+
+            // Adds authentication
+            if (endpoint.AuthRequired)
+            {
+                request.Headers.Add("Authorization", $"Bearer {_tokenStorage.GetToken()}");
             }
 
             // Returns response

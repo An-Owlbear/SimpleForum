@@ -51,11 +51,12 @@ namespace SimpleForum.API.Controllers
 
         // Creates a new thread
         [HttpPut("")]
+        [Authorize]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> CreateThread(CreateThreadRequest request)
         {
             // Returns error if either parameter is null
-            if (request.Title == null || request.Content == null) return NotFound("Title and content cannot be null");
+            if (request.Title == null || request.Content == null) return BadRequest("Title and content cannot be null");
 
             // Creates and adds thread to database
             User user = await _repository.GetUserAsync(User);
@@ -75,6 +76,7 @@ namespace SimpleForum.API.Controllers
 
         // Posts a comment to the thread
         [HttpPut("{id}/Comments")]
+        [Authorize]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(int id, PostCommentRequest request)
         {

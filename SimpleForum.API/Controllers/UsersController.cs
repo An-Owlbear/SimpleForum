@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
@@ -42,6 +43,7 @@ namespace SimpleForum.API.Controllers
 
         // Posts a comment to a user's profile
         [HttpPut("{id}/Comments")]
+        [Authorize]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(int id, PostCommentRequest request)
         {
