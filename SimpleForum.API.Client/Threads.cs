@@ -13,7 +13,7 @@ namespace SimpleForum.API.Client
         /// Retrieves the list of threads at the front page
         /// </summary>
         /// <returns>The list of threads</returns>
-        public async Task<List<ApiThread>> GetFrontPage(int page = 1)
+        public async Task<List<ApiThread>> GetFrontPageAsync(int page = 1)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {
@@ -32,7 +32,7 @@ namespace SimpleForum.API.Client
         /// </summary>
         /// <param name="threadID">The thread to retrieve</param>
         /// <returns>The requested thread</returns>
-        public async Task<Result<ApiThread>> GetThread(int threadID)
+        public async Task<Result<ApiThread>> GetThreadAsync(int threadID)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {
@@ -60,7 +60,7 @@ namespace SimpleForum.API.Client
         /// <param name="title">The title of the new thread</param>
         /// <param name="contents">The contents of the new thread</param>
         /// <returns>The newly created thread/error</returns>
-        public async Task<Result<ApiThread>> CreateThread(string title, string contents)
+        public async Task<Result<ApiThread>> CreateThreadAsync(string title, string contents)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {

@@ -14,7 +14,7 @@ namespace SimpleForum.API.Client.Tests
             Console.Write("Select a page to view\n> ");
             int page = int.Parse(Console.ReadLine());
             Console.Clear();
-            List<ApiThread> response = await client.GetFrontPage();
+            List<ApiThread> response = await client.GetFrontPageAsync();
     
             // Outputs result
             Console.WriteLine(separator);
@@ -32,7 +32,7 @@ namespace SimpleForum.API.Client.Tests
             Console.Write("Enter the ID of the thread to view\n> ");
             int id = int.Parse(Console.ReadLine());
             Console.Clear();
-            Result<ApiThread> response = await client.GetThread(id);
+            Result<ApiThread> response = await client.GetThreadAsync(id);
             
             // Outputs result
             if (response.Success) DisplayItems.DisplayThread(response.Value);
@@ -47,7 +47,7 @@ namespace SimpleForum.API.Client.Tests
             string title = Console.ReadLine();
             Console.Write("Thread contents: ");
             string contents = Console.ReadLine();
-            Result<ApiThread> result = await client.CreateThread(title, contents);
+            Result<ApiThread> result = await client.CreateThreadAsync(title, contents);
             
             // Output result
             if (result.Success) DisplayItems.DisplayThread(result.Value);
@@ -60,7 +60,7 @@ namespace SimpleForum.API.Client.Tests
             // Receives user input and retrieves comment
             Console.Write("Enter the ID of the thread to retrieve\n> ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Enter the page of the comments to view\n");
+            Console.Write("Enter the page of the comments to view\n> ");
             int page = int.Parse(Console.ReadLine());
             Result<List<ApiComment>> result = await client.GetThreadCommentsAsync(id, page);
             
