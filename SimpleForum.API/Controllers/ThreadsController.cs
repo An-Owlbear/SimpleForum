@@ -43,10 +43,12 @@ namespace SimpleForum.API.Controllers
 
         // Gets a list of comments for a thread of the given ID
         [HttpGet("{id}/Comments")]
-        public async Task<IEnumerable<ApiComment>> GetComments(int id, int page = 1)
+        public async Task<IActionResult> GetComments(int id, int page = 1)
         {
-            IEnumerable<Comment> comments = await _repository.GetThreadRepliesAsync(id, page);
-            return comments.Select(x => new ApiComment(x));
+            // Retrieves comments from database, returns if successful, otherwise returns error
+            Result<IEnumerable<Comment>> result = await _repository.GetThreadRepliesAsync(id, page);
+            if (result.Success) return Json(result.Value.Select(x => new ApiComment(x)));
+            return StatusCode(result.Code, result.Error);
         }
 
         // Creates a new thread

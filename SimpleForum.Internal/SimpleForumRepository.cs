@@ -283,17 +283,19 @@ namespace SimpleForum.Internal
         /// <param name="page">The page of which to get replies from</param>
         /// <returns>The list of <see cref="Comment">comments</see> for the given thread and page</returns>
         /// <remarks>The number of comments on each page depends on the property <see cref="PostsPerPage"/></remarks>
-        public IEnumerable<Comment> GetThreadReplies(Thread thread, int page)
+        public Result<IEnumerable<Comment>> GetThreadReplies(Thread thread, int page)
         {
             // Returns empty list if thread is null
-            if (thread == null) return Enumerable.Empty<Comment>();
+            if (thread == null) return Result.Fail<IEnumerable<Comment>>("Thread not found", 404);
             
             // Returns list of comments
-            return thread.Comments
+            IEnumerable<Comment> comments =  thread.Comments
                 .Where(x => !x.Deleted && !x.User.Deleted)
                 .OrderBy(x => x.DatePosted)
                 .Skip((page - 1) * PostsPerPage)
                 .Take(PostsPerPage);
+
+            return Result.Ok(comments);
         }
 
         /// <summary>
@@ -303,7 +305,7 @@ namespace SimpleForum.Internal
         /// <param name="page">The page of which to get replies from</param>
         /// <returns>The list of <see cref="CommentsPerPage">comments</see> for the given id and page</returns>
         /// <remarks>The number of comments on each page depends on the property <see cref="PostsPerPage"/></remarks>
-        public async Task<IEnumerable<Comment>> GetThreadRepliesAsync(int threadID, int page)
+        public async Task<Result<IEnumerable<Comment>>> GetThreadRepliesAsync(int threadID, int page)
         {
             Thread thread = await GetThreadAsync(threadID);
             return GetThreadReplies(thread, page);
