@@ -16,7 +16,6 @@ namespace SimpleForum.API.Client.Tests
                               $"Replies - {thread.Replies}");
             Console.WriteLine("========= User ========");
             DisplayUser(thread.User);
-            Console.WriteLine("========= User ========");
         }
 
         public static void DisplayUser(ApiUser user)
@@ -28,6 +27,16 @@ namespace SimpleForum.API.Client.Tests
                               $"Comments - {user.Comments}\n" +
                               $"Banned - {user.Banned}\n" +
                               $"Comments locked - {user.CommentsLocked}");
+        }
+
+        public static void DisplayComment(ApiComment comment)
+        {
+            Console.WriteLine($"ID - {comment.ID}\n" +
+                              $"Content - {comment.Content}\n" +
+                              $"Date posted - {comment.DatePosted}\n" +
+                              $"Type - {comment.Type}");
+            Console.WriteLine("========= User ========"); 
+            DisplayUser(comment.User);
         }
 
         public static void DisplayError(Result error)

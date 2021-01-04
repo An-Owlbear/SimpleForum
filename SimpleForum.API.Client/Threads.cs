@@ -54,6 +54,12 @@ namespace SimpleForum.API.Client
             return Result.Fail<ApiThread>(error.Message, error.Type);
         }
 
+        /// <summary>
+        /// Creates a new thread
+        /// </summary>
+        /// <param name="title">The title of the new thread</param>
+        /// <param name="contents">The contents of the new thread</param>
+        /// <returns>The newly created thread/error</returns>
         public async Task<Result<ApiThread>> CreateThread(string title, string contents)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
@@ -75,6 +81,35 @@ namespace SimpleForum.API.Client
 
             Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
             return Result.Fail<ApiThread>(error.Message, error.Type);
+        }
+
+        /// <summary>
+        /// Retrieves a list of comments on a thread
+        /// </summary>
+        /// <param name="id">The id of the thread</param>
+        /// <param name="page">The page of the thread comments</param>
+        /// <returns>A list of comments </returns>
+        public async Task<Result<List<ApiComment>>> GetThreadCommentsAsync(int id, int page)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() },
+                { "page", page.ToString() }
+            };
+            
+            // Retrieves response and converts to stream
+            HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ThreadComments, parameters).ConfigureAwait(false);
+            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            
+            // Converts to list of comments if request was successful, otherwise converts to error
+            if (response.IsSuccessStatusCode)
+            {
+                List<ApiComment> comments = await JsonSerializer.DeserializeAsync<List<ApiComment>>(streamResult, jsonOptions).ConfigureAwait(false);
+                return Result.Ok(comments);
+            }
+
+            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
+            return Result.Fail<List<ApiComment>>(error.Message, error.Type);
         }
     }
 }

@@ -53,5 +53,24 @@ namespace SimpleForum.API.Client.Tests
             if (result.Success) DisplayItems.DisplayThread(result.Value);
             else DisplayItems.DisplayError(result);
         }
+        
+        // Tests retrieving comments of a thread
+        private static async Task TestThreadComments()
+        {
+            // Receives user input and retrieves comment
+            Console.Write("Enter the ID of the thread to retrieve\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Console.Write("Enter the page of the comments to view\n");
+            int page = int.Parse(Console.ReadLine());
+            Result<List<ApiComment>> result = await client.GetThreadCommentsAsync(id, page);
+            
+            // Outputs result
+            if (result.Success)
+            {
+                foreach (ApiComment comment in result.Value) DisplayItems.DisplayComment(comment);
+                Console.WriteLine(separator);
+            }
+            else DisplayItems.DisplayError(result);
+        }
     }
 }
