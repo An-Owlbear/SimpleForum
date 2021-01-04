@@ -44,13 +44,15 @@ namespace SimpleForum.Web.Controllers
             User user = await _repository.GetUserAsync(User);
             
             // Retrieves comments for the requested page
-            IEnumerable<Comment> comments = _repository.GetThreadReplies(thread, page);
+            Result<IEnumerable<Comment>> result = _repository.GetThreadReplies(thread, page);
+
+            if (result.Failure) return StatusCode(result.Code);
 
             // Creates model and returns view
             ThreadViewModel model = new ThreadViewModel()
             {
                 Thread = thread,
-                Comments = comments,
+                Comments = result.Value,
                 Page = page,
                 PageCount = ((thread.Comments.Count + 1) + (PostsPerPage - 1)) / PostsPerPage,
                 User = user
