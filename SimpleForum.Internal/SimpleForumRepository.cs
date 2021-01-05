@@ -484,7 +484,7 @@ namespace SimpleForum.Internal
         public async Task<Result> AdminDeleteIPostAsync(IPost post, string reason)
         {
             // Returns error if post doesn't exist or is already deleted by user
-            if (post.DeletedBy == "User") return Result.Fail("Post not found", 404);
+            if (post.DeletedBy == "User") return Result.Fail("Post already deleted", 410);
 
             // Sets post as deleted and sets reason
             post.Deleted = true;
@@ -521,7 +521,7 @@ namespace SimpleForum.Internal
         /// <returns>
         /// Returns failure under the following circumstances:
         /// - Thread does not exist - 404
-        /// - User has already deleted thread - 404
+        /// - User has already deleted thread - 410
         /// </returns>
         public async Task<Result> AdminDeleteThreadAsync(int id, string reason)
         {
@@ -537,7 +537,7 @@ namespace SimpleForum.Internal
         /// <returns>
         /// Returns failure under the following circumstances:
         /// - Comment does not exist - 404
-        /// - User has already deleted comment - 404
+        /// - User has already deleted comment - 410
         /// </returns>
         public async Task<Result> AdminDeleteCommentAsync(int id, string reason)
         {
@@ -553,7 +553,7 @@ namespace SimpleForum.Internal
         /// <returns>
         /// Returns failure under the following circumstances:
         /// - UserComment does not exist - 404
-        /// - User has already deleted UserComment - 404
+        /// - User has already deleted UserComment - 410
         /// </returns>
         public async Task<Result> AdminDeleteUserCommentAsync(int id, string reason)
         {
