@@ -29,6 +29,7 @@ namespace SimpleForum.API.Controllers
         {
             User user = await _repository.GetUserAsync(id);
             if (user == null) return NotFound("User not found");
+            if (user.Deleted) return Gone("User deleted");
 
             return Json(new ApiUser(user));
         }

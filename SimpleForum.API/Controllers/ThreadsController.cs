@@ -37,6 +37,7 @@ namespace SimpleForum.API.Controllers
         {
             Thread thread = await _repository.GetThreadAsync(id);
             if (thread == null) return NotFound("Requested thread not found");
+            if (thread.Deleted || thread.User.Deleted) return Gone("Thread deleted");
 
             return Json(new ApiThread(thread));
         }

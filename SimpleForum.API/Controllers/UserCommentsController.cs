@@ -25,6 +25,7 @@ namespace SimpleForum.API.Controllers
             // Retrieves comment and returns 404 if null
             UserComment comment = await _repository.GetUserCommentAsync(id);
             if (comment == null) return NotFound("UserComment not found");
+            if (comment.Deleted || comment.User.Deleted || comment.UserPage.Deleted) return Gone("Comment deleted");
 
             return Json(new ApiComment(comment));
         }
