@@ -19,7 +19,8 @@ namespace SimpleForum.API.Client.Tests
                                   "3 - Login\n" +
                                   "4 - Create thread\n" +
                                   "5 - Get thread comments\n" +
-                                  "6 - Get comment" +
+                                  "6 - Get comment\n" +
+                                  "7 - Get UserComment\n" +
                                   "> ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -44,6 +45,9 @@ namespace SimpleForum.API.Client.Tests
                         break;
                     case 6:
                         await TestGetComment();
+                        break;
+                    case 7:
+                        await TestGetUserComment();
                         break;
                 }
 
