@@ -15,6 +15,9 @@
       <Compile Update="Login.cs">
         <DependentUpon>SimpleForumClient.cs</DependentUpon>
       </Compile>
+      <Compile Update="Comment.cs">
+        <DependentUpon>SimpleForumClient.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
