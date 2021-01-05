@@ -65,6 +65,10 @@ namespace SimpleForum.API
             return new BadRequestObjectResult(new Error(400, message));
         }
 
+        /// <summary>
+        /// Returns a access denied JSON result
+        /// </summary>
+        /// <returns></returns>
         public new ObjectResult Forbid()
         {
             return new ObjectResult(new Error(403)) {StatusCode = 403};
@@ -78,6 +82,25 @@ namespace SimpleForum.API
         public ObjectResult Forbid(string message)
         {
             return new ObjectResult(new Error(403, message)) {StatusCode = 403};
+        }
+
+        /// <summary>
+        /// Returns a gone JSON result
+        /// </summary>
+        /// <returns></returns>
+        public ObjectResult Gone()
+        {
+            return new ObjectResult(new Error(410)) { StatusCode = 410 };
+        }
+
+        /// <summary>
+        /// Returns a gone JSON result for a given message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public ObjectResult Gone(string message)
+        {
+            return new ObjectResult(new Error(410, message)) { StatusCode = 410 };
         }
 
         /// <summary>
