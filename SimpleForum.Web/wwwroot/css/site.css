@@ -211,6 +211,7 @@ i.content-container-title {
 .list-item {
   display: flex;
   flex-direction: row;
+  align-items: center;
   height: 4rem;
   margin: 0.5rem 0 0.5rem 0;
   background-color: var(--bg-secondary);
@@ -226,16 +227,22 @@ i.content-container-title {
   margin-bottom: 0;
 }
 
+.list-item-property-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+}
+
 .list-item-property {
   font-size: 1rem;
   text-align: center;
-  margin: auto 1rem auto 1rem;
+  margin: 0 1rem 0 1rem;
   color: var(--text-primary);
 }
 
 .list-item-icon {
   font-size: 1rem;
-  line-height: 4rem;
   margin: 0 0 0 0.5rem;
   color: var(--text-primary);
 }
@@ -809,7 +816,7 @@ textarea.edit-container-item {
 }
 
 .list-item-profile {
-  margin: auto 0.5rem auto 1rem;
+  margin: 0 0.5rem 0 1rem;
 }
 
 .list-item-profile-image {
