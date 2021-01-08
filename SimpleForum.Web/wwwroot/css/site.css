@@ -357,6 +357,22 @@ a.list-item-property {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 1rem;
+}
+
+.post-user-property {
+  margin: 0.25rem;
+}
+
+a.post-user-property {
+  text-decoration: none;
+  color: royalblue;
+}
+
+img.post-user-property {
+  height: 100px;
+  width: 100px;
+  border-radius: 75px;
 }
 
 .post-username {

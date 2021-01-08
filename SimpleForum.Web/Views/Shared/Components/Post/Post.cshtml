@@ -1,0 +1,23 @@
+﻿@model PostViewModel
+
+<li id="@Model.ID" class="thread-post">
+    <div class="post-user">
+        <img class="post-user-property" src="/Files/ProfileImg?id=@Model.Post.UserID" alt="@Model.Post.User.Username">
+        <a class="post-user-property" asp-controller="User" asp-action="Index" asp-route-id="@Model.Post.UserID">@Model.Post.User.Username</a>
+
+        @if (Model.Post.User.Banned)
+        {
+            <span class="post-user-property">(banned)</span>
+        }
+        
+        <span class="post-user-property">
+            @Model.Post.DatePosted.ToShortDateString()
+            @Model.Post.DatePosted.ToShortTimeString()
+        </span>
+    </div>
+    <span class="post-contents">@HtmlExtensions.RenderOutput(Model.Post.Content)</span>
+    <div class="post-footer">
+        <a class="footer-link" href="javascript:void(0)">Reply</a>
+        <a class="footer-link" href="#@Model.ID">OP</a>
+    </div>
+</li>

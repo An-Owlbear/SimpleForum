@@ -74,39 +74,7 @@
         <ul class="thread-posts user-comments">
             @foreach (UserComment comment in Model.CurrentPageComments)
             {
-                <li class="thread-post">
-                    <div class="post-user">
-                        <a class="post-username" asp-action="Index" asp-route-id="@comment.UserID">@comment.User.Username</a>
-                        
-                        @if (comment.User.Banned)
-                        {
-                            <span class="ban-text post">(banned)</span>
-                        }
-                        
-                        <img class="post-profile-img" src="/Files/ProfileImg?id=@comment.UserID" alt="@comment.User.Username">
-                        <span class="post-date">
-                            @comment.DatePosted.ToShortDateString()
-                            @comment.DatePosted.ToShortTimeString()
-                        </span>
-                    </div>
-                    <span class="post-contents">@comment.Content</span>
-
-                    <div class="post-footer">
-                        <a class="footer-link" href="javascript:void(0)">Reply</a>
-                        <a class="footer-link" href="javascript:void(0)">Share</a>
-                        @if (RazorMethods.IsOwner(User, comment))
-                        {
-                            <form method="post" asp-action="DeleteUserComment">
-                                <input type="hidden" name="userCommentID" value="@comment.UserCommentID">
-                                <button class="footer-link" type="submit">Delete</button>
-                            </form>
-                        }
-                        else if (User.Identity.IsAuthenticated && Model.CurrentUser.Role == "Admin")
-                        {
-                            <a class="footer-link">Delete (Admin)</a>
-                        }
-                    </div>
-                </li>
+                @await Component.InvokeAsync("Post", new PostViewModel() { Post = comment, ID = comment.ID.ToString() })
             }
         </ul>
 

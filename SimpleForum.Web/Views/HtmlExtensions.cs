@@ -9,7 +9,7 @@ namespace SimpleForum.Web.Views
 {
     public static class HtmlExtensions
     {
-        public static HtmlString RenderOutput(this IHtmlHelper htmlHelper, string message)
+        public static HtmlString RenderOutput(string message)
         {
             string addNewLines = string.Join(
                 "<br/>",
@@ -33,6 +33,11 @@ namespace SimpleForum.Web.Views
             });
             
             return new HtmlString(output);
+        }
+
+        public static HtmlString RenderOutput(this IHtmlHelper helper, string message)
+        {
+            return RenderOutput(message);
         }
     }
 }
