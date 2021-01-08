@@ -354,10 +354,9 @@ a.list-item-property {
 }
 
 .post-user {
-  display: inline;
-  max-width: calc(100px + 2rem);
-  flex: 0 0 calc(100px + 2rem);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .post-username {
@@ -392,7 +391,6 @@ a.list-item-property {
 .post-contents {
   margin: 1rem;
   color: var(--text-primary);
-  flex: 0 0 calc(100% - (100px + 4rem));
 }
 
 .post-contents:hover {
