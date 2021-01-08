@@ -6,7 +6,7 @@ namespace SimpleForum.Web.ViewComponents
 {
     public class PostViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(PostViewModel model)
+        public IViewComponentResult Invoke(PostViewModel model)
         {
             return View("Post", model);
         }
