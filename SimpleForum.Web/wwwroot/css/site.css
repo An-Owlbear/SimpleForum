@@ -212,11 +212,10 @@ i.content-container-title {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 4rem;
+  min-height: 4rem;
   margin: 0.5rem 0 0.5rem 0;
   background-color: var(--bg-secondary);
   border-radius: 5px;
-  overflow: hidden;
 }
 
 .list-item:first-child {
@@ -232,12 +231,13 @@ i.content-container-title {
   flex-direction: row;
   align-items: center;
   flex-grow: 1;
+  flex-wrap: wrap;
+  margin: 0.75rem 0;
 }
 
 .list-item-property {
   font-size: 1rem;
-  text-align: center;
-  margin: 0 1rem 0 1rem;
+  margin: 0.25rem 1rem;
   color: var(--text-primary);
 }
 
@@ -259,6 +259,10 @@ a.list-item-property {
 .list-item-title {
   color: royalblue;
   margin-right: auto;
+}
+
+.list-item-break {
+  display: none;
 }
 
 .variable-container {
@@ -925,6 +929,11 @@ textarea.edit-container-item {
   background-color: var(--error-background);
 }
 
+.flex-break {
+  flex-basis: 100%;
+  height: 0;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar-nav {
     overflow: hidden;
@@ -957,5 +966,41 @@ textarea.edit-container-item {
   .post-button {
     width: 100%;
     margin: 1rem 0 0 0;
+  }
+  
+  .top-message {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+  
+  h1.top-message-text {
+    font-size: 1.25rem;
+    margin: 0.5rem;
+  }
+  
+  .content-list {
+    margin: 0.5rem;
+  }
+  
+  span.content-container-title {
+    font-size: 1.5rem;
+    margin: 0.5rem;
+  }
+  
+  .content-container-title:first-child {
+    margin-left: 1rem;
+  }
+  
+  .content-container-top-link-container {
+    margin-right: 1rem;
+  }
+  
+  .content-container-top-link {
+    font-size: 1rem;
+  }
+  
+  .list-item-break {
+    display: initial;
   }
 }

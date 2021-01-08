@@ -44,18 +44,21 @@
                 <a class="list-item-profile" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">
                     <img class="list-item-profile-image" src="/Files/ProfileImg?id=@thread.UserID" alt="@thread.User.Username" title="@thread.User.Username">
                 </a>
-                @if (thread.Pinned)
-                {
-                    <i class="ri-pushpin-2-fill list-item-icon"></i> 
-                }
-                @if (thread.Locked)
-                {
-                    <i class="ri-lock-fill list-item-icon"></i>
-                }
-                <a class="list-item-title list-item-property" asp-controller="Thread" asp-action="Index" asp-route-id="@thread.ThreadID">@thread.Title</a>
-                <a class="list-item-property" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">@thread.User.Username</a>
-                <span class="list-item-property">@thread.Comments.Count(x => !x.Deleted) replies</span>
-                <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
+                <div class="list-item-property-container">
+                    @if (thread.Pinned)
+                    {
+                        <i class="ri-pushpin-2-fill list-item-icon"></i> 
+                    }
+                    @if (thread.Locked)
+                    {
+                        <i class="ri-lock-fill list-item-icon"></i>
+                    }
+                    <a class="list-item-title list-item-property" asp-controller="Thread" asp-action="Index" asp-route-id="@thread.ThreadID">@thread.Title</a>
+                    <div class="list-item-break flex-break"></div>
+                    <a class="list-item-property" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">@thread.User.Username</a>
+                    <span class="list-item-property">@thread.Comments.Count(x => !x.Deleted) replies</span>
+                    <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
+                </div>
             </li>
         }
     </ul>
