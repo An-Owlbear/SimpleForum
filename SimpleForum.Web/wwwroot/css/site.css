@@ -362,6 +362,7 @@ a.list-item-property {
 
 .post-user-property {
   margin: 0.25rem;
+  color: var(--text-primary);
 }
 
 a.post-user-property {
@@ -405,7 +406,8 @@ img.post-user-property {
 }
 
 .post-contents {
-  margin: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
   color: var(--text-primary);
 }
 
@@ -558,7 +560,6 @@ textarea.thread-create-input {
 
 .content-container-top-link {
   display: inline-block;
-  text-decoration: none;
   color: var(--text-primary-light);
   font-size: 1.25rem;
   margin: 1rem 0.5rem 1rem 0;
@@ -566,6 +567,16 @@ textarea.thread-create-input {
   border-radius: 10px;
   background-color: royalblue;
   vertical-align: middle;
+  text-decoration: none;
+  border: none;
+}
+
+.content-container-top-link a, .content-container-top button {
+  text-decoration: inherit;
+  border: inherit;
+  background: inherit;
+  color: inherit;
+  font-size: inherit;
 }
 
 .content-container-top-link:last-child {
@@ -971,10 +982,19 @@ textarea.edit-container-item {
 
   .post-user {
     flex: 0 0 100%;
+    flex-direction: row;
+    margin: 0;
+    padding: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  img.post-user-property {
+    height: 25px;
+    width: 25px;
   }
 
   .post-contents {
-    flex: 0 0 calc(100% - 2rem);
+    flex: 0 0 100%;
   }
 
   .post-button {
@@ -1016,5 +1036,50 @@ textarea.edit-container-item {
   
   .list-item-break {
     display: initial;
+  }
+  
+  .content-container-top {
+    flex-wrap: wrap;
+  }
+  
+  .thread.content-container .content-container-top-link-container {
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+  }
+  
+  .thread.content-container .content-container-title-container {
+    flex-basis: 100%;
+  }
+  
+  .thread.content-container .content-container-top-link {
+    margin: 0 0.25rem 1rem 0.25rem;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .thread.content-container .content-container-top-link:first-child {
+    margin-left: 1rem;
+  }
+  
+  .thread.content-container .content-container-top-link:last-child {
+    margin-right: 1rem;
+  }
+  
+  .thread.content-container .content-container-title {
+    margin: 1rem 0 1rem 1rem;
+  }
+  
+  .thread-posts {
+    margin: 0 1rem;
+  }
+  
+  .thread-message {
+    margin: 1rem 1rem 0 1rem;
+  }
+  
+  .post-form {
+    margin: 1rem 1rem 0 1rem;
   }
 }
