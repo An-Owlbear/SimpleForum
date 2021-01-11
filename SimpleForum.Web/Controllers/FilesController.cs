@@ -11,6 +11,9 @@ namespace SimpleForum.Web.Controllers
             // Returns if no id
             if (id == null) return new BadRequestResult();
             
+            // Sets response headers
+            Response.Headers["Cache-Control"] = "max-age=604800, must-revalidate";
+            
             // Checks if profile picture exists and returns default if it doesn't
             string path = $"UploadedImages/ProfilePictures/{id}.jpg";
             if (System.IO.File.Exists(path))
