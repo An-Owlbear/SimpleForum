@@ -1083,4 +1083,10 @@ textarea.edit-container-item {
   .thread-create-form {
     padding: 0 1rem 1rem 1rem;
   }
+  
+  .variable-container {
+    width: 100vw;
+    max-width: initial;
+    margin: 0;
+  }
 }
