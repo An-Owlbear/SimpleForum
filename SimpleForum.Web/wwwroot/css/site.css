@@ -1109,6 +1109,11 @@ textarea.edit-container-item {
     text-align: initial;
   }
   
+  .nav-link {
+    box-sizing: border-box;
+    width: 100%;
+  }
+  
   .nav-item.right-first {
     margin: 0 1rem;
   }
@@ -1136,6 +1141,14 @@ textarea.edit-container-item {
   
   .navbar.open .navbar-nav {
     overflow-y: scroll;
+  }
+  
+  .navbar.open .icon-item .nav-link i {
+    display: none;
+  }
+  
+  .navbar.open .icon-item .nav-link::after {
+    content: "Notifications";
   }
   
   .dropdown-clicked {
