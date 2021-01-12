@@ -39,8 +39,14 @@
 <header id="navbar-header">
     <div class="navbar">
         <ul class="navbar-nav">
-            <li class="nav-item">
+            <li class="nav-item home-link">
                 <a class="nav-link" asp-controller="Home" asp-action="Index">@options.Value.InstanceName</a>
+            </li>
+            
+            <li class="nav-item toggle-menu">
+                <a class="nav-link" href="javascript:void(0)">
+                     <i class="ri-menu-line"></i> 
+                </a>
             </li>
 
             <li class="nav-item">
