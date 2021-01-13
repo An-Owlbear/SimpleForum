@@ -42,15 +42,9 @@ namespace SimpleForum.Web.Controllers
             if (username == null || password == null) return Redirect("/Login?error=0");
             
             // Retrieves user, returning error if none are found
-            User user;
-            try
-            {
-                user = await _repository.GetUserAsync(username);
-            }
-            catch (InvalidOperationException)
-            {
-                return Redirect("/Login?error=1");
-            }
+            User user = await _repository.GetUserAsync(username);
+            if (user == null) return Redirect("/Login?error=1");
+            
 
             // Returns error if password is incorrect
             if (user.Password != password || user.Deleted) return Redirect("/Login?error=1");
