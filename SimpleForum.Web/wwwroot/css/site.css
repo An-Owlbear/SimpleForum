@@ -1178,4 +1178,28 @@ textarea.edit-container-item {
     padding: 0 1rem;
     margin-right: 1rem;
   }
+  
+  .action-list {
+    margin: 0 1rem;
+  }
+  
+  .action-list-item {
+    flex-direction: column;
+  }
+  
+  .action-list-item-title {
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  
+  .action-list-item-button {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  
+  .action-list-item form {
+    width: 100%;
+  }
 }
