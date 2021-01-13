@@ -20,9 +20,6 @@ a:focus {
   outline: none;
 }
 
-button:focus {
-  outline: none;
-}
 
 button::-moz-focus-inner {
   border: 0;
@@ -567,12 +564,22 @@ textarea.thread-create-input {
   border: none;
 }
 
-.content-container-top-link a, .content-container-top button {
+form.content-container-top-link {
+  padding: 0;
+}
+
+.content-container-top-link button {
   text-decoration: inherit;
   border: inherit;
   background: inherit;
   color: inherit;
   font-size: inherit;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px;
+}
+
+.content-container-top-link:hover, .content-container-top-link button:hover  {
+  cursor: pointer;
 }
 
 .content-container-top-link:last-child {
