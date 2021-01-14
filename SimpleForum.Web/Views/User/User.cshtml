@@ -8,18 +8,18 @@
         <div class="profile-info">
 
             <div class="profile-info-section">
-                <span class="profile-info-name">@Model.User.Username</span>
-                
-                @if (Model.User.Banned)
-                {
-                    <span class="ban-text profile">(banned)</span>
-                }
-                @if (Model.User.Deleted)
-                {
-                    <span class="ban-text profile">(deleted)</span>
-                }
-                
                 <img class="profile-info-image" src="/Files/ProfileImg?id=@Model.User.UserID" alt="@Model.User.Username">
+                <div class="profile-info-text-container">
+                    <span class="profile-info-name">@Model.User.Username</span>
+                    @if (Model.User.Banned)
+                    {
+                        <span class="ban-text profile">(banned)</span>
+                    }
+                    @if (Model.User.Deleted)
+                    {
+                        <span class="ban-text profile">(deleted)</span>
+                    }
+                </div>
             </div>
             <div class="profile-info-section">
                 <span class="profile-bio">@Model.User.Bio</span>

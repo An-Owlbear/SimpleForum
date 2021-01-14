@@ -886,6 +886,10 @@ textarea.edit-container-item {
   margin-top: 1rem;
 }
 
+.ban-text.profile:last-child {
+  margin-bottom: 1rem;
+}
+
 .ban-text.post {
   margin-top: 0.5rem;
 }
@@ -1201,5 +1205,48 @@ textarea.edit-container-item {
   
   .action-list-item form {
     width: 100%;
+  }
+  
+  .profile-container {
+    width: 100%;
+    min-width: initial;
+  }
+  
+  .profile-info {
+    margin: 1rem 1rem 0 1rem;
+    flex-direction: column;
+  }
+  
+  .profile-info-section:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-info-image {
+    height: 75px;
+    width: 75px;
+    margin: 1rem 1rem 1rem 0;
+  }
+  
+  .ban-text.profile {
+    margin-top: 0.5rem;
+  }
+  
+  .profile-info-section {
+    text-align: center;
+  }
+  
+  .profile-info-section:last-child {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-info-text {
+    margin: 1rem 0;
+  }
+  
+  .post-form.profile-post-form {
+    margin: 0 1rem 1rem 1rem;
   }
 }
