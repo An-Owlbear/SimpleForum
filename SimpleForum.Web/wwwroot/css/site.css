@@ -1046,11 +1046,18 @@ textarea.edit-container-item {
   }
   
   .content-container-top-link-container {
-    margin-right: 1rem;
+    margin: 0 1rem;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
   }
   
   .content-container-top-link {
     font-size: 1rem;
+    padding: 1rem;
+    margin: 0 0 0.5rem 0;
+    box-sizing: border-box;
+    width: 100%;
   }
   
   .list-item-break {
@@ -1247,6 +1254,6 @@ textarea.edit-container-item {
   }
   
   .post-form.profile-post-form {
-    margin: 0 1rem 1rem 1rem;
+    margin: 0.5rem 1rem 1rem 1rem;
   }
 }
