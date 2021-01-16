@@ -135,3 +135,10 @@ module ParserCombinators =
         
     let between parser1 parser2 parser3 =
         parser1 >>. parser2 .>> parser3
+        
+    let parseString str =
+        str
+        |> List.ofSeq
+        |> List.map parseChar
+        |> sequence
+        |> mapParser (fun chars -> String(List.toArray chars))
