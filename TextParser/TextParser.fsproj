@@ -6,6 +6,7 @@
 
     <ItemGroup>
         <Compile Include="ParserCombinators.fs" />
+        <Compile Include="StandardParsers.fs" />
     </ItemGroup>
 
 </Project>
