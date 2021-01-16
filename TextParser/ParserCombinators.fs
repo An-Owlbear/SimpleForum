@@ -12,16 +12,22 @@ let run parser input =
     let (Parser innerFn) = parser
     innerFn input
     
-let parseChar target =
+// Parses a character that meets the given condition
+let parse condition =
     let innerFn input =
         if String.IsNullOrEmpty(input) then
             Failure "End of input"
         else
-            if input.[0] = target then
-                Success (target, input.[1..])
+            if condition input.[0] then
+                Success (input.[0], input.[1..])
             else
-                Failure (sprintf "Expecting character '%c', got '%c'" target input.[0])
+                Failure (sprintf "Unexpected '%c'" input.[0])
     Parser innerFn
+
+// Parses the given character
+let parseChar target =
+    let condition character = (character = target)
+    parse condition
     
 // Passes the output of a parser to a parser producing function, creating a new parser
 let bindParser fn parser =
