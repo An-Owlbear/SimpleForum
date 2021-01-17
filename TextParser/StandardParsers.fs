@@ -2,9 +2,9 @@
 open System
 open ParserCombinators
 
-let private letters = [for i in 65..90 -> char i] @ [for i in 97..122 -> char i]
+let internal letters = [for i in 65..90 -> char i] @ [for i in 97..122 -> char i]
 
-let private charListToString charList =
+let internal charListToString charList =
     String(List.toArray charList)
 
 // Parses a whitespace character
