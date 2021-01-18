@@ -137,9 +137,11 @@ let ( >>. ) parser1 parser2 =
     parser1 .>>. parser2
     |> mapParser (fun (_,b) -> b)
     
+// Applies three parsers, discarding the result of the first and third
 let between parser1 parser2 parser3 =
     parser1 >>. parser2 .>> parser3
     
+// parses a given string
 let parseString str =
     str
     |> List.ofSeq
