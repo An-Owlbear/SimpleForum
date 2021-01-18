@@ -149,6 +149,14 @@ let parseString str =
     |> sequence
     |> mapParser (fun chars -> String(List.toArray chars))
     
+let notParser parser =
+    let innerFn input =
+        let result = run parser input
+        match result with
+        | Success _ -> Failure "Failure"
+        | Failure _ -> Success (null, input)
+    Parser innerFn
+    
 // Runs a second parser if the first one passes
 let parserCondition condition parser =
     let innerFn input =
@@ -161,15 +169,20 @@ let parserCondition condition parser =
 let ( <&> ) = parserCondition
 
 // Runs a second parser if the first fails, otherwise fails
-let parseNegativeCondition condition parser =
-    let innerFn input =
-        let result1 = run condition input
-        match result1 with
-        | Success (result2, _) -> Failure (sprintf "Unexpected %A" result2)
-        | Failure _ -> run parser input
-    Parser innerFn
+let parseNegativeCondition condition parser = parserCondition (notParser condition) parser
     
 let ( <!&> ) = parseNegativeCondition
+
+// Returns success if both parsers pass, otherwise failure
+let andConditionParser parser1 parser2 =
+    let innerFn input =
+        let result1 = run parser1 input
+        let result2 = run parser2 input
+        match (result1, result2) with
+        | (Success (value, _), Success _) -> Success (value, input)
+        | _ -> Failure "Failure"
+    Parser innerFn
+    
 
 // Sets the result of a parser to a specific value
 let setResult parser result = parser |>> (fun _ -> result)
