@@ -34,3 +34,16 @@ let parseLetterOrNumber =
     
 let parseLettersOrNumbers0 = parseString0 parseLetterOrNumber
 let parseLettersOrNumbers1 = parseString1 parseLetterOrNumber
+
+// Creates a forwarded parser
+let forwardedParser<'a> =
+    let dummyParser =
+        let innerFn input : Result<'a * string> = failwith "Unfixed forwarded parser"
+        Parser innerFn
+    
+    let parserReference = ref dummyParser
+    
+    let innerFn input =
+        run !parserReference input
+    
+    (Parser innerFn, parserReference)
