@@ -160,6 +160,17 @@ let parserCondition condition parser =
     
 let ( <&> ) = parserCondition
 
+// Runs a second parser if the first fails, otherwise fails
+let parseNegativeCondition condition parser =
+    let innerFn input =
+        let result1 = run condition input
+        match result1 with
+        | Success (result2, _) -> Failure (sprintf "Unexpected %A" result2)
+        | Failure _ -> run parser input
+    Parser innerFn
+    
+let ( <!&> ) = parseNegativeCondition
+
 // Sets the result of a parser to a specific value
 let setResult parser result = parser |>> (fun _ -> result)
 let ( >>% ) = setResult
