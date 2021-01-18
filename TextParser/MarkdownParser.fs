@@ -47,11 +47,12 @@ let bold =
 // Parses a block of italic text
 let italic =
     let quote = parseChar '*'
-    // TODO - Fix parser to allow bold blocks
-    let parser = quote <!&> markdownValue
+    let conditionParser = quote <&> notParser (parseString "**")
+    let parser = conditionParser <!&> markdownValue
     quote >>. parseMany1 parser .>> quote
     |>> Italic
     
+// Sets the value of markdownValue
 markdownValueRef := choice
     [
         bold
@@ -59,4 +60,5 @@ markdownValueRef := choice
         text
     ]
     
+// Parsers the given input
 let parseMarkdown input = run (parseMany0 markdownValue) input
