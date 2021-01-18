@@ -47,3 +47,6 @@ let forwardedParser<'a> =
         run !parserReference input
     
     (Parser innerFn, parserReference)
+    
+// Parses any character
+let parseAny = parse (fun _ -> true)
