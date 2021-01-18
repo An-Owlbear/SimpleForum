@@ -159,3 +159,7 @@ let parserCondition condition parser =
     Parser innerFn
     
 let ( <&> ) = parserCondition
+
+// Sets the result of a parser to a specific value
+let setResult parser result = parser |>> (fun _ -> result)
+let ( >>% ) = setResult
