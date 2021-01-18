@@ -148,3 +148,14 @@ let parseString str =
     |> List.map parseChar
     |> sequence
     |> mapParser (fun chars -> String(List.toArray chars))
+    
+// Runs a second parser if the first one passes
+let parserCondition condition parser =
+    let innerFn input =
+        let result1 = run condition input
+        match result1 with
+        | Success _ -> run parser input
+        | Failure err -> Failure err
+    Parser innerFn
+    
+let ( <&> ) = parserCondition
