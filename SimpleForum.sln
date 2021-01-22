@@ -19,9 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API.Client", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API.Client.Tests", "SimpleForum.API.Client.Tests\SimpleForum.API.Client.Tests.csproj", "{750D09C6-CF09-48E6-882E-FC8794A12358}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TextParser", "TextParser\TextParser.fsproj", "{ADF20B16-2C79-4D8B-BCFB-846BDA873EDF}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SimpleForum.TextParser", "SimpleForum.TextParser\SimpleForum.TextParser.fsproj", "{ADF20B16-2C79-4D8B-BCFB-846BDA873EDF}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TextParser.Tests", "TextParser.Tests\TextParser.Tests.fsproj", "{EB81C390-5387-4859-A8D1-386C9FECC966}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SimpleForum.TextParser.Tests", "SimpleForum.TextParser.Tests\SimpleForum.TextParser.Tests.fsproj", "{EB81C390-5387-4859-A8D1-386C9FECC966}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

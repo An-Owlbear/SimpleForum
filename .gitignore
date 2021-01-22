@@ -6,4 +6,4 @@ obj/
 *.DotSettings.user
 SimpleForum.Web/UploadedImages/**
 !UploadedImages/ProfilePictures/defaultprofile.png
-TextParser.Tests/*.html
+SimpleForum.TextParser.Tests/*.html

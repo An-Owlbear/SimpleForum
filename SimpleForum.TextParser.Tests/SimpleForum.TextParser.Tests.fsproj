@@ -3,6 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>TextParser.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,11 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TextParser\TextParser.fsproj" />
+      <PackageReference Include="FSharp.Formatting" Version="7.2.9" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FSharp.Formatting" Version="7.2.9" />
+      <ProjectReference Include="..\SimpleForum.TextParser\SimpleForum.TextParser.fsproj" />
     </ItemGroup>
 
 </Project>

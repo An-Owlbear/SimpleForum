@@ -2,8 +2,8 @@
 open System.IO
 open System.Text
 open FSharp.Formatting.Markdown
-open TextParser.ParserCombinators
-open TextParser.MarkdownParser
+open SimpleForum.TextParser.ParserCombinators
+open SimpleForum.TextParser.MarkdownParser
 
 let generateFile content =
     [

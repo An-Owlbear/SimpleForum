@@ -1,4 +1,4 @@
-﻿module TextParser.ParserCombinators
+﻿module SimpleForum.TextParser.ParserCombinators
 open System
 
 type Result<'a> =

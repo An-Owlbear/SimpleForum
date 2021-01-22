@@ -1,4 +1,4 @@
-﻿module TextParser.MarkdownParser
+﻿module SimpleForum.TextParser.MarkdownParser
 open System.Text
 open ParserCombinators
 open StandardParsers

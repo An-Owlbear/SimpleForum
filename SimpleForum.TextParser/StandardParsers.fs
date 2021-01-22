@@ -1,4 +1,4 @@
-﻿module TextParser.StandardParsers
+﻿module SimpleForum.TextParser.StandardParsers
 open System
 open ParserCombinators
 
