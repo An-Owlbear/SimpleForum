@@ -11,7 +11,7 @@ type MarkdownValue =
     | Heading of int * MarkdownValue list
     | Link of MarkdownValue list * string
     | Image of string * string
-    | BlockQuote of string
+    | BlockQuote of MarkdownValue list
     
 let (markdownValue, markdownValueRef) = forwardedParser<MarkdownValue>
 
@@ -85,6 +85,13 @@ let image =
     .>>. ((parseChar '(') >>. parseString0 (urlCharParser <&> characterParser) .>> (parseChar ')'))
     |>> Image
     
+// Parses a blockquote
+let blockQuote =
+    let start = parseChar '>' .>> parseMany0 (parseChar ' ')
+    let content = parseMany1 markdownValue
+    start >>.content
+    |>> BlockQuote
+    
 // Sets the value of markdownValue
 markdownValueRef := choice
     [
@@ -96,7 +103,8 @@ markdownValueRef := choice
     ]
     
 // Parses a line of markdown
-let markdownLineContent = ((heading |>> fun x -> [x]) <|> parseMany1 markdownValue)
+let lineStartParser = heading <|> blockQuote
+let markdownLineContent = ((lineStartParser |>> fun x -> [x]) <|> parseMany1 markdownValue)
 let endOfLineChar = parseString "\r\n" <|> parseInputEnd
 
 let markdownLine =
@@ -130,8 +138,8 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
             | Heading (degree, content) -> sprintf "<h%i>%s</h%i>" degree (markdownToHTML content) degree
             | Image (alt, url) -> sprintf "<img src=%s alt=%s>" url alt
             | Link (title, url) -> sprintf "<a href=%s>%s</a>" url (markdownToHTML title)
+            | BlockQuote blockquote -> sprintf "<blockquote>%s</blockquote>" (markdownToHTML blockquote)
             | Text text -> text.Replace("\r\n", "<br>\r\n")
-            | _ -> "<p>Value not supported</p>"
         acc.Append(value)
     ) (StringBuilder())
     |> fun x -> x.ToString()
