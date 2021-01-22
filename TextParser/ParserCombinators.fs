@@ -24,6 +24,15 @@ let parse condition =
                 Failure (sprintf "Unexpected '%c'" input.[0])
     Parser innerFn
 
+// Parses the end of input
+let parseInputEnd =
+    let innerFn input =
+        if String.IsNullOrEmpty(input) then
+            Success ("", "")
+        else
+            Failure "Input remaining"
+    Parser innerFn
+
 // Parses the given character
 let parseChar target =
     let condition character = (character = target)
