@@ -1,4 +1,5 @@
 ﻿module SimpleForum.TextParser.MarkdownParser
+open System
 open System.Text
 open ParserCombinators
 open StandardParsers
@@ -11,12 +12,12 @@ type MarkdownValue =
     | Link of MarkdownValue list * string
     | Image of string * string
     | BlockQuote of string
-    | List of string list
     
 let (markdownValue, markdownValueRef) = forwardedParser<MarkdownValue>
 
+// Characters to temporarily break from parsing to check for closing tag
 let conditionParser =
-    [ '*'; '_' ]
+    [ '*'; '_'; ']' ]
     |> List.map parseChar
     |> choice
     
@@ -59,6 +60,7 @@ let italic =
     quote >>. parseMany1 parser .>> quote
     |>> Italic
     
+// Parsers a heading
 let heading =
     let start = parseString1 (parseChar '#') .>> parseString1 (parseChar ' ')
     let content = parseMany1 markdownValue
@@ -66,11 +68,20 @@ let heading =
     |>> fun (start, content) -> (start.Length, content)
     |>> Heading
     
+// Parses a url
+let link =
+    let titleCharParser = parse (fun x -> x <> ']')
+    let urlCharParser = parse (fun x -> x <> ')')
+    ((parseChar '[') >>. parseMany0 (titleCharParser <&> markdownValue) .>> (parseChar ']'))
+    .>>. ((parseChar '(') >>. parseString0 (urlCharParser <&> characterParser) .>> (parseChar ')'))
+    |>> Link
+    
 // Sets the value of markdownValue
 markdownValueRef := choice
     [
         bold
         italic
+        link
         text
     ]
     
@@ -107,6 +118,7 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
             | Bold bold -> sprintf "<strong>%s</strong>" (markdownToHTML bold)
             | Italic italic -> sprintf "<em>%s</em>" (markdownToHTML italic)
             | Heading (degree, content) -> sprintf "<h%i>%s</h%i>" degree (markdownToHTML content) degree
+            | Link (title, url) -> sprintf "<a href=%s>%s</a>" url (markdownToHTML title)
             | Text text -> text.Replace("\r\n", "<br>\r\n")
             | _ -> "<p>Value not supported</p>"
         acc.Append(value)
