@@ -17,10 +17,10 @@ let parseWhitespaceChar =
     parse condition
     
 // Parses zero or more whitespace characters
-let spaces0 = parseString0 parseWhitespaceChar
+let parseWhitespace0 = parseString0 parseWhitespaceChar
 
 // Parses one or more whitespace characters
-let spaces1 = parseString1 parseWhitespaceChar
+let parseWhitespace1 = parseString1 parseWhitespaceChar
 
 // Functions for parsing letters
 let parseLetter = anyOf letters

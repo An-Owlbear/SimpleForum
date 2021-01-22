@@ -27,8 +27,10 @@ let parse condition =
 // Parses the end of input
 let parseInputEnd =
     let innerFn input =
-        if String.IsNullOrEmpty(input) then
-            Success ("", "")
+        if input = String.Empty then
+            Success ("", null)
+        else if input = null then
+            Failure "End already parsed"
         else
             Failure "Input remaining"
     Parser innerFn
