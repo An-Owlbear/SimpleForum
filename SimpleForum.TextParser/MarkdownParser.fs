@@ -17,7 +17,7 @@ let (markdownValue, markdownValueRef) = forwardedParser<MarkdownValue>
 
 // Characters to temporarily break from parsing to check for closing tag
 let conditionParser =
-    [ '*'; '_'; ']' ]
+    [ '*'; '_'; '['; ']'; '!' ]
     |> List.map parseChar
     |> choice
     
@@ -76,11 +76,21 @@ let link =
     .>>. ((parseChar '(') >>. parseString0 (urlCharParser <&> characterParser) .>> (parseChar ')'))
     |>> Link
     
+// Parsers an image
+let image =
+    let titleCharParser = parse (fun x -> x <> ']')
+    let urlCharParser = parse (fun x -> x <> ')')
+    parseChar '!' >>.
+    ((parseChar '[') >>. parseString0 (titleCharParser <&> characterParser) .>> (parseChar ']'))
+    .>>. ((parseChar '(') >>. parseString0 (urlCharParser <&> characterParser) .>> (parseChar ')'))
+    |>> Image
+    
 // Sets the value of markdownValue
 markdownValueRef := choice
     [
         bold
         italic
+        image
         link
         text
     ]
@@ -118,6 +128,7 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
             | Bold bold -> sprintf "<strong>%s</strong>" (markdownToHTML bold)
             | Italic italic -> sprintf "<em>%s</em>" (markdownToHTML italic)
             | Heading (degree, content) -> sprintf "<h%i>%s</h%i>" degree (markdownToHTML content) degree
+            | Image (alt, url) -> sprintf "<img src=%s alt=%s>" url alt
             | Link (title, url) -> sprintf "<a href=%s>%s</a>" url (markdownToHTML title)
             | Text text -> text.Replace("\r\n", "<br>\r\n")
             | _ -> "<p>Value not supported</p>"
