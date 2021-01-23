@@ -9,7 +9,7 @@
         <h1 class="top-message-text">@Model.MessageTitle</h1>
         @if (Model.MessageContent != null)
         {
-            <p class="top-message-text">@Html.RenderOutput(Model.MessageContent)</p>
+            <p class="top-message-text">@HtmlExtensions.ParseText(Model.MessageContent)</p>
         }
     </div>
     @if (Model.Button != null && Model.Button.Method == HttpMethods.Post)

@@ -82,6 +82,7 @@
     <ItemGroup>
         <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
         <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
+        <ProjectReference Include="..\SimpleForum.TextParser\SimpleForum.TextParser.fsproj" />
     </ItemGroup>
 
     <ItemGroup>

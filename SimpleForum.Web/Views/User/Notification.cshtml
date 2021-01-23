@@ -10,7 +10,7 @@
     @if (Model.Content != null)
     {
         <div class="notification-item">
-            <span class="notification-contents">@Html.RenderOutput(Model.Content)</span>
+            <span class="notification-contents">@HtmlExtensions.ParseText(Model.Content)</span>
         </div>
     }
     <div class="notification-item-footer">

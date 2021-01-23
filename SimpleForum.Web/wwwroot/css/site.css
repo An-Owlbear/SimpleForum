@@ -1,5 +1,4 @@
 ﻿:root * {
-  font-size: 16px;
   font-weight: normal;
   font-family: 'Open Sans', sans-serif;
   --navbar-text-primary: #b6b6b6;
@@ -682,11 +681,6 @@ i.content-container-icon {
   margin-left: 0.125rem;
 }
 
-.markdown-link {
-  font-size: inherit;
-  color: royalblue;
-  text-decoration: none;
-}
 
 .form-bottom-link {
   color: royalblue;
@@ -970,6 +964,36 @@ textarea.edit-container-item {
 
 .toggle-menu {
   display: none;
+}
+
+.post-contents *, .top-message-text *, .notification-contents * {
+  display: inline-block;
+}
+
+.post-contents a, .top-message-text a, .notification-contents a {
+  font-size: inherit;
+  color: royalblue;
+  text-decoration: none;
+}
+
+.post-contents :is(h1, h2, h3, h4, h5, h6),
+.top-message-text :is(h1, h2, h3, h4, h5, h6),
+.notification-contents :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0.75rem 0;
+}
+
+.post-contents :is(h1, h2, h3, h4, h5, h6):first-child,
+.top-message-text :is(h1, h2, h3, h4, h5, h6):first-child,
+.notification-contents :is(h1, h2, h3, h4, h5, h6):first-child {
+  margin-top: 0;
+}
+
+.post-contents blockquote, .top-message-text blockquote, .notification-contents blockquote {
+  margin: 0;
+  padding: 1rem;
+  background: var(--bg-primary);
+  display: block;
+  border-left: 0.25rem solid var(--text-primary) ;
 }
 
 @media only screen and (max-width: 800px) {

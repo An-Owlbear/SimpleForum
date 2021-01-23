@@ -143,3 +143,15 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
         acc.Append(value)
     ) (StringBuilder())
     |> fun x -> x.ToString()
+    
+// C# usage functions
+let ParseMarkdown input =
+    let result = parseMarkdown input
+    match result with
+    | Success (result, _) -> Seq.ofList result
+    | Failure message -> failwith message
+    
+let MarkdownToHTML (valueList: MarkdownValue seq) : string =
+    valueList
+    |> List.ofSeq
+    |> markdownToHTML
