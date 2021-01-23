@@ -7,6 +7,7 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.10" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
         <PrivateAssets>all</PrivateAssets>
@@ -20,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
       <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
     </ItemGroup>
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Responses;
 
-namespace SimpleForum.API
+namespace SimpleForum.Internal
 {
     /// <summary>
     /// Extension of Controller which implements new error result methods
