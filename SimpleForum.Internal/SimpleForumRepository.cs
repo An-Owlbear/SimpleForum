@@ -165,6 +165,26 @@ namespace SimpleForum.Internal
             return await _context.AuthTokens.FindAsync(token);
         }
 
+        /// <summary>
+        /// Returns the outgoing token for the given name
+        /// </summary>
+        /// <param name="name">The address of the server</param>
+        /// <returns></returns>
+        public async Task<OutgoingServerToken> GetOutgoingServerTokenAsync(string name)
+        {
+            return await _context.OutgoingServerTokens.FindAsync(name);
+        }
+
+        /// <summary>
+        /// Returns the incoming server token for the given token
+        /// </summary>
+        /// <param name="token">The token to find</param>
+        /// <returns></returns>
+        public async Task<IncomingServerToken> GetIncomingServerTokenAsync(string token)
+        {
+            return await _context.IncomingServerTokens.FirstOrDefaultAsync(x => x.Token == token);
+        }
+
         //
         // Methods for adding a single item to the database
         //
@@ -243,6 +263,23 @@ namespace SimpleForum.Internal
         public async Task<AuthToken> AddAuthTokenAsync(AuthToken authToken)
         {
             EntityEntry<AuthToken> addedToken = await _context.AuthTokens.AddAsync(authToken);
+            return addedToken.Entity;
+        }
+
+        /// <summary>
+        /// Adds an outgoing server token to the database
+        /// </summary>
+        /// <param name="serverToken"></param>
+        /// <returns></returns>
+        public async Task<OutgoingServerToken> AddOutgoingServerTokenAsync(OutgoingServerToken serverToken)
+        {
+            EntityEntry<OutgoingServerToken> addedToken = await _context.OutgoingServerTokens.AddAsync(serverToken);
+            return addedToken.Entity;
+        }
+
+        public async Task<IncomingServerToken> AddIncomingServerToken(IncomingServerToken serverToken)
+        {
+            EntityEntry<IncomingServerToken> addedToken = await _context.IncomingServerTokens.AddAsync(serverToken);
             return addedToken.Entity;
         }
 
