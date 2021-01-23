@@ -14,6 +14,8 @@ namespace SimpleForum.Internal
         public DbSet<AuthToken> AuthTokens { get; set; }
         public DbSet<EmailCode> EmailCodes { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<OutgoingServerToken> OutgoingServerTokens { get; set; }
+        public DbSet<IncomingServerToken> IncomingServerTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -89,6 +89,18 @@ CREATE TABLE `Notifications` (
     CONSTRAINT `FK_Notifications_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
 
+CREATE TABLE `OutgoingServerTokens` (
+    `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_OutgoingServerTokens` PRIMARY KEY (`Address`)
+)
+
+CREATE TABLE `IncomingServerTokens` (
+    `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`Address`)
+)
+
 CREATE INDEX `IX_Comments_ThreadID` ON `Comments` (`ThreadID`);
 CREATE INDEX `IX_Comments_UserID` ON `Comments` (`UserID`);
 CREATE INDEX `IX_Comments_DatePosted` ON `Comments` (`DatePosted`);
