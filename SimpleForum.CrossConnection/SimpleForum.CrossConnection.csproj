@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
+      <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
+      <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
+    </ItemGroup>
+
+
+</Project>
