@@ -165,12 +165,17 @@ namespace SimpleForum.Internal
             return await _context.AuthTokens.FindAsync(token);
         }
 
+        public async Task<OutgoingServerToken> GetOutgoingServerTokenAsync(string token)
+        {
+            return await _context.OutgoingServerTokens.FirstOrDefaultAsync(x => x.Token == token);
+        }
+
         /// <summary>
         /// Returns the outgoing token for the given name
         /// </summary>
         /// <param name="name">The address of the server</param>
         /// <returns></returns>
-        public async Task<OutgoingServerToken> GetOutgoingServerTokenAsync(string name)
+        public async Task<OutgoingServerToken> GetOutgoingServerTokenByNameAsync(string name)
         {
             return await _context.OutgoingServerTokens.FindAsync(name);
         }
