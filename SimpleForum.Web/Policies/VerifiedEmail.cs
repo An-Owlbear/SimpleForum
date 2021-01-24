@@ -15,7 +15,7 @@ namespace SimpleForum.Web.Policies
         private readonly ApplicationDbContext _context;
         private readonly SimpleForumConfig _config;
 
-        public VerifiedEmail(ApplicationDbContext context, IOptions<SimpleForumConfig> config)
+        public VerifiedEmail(ApplicationDbContext context, IOptionsSnapshot<SimpleForumConfig> config)
         {
             _context = context;
             _config = config.Value;

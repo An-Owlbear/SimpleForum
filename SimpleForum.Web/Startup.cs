@@ -33,7 +33,7 @@ namespace SimpleForum.Web
             string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString")?.Split(";");
             if (dbConnectionString == null || mailConnectionStrings == null) throw new NullReferenceException();
 
-            services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
+            services.Configure<SimpleForumConfig>(Configuration);
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {

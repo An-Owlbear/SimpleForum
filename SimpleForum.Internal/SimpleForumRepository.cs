@@ -38,7 +38,7 @@ namespace SimpleForum.Internal
         /// <param name="config">The filename of settings file to use</param>
         /// <param name="contextAccessor">Used to access the HTTP context</param>
         public SimpleForumRepository(ApplicationDbContext context, IEmailService emailService,
-            IOptions<SimpleForumConfig> config, IHttpContextAccessor contextAccessor)
+            IOptionsSnapshot<SimpleForumConfig> config, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _emailService = emailService;

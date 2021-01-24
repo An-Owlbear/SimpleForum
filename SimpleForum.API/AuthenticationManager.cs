@@ -20,7 +20,7 @@ namespace SimpleForum.API
         private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
         
-        public AuthenticationManager(SimpleForumRepository repository, IOptions<SimpleForumConfig> config)
+        public AuthenticationManager(SimpleForumRepository repository, IOptionsSnapshot<SimpleForumConfig> config)
         {
             _repository = repository;
             _config = config.Value;

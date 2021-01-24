@@ -37,7 +37,7 @@ namespace SimpleForum.API
             string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString")?.Split(";");
             if (dbConnectionString == null || mailConnectionStrings == null) throw new NullReferenceException();
             
-            services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
+            services.Configure<SimpleForumConfig>(Configuration);
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
             services.AddMailKit(options => options.UseMailKit(new MailKitOptions()
@@ -61,7 +61,7 @@ namespace SimpleForum.API
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
-            string key = Configuration.GetSection("SimpleForumConfig")["PrivateKey"];
+            string key = Configuration["PrivateKey"];
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

@@ -17,7 +17,7 @@ namespace SimpleForum.Web.Controllers
         private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
 
-        public SignupController(SimpleForumRepository repository, IOptions<SimpleForumConfig> config)
+        public SignupController(SimpleForumRepository repository, IOptionsSnapshot<SimpleForumConfig> config)
         {
             _repository = repository;
             _config = config.Value;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using SimpleForum.Internal;
 
 namespace SimpleForum.Web
 {
@@ -10,7 +11,7 @@ namespace SimpleForum.Web
         public static void Main(string[] args)
         {
             CreateDirectories();
-            CreateHostBuilder(args).Build().Run();
+            SimpleForumHostBuilder.CreateHostBuilder<Startup>(args, Service.Web).Build().Run();
         }
 
         // Creates the required directories if they don't already exist
@@ -33,9 +34,5 @@ namespace SimpleForum.Web
                 }
             }
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

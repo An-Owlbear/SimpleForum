@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using SimpleForum.Internal;
 
 namespace SimpleForum.CrossConnection
 {
@@ -7,11 +7,7 @@ namespace SimpleForum.CrossConnection
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            SimpleForumHostBuilder.CreateHostBuilder<Startup>(args, Service.CrossConnect).Build().Run();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

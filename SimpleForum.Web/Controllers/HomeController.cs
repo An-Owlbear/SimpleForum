@@ -13,7 +13,7 @@ namespace SimpleForum.Web.Controllers
         private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
 
-        public HomeController(SimpleForumRepository repository, IOptions<SimpleForumConfig> config)
+        public HomeController(SimpleForumRepository repository, IOptionsSnapshot<SimpleForumConfig> config)
         {
             _repository = repository;
             _config = config.Value;

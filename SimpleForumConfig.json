@@ -1,0 +1,9 @@
+﻿{
+    "InstanceName": "SimpleForum",
+    "InstanceURL": "http://localhost:5000",
+    "RequireEmailVerification": true,
+    "PrivateKey": "moAlQg6tJBBDJ1bk2QxDnebQ4Zyjnwos",
+    "WebPort": 5000,
+    "ApiPort": 5001,
+    "CrossInstancePort": 5002 
+}
