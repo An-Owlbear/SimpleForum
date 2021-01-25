@@ -425,8 +425,11 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="comment">The UserComment to post</param>
         /// <returns>The posted <see cref="UserComment"/></returns>
-        public async Task<UserComment> PostUserCommentAsync(UserComment comment)
+        public async Task<Result<UserComment>> PostUserCommentAsync(UserComment comment)
         {
+            // Returns Fail if comments locked
+            if (comment.User.CommentsLocked) return Result.Fail<UserComment>("Comments locked", 403);
+            
             // Adds comment to database and saves changes
             await AddUserCommentAsync(comment);
 
@@ -443,7 +446,7 @@ namespace SimpleForum.Internal
                 await AddNotificationAsync(notification);
             }
 
-            return comment;
+            return Result.Ok(comment);
         }
 
         /// <summary>

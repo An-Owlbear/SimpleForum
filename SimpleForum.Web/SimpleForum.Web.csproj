@@ -102,12 +102,6 @@
         <Compile Update="Policies\UserOwnerHandler.cs">
             <DependentUpon>UserOwnerRequirement.cs</DependentUpon>
         </Compile>
-        <Compile Update="Policies\UserPageReplyHandler.cs">
-            <DependentUpon>UserPageReplyRequirement.cs</DependentUpon>
-        </Compile>
-        <Compile Update="Policies\NotificationOwnerHandler.cs">
-          <DependentUpon>NotificationOwnerRequirement.cs</DependentUpon>
-        </Compile>
     </ItemGroup>
 
 </Project>

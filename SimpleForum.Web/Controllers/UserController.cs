@@ -48,7 +48,7 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Posts a comment to a user's profile
-        [Authorize(Policy = "UserPageReply")]
+        [Authorize]
         [ServiceFilter(typeof(VerifiedEmail))]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostUserComment(string content, int userPageID)
@@ -64,11 +64,15 @@ namespace SimpleForum.Web.Controllers
                 UserID = Tools.GetUserID(User),
                 UserPageID = userPageID,
             };
-            await _repository.PostUserCommentAsync(comment);
-            await _repository.SaveChangesAsync();
-            
-            // Redirects to posted comment
-            return Redirect("/User?id=" + userPageID);
+            Result result = await _repository.PostUserCommentAsync(comment);
+
+            // Saves changes and redirects if successful, otherwise returns 403
+            if (result.Success)
+            {
+                await _repository.SaveChangesAsync();
+                return Redirect("/User?id=" + userPageID);
+            }
+            return StatusCode(result.Code);
         }
 
         // Deletes a posted UserComment
@@ -347,11 +351,14 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Displays a notification of the given id
-        [Authorize(Policy = "NotificationOwner")]
+        [Authorize]
         public async Task<IActionResult> Notification(int id)
         {
-            // Retrieves notification from database and sets to read if unread
+            // Retrieves notification from database and return 403 if not owner
             Notification notification = await _repository.GetNotificationAsync(id);
+            if (Tools.GetUserID(User) == notification.UserID) return Forbid();
+            
+            // Sets notification as read if unread
             if (!notification.Read)
             {
                 notification.Read = true;
