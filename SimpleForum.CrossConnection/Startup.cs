@@ -19,33 +19,16 @@ namespace SimpleForum.CrossConnection
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string dbConnectionString = Environment.GetEnvironmentVariable("DbConnectionString");
-            string[] mailConnectionStrings = Environment.GetEnvironmentVariable("MailConnectionString")?.Split(";");
-            if (dbConnectionString == null || mailConnectionStrings == null) throw new NullReferenceException();
+            services.AddSimpleForum(_configuration);
             
-            services.Configure<SimpleForumConfig>(Configuration.GetSection("SimpleForumConfig"));
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(dbConnectionString).UseLazyLoadingProxies());
-            services.AddMailKit(options => options.UseMailKit(new MailKitOptions()
-            {
-                Server = mailConnectionStrings[0].Trim(),
-                Port = int.Parse(mailConnectionStrings[1].Trim()),
-                SenderName = mailConnectionStrings[2].Trim(),
-                SenderEmail = mailConnectionStrings[3].Trim(),
-                Account = mailConnectionStrings[4].Trim(),
-                Password = mailConnectionStrings[5].Trim(),
-                Security = true
-            }));
-
-            services.AddScoped<SimpleForumRepository>();
             services.AddScoped<AuthenticationHandler>();
 
             
