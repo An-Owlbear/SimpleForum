@@ -396,15 +396,18 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="comment">The comment to post</param>
         /// <returns>The posted <see cref="Comment"/></returns>
-        public async Task<Comment> PostCommentAsync(Comment comment)
+        public async Task<Result<Comment>> PostCommentAsync(Comment comment)
         {
+            // Returns fail if thread is locked
+            Thread thread = await GetThreadAsync(comment.ThreadID);
+            if (thread.Locked) return Result.Fail<Comment>("Comments locked", 403);
+            
             // Retrieves user and adds comment to database
             User user = await GetUserAsync(_httpContext.User);
             comment.User = user;
             await AddCommentAsync(comment);
 
             // Creates a notification if the comment creator is not the thread creator
-            Thread thread = await GetThreadAsync(comment.ThreadID);
             if (comment.UserID != thread.UserID)
             {
                 Notification notification = new Notification()
@@ -417,7 +420,7 @@ namespace SimpleForum.Internal
                 await AddNotificationAsync(notification);
             }
 
-            return comment;
+            return Result.Ok(comment);
         }
 
         /// <summary>

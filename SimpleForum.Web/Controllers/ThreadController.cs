@@ -99,7 +99,7 @@ namespace SimpleForum.Web.Controllers
         }
         
         // Posts a comment to a thread
-        [Authorize(Policy = "ThreadReply")]
+        [Authorize]
         [ServiceFilter(typeof(VerifiedEmail))]
         [ServiceFilter(typeof(PreventMuted))]
         public async Task<IActionResult> PostComment(string content, int threadID)
@@ -115,11 +115,15 @@ namespace SimpleForum.Web.Controllers
                 ThreadID = threadID,
                 UserID = user.UserID
             };
-            await _repository.PostCommentAsync(comment);
-            await _repository.SaveChangesAsync();
-            
-            // Redirects to comment
-            return Redirect($"/Thread?id={threadID}#{comment.CommentID}");
+            Result result = await _repository.PostCommentAsync(comment);
+
+            // Saves changes and redirects if successful, otherwise return error
+            if (result.Success)
+            {
+                await _repository.SaveChangesAsync();
+                return Redirect($"/Thread?id={threadID}#{comment.CommentID}");
+            }
+            return StatusCode(result.Code);
         }
 
         // Returns page for admin actions on threads
