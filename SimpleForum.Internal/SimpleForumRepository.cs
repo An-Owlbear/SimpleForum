@@ -431,7 +431,8 @@ namespace SimpleForum.Internal
         public async Task<Result<UserComment>> PostUserCommentAsync(UserComment comment)
         {
             // Returns Fail if comments locked
-            if (comment.User.CommentsLocked) return Result.Fail<UserComment>("Comments locked", 403);
+            User user = await GetUserAsync(comment.UserID);
+            if (user.CommentsLocked) return Result.Fail<UserComment>("Comments locked", 403);
             
             // Adds comment to database and saves changes
             await AddUserCommentAsync(comment);
