@@ -45,10 +45,6 @@ namespace SimpleForum.Web
                 {
                     policy.Requirements.Add(new ThreadOwnerOrAdminRequirement());
                 });
-                options.AddPolicy("ThreadOwner", policy =>
-                {
-                    policy.Requirements.Add(new ThreadOwnerRequirement());
-                });
                 options.AddPolicy("UserOwnerOrAdmin", policy =>
                 {
                     policy.Requirements.Add(new UserOwnerOrAdminRequirement());
@@ -59,7 +55,6 @@ namespace SimpleForum.Web
                 });
             });
             services.AddScoped<IAuthorizationHandler, ThreadOwnerOrAdminHandler>();
-            services.AddScoped<IAuthorizationHandler, ThreadOwnerHandler>();
             services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, UserOwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, CommentOwnerHandler>();

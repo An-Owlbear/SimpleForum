@@ -90,9 +90,6 @@
         <Compile Update="Policies\ThreadOwnerOrAdminHandler.cs">
             <DependentUpon>ThreadOwnerOrAdminRequirement.cs</DependentUpon>
         </Compile>
-        <Compile Update="Policies\ThreadOwnerHandler.cs">
-            <DependentUpon>ThreadOwnerRequirement.cs</DependentUpon>
-        </Compile>
         <Compile Update="Policies\UserOwnerOrAdminHandler.cs">
             <DependentUpon>UserOwnerOrAdminRequirement.cs</DependentUpon>
         </Compile>
