@@ -3,12 +3,10 @@
   font-family: 'Open Sans', sans-serif;
   --navbar-text-primary: #b6b6b6;
   --navbar-text-secondary: #ececec;
-  /* --text-primary: #5C728A; */
   --text-primary: #404E5C;
   --bg-primary: #FAFAFA;
   --bg-secondary: #E5EBF1;
   --text-primary-light: #FFFFFF;
-  /* --bg-secondary: #EDF1F5; */
   --navbar-primary: #23232e;
   --navbar-secondary: #141418;
   --button-primary: 3 DB4F2;
@@ -19,6 +17,13 @@ a:focus {
   outline: none;
 }
 
+button {
+  font-size: 16px;
+}
+
+button:focus {
+  outline: none;
+}
 
 button::-moz-focus-inner {
   border: 0;
