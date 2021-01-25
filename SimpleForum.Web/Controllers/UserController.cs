@@ -138,12 +138,12 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Locks a user's comments
-        [Authorize(Policy = "UserOwner")]
+        [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> LockComments(int id)
+        public async Task<IActionResult> LockComments()
         {
             // Retrieves user and sets comments as locked
-            User user = await _repository.GetUserAsync(id);
+            User user = await _repository.GetUserAsync(User);
             user.CommentsLocked = true;
             await _repository.SaveChangesAsync();
             
@@ -157,12 +157,12 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Clears a user's comments
-        [Authorize(Policy = "UserOwner")]
+        [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> ClearComments(int id)
+        public async Task<IActionResult> ClearComments()
         {
             // Retrieves user and deletes comments
-            User user = await _repository.GetUserAsync(id);
+            User user = await _repository.GetUserAsync(User);
             foreach (UserComment userComment in user.UserPageComments)
             {
                 userComment.Deleted = true;
@@ -179,12 +179,12 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Unlocks a user's comments
-        [Authorize(Policy = "UserOwner")]
+        [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> UnlockComments(int id)
+        public async Task<IActionResult> UnlockComments()
         {
             // Retrieves users and locks comments
-            User user = await _repository.GetUserAsync(id);
+            User user = await _repository.GetUserAsync(User);
             user.CommentsLocked = false;
             await _repository.SaveChangesAsync();
 

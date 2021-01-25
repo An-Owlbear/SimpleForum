@@ -38,7 +38,7 @@
                 {
                     <a class="content-container-top-link" asp-action="AdminActions" asp-route-id="@Model.User.UserID">Admin actions</a>
                 }
-                @if ((await AuthorizationService.AuthorizeAsync(User, "UserOwner")).Succeeded)
+                @if (Model.User.UserID == Model.CurrentUser?.UserID)
                 {
                     <a class="content-container-top-link" asp-action="CommentSettings">Comment settings</a>
                     <a class="content-container-top-link" asp-action="Edit">Edit profile</a>

@@ -99,9 +99,6 @@
         <Compile Update="Policies\UserOwnerOrAdminHandler.cs">
             <DependentUpon>UserOwnerOrAdminRequirement.cs</DependentUpon>
         </Compile>
-        <Compile Update="Policies\UserOwnerHandler.cs">
-            <DependentUpon>UserOwnerRequirement.cs</DependentUpon>
-        </Compile>
     </ItemGroup>
 
 </Project>

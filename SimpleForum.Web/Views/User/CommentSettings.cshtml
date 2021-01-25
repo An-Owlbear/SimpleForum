@@ -11,7 +11,6 @@
             <li class="action-list-item">
                 <span class="action-list-item-title">Lock comments, disabling further comments</span>
                 <form asp-action="LockComments" method="post">
-                    <input type="hidden" name="id" value="@Model.UserID">
                     <button class="action-list-item-button" type="submit">Lock comments</button>
                 </form>
             </li>
@@ -21,7 +20,6 @@
             <li class="action-list-item">
                 <span class="action-list-item-title">Unlock comments, allowing users to reply again</span>
                 <form asp-action="UnlockComments">
-                    <input type="hidden" name="id" value="@Model.UserID">
                     <button class="action-list-item-button" type="submit">Unlock comments</button>
                 </form>
             </li>
@@ -29,7 +27,6 @@
         <li class="action-list-item">
             <span class="action-list-item-title">Clear all comments</span>
             <form asp-action="ClearComments" method="post">
-                <input type="hidden" name="id" value="@Model.UserID">
                 <button class="action-list-item-button" type="submit">Clear comments</button>
             </form>
         </li>
