@@ -8,6 +8,7 @@ namespace SimpleForum.Internal
 {
     public class SimpleForumHostBuilder
     {
+        // Creates a host builder for the given service
         public static IHostBuilder CreateHostBuilder<Startup>(string[] args, Service service) where Startup : class 
         {
             SimpleForumConfig config = new SimpleForumConfig();

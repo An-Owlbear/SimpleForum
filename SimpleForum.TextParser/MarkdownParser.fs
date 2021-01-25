@@ -1,6 +1,7 @@
 ﻿module SimpleForum.TextParser.MarkdownParser
 open System
 open System.Text
+open System.Web
 open ParserCombinators
 open StandardParsers
 
@@ -139,7 +140,7 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
             | Image (alt, url) -> sprintf "<img src=%s alt=%s>" url alt
             | Link (title, url) -> sprintf "<a href=%s>%s</a>" url (markdownToHTML title)
             | BlockQuote blockquote -> sprintf "<blockquote>%s</blockquote>" (markdownToHTML blockquote)
-            | Text text -> text.Replace("\r\n", "<br>\r\n")
+            | Text text -> HttpUtility.HtmlEncode(text) |> fun x -> x.Replace("\r\n", "<br>\r\n")
         acc.Append(value)
     ) (StringBuilder())
     |> fun x -> x.ToString()
