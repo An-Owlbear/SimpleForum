@@ -40,10 +40,10 @@ namespace SimpleForum.CrossConnection
             string authHeader = Request.Headers["Authorization"];
 
             if (string.IsNullOrEmpty(authHeader)) return AuthenticateResult.Fail("Unauthorized");
-            if (!authHeader.StartsWith("bearer ", StringComparison.OrdinalIgnoreCase)) return 
+            if (!authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)) return 
                 AuthenticateResult.Fail("Unauthorized");
 
-            string token = authHeader.Substring("bearer ".Length).Trim();
+            string token = authHeader.Substring("Bearer ".Length).Trim();
             if (string.IsNullOrEmpty(token)) return AuthenticateResult.Fail("Unauthorized");
 
             return await verifyToken(token);
