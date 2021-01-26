@@ -7,11 +7,19 @@ namespace SimpleForum.Models
     /// </summary>
     public abstract class ServerToken
     {
-        [Key]
         public string Address { get; set; }
         public string Token { get; set; }
     }
-    
-    public class OutgoingServerToken : ServerToken { }
-    public class IncomingServerToken : ServerToken { }
+
+    public class OutgoingServerToken : ServerToken
+    {
+        [Key]
+        public int OutgoingServerTokenID { get; set; }
+    }
+
+    public class IncomingServerToken : ServerToken
+    {
+        [Key]
+        public int IncomingServerTokenID { get; set; }
+    }
 }

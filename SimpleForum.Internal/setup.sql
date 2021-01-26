@@ -96,6 +96,7 @@ CREATE TABLE `OutgoingServerTokens` (
 )
 
 CREATE TABLE `IncomingServerTokens` (
+    `Ser`
     `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
     `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
     CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`Address`)
