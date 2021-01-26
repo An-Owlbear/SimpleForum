@@ -32,7 +32,7 @@ namespace SimpleForum.CrossConnection.Controllers
         [HttpGet("CheckToken")]
         public async Task<IActionResult> OutgoingTokenCheck(string token)
         {
-            OutgoingServerToken outgoingToken = await _repository.GetOutgoingServerTokenAsync(token);
+            OutgoingServerToken outgoingToken = await _repository.GetOutgoingServerTokenByValueAsync(token);
             if (outgoingToken == null) return NotFound();
             return Ok();
         }

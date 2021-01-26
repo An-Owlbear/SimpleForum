@@ -52,7 +52,7 @@ namespace SimpleForum.CrossConnection
         // Returns true if the token is valid, else false
         private async Task<AuthenticateResult> verifyToken(string token)
         {
-            IncomingServerToken serverToken = await _repository.GetIncomingServerTokenAsync(token);
+            IncomingServerToken serverToken = await _repository.GetIncomingServerTokenByValueAsync(token);
             if (serverToken == null) return AuthenticateResult.Fail("Unauthorized");
 
             List<Claim> claims = new List<Claim>()

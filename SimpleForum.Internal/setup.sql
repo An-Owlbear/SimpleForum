@@ -90,15 +90,17 @@ CREATE TABLE `Notifications` (
 );
 
 CREATE TABLE `OutgoingServerTokens` (
+    `OutgoingServerTokenID` int NOT NULL AUTO_INCREMENT,
     `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
     `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
-    CONSTRAINT `PK_OutgoingServerTokens` PRIMARY KEY (`Address`)
+    CONSTRAINT `PK_OutgoingServerTokens` PRIMARY KEY (`OutgoingServerTokenID`)
 )
 
 CREATE TABLE `IncomingServerTokens` (
+    `IncomingServerTokenID` int NOT NULL AUTO_INCREMENT,
     `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
     `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
-    CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`Address`)
+    CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`IncomingServerTokenID`)
 )
 
 CREATE INDEX `IX_Comments_ThreadID` ON `Comments` (`ThreadID`);

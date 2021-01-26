@@ -170,7 +170,7 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<OutgoingServerToken> GetOutgoingServerTokenAsync(string token)
+        public async Task<OutgoingServerToken> GetOutgoingServerTokenByValueAsync(string token)
         {
             return await _context.OutgoingServerTokens.FirstOrDefaultAsync(x => x.Token == token);
         }
@@ -182,7 +182,7 @@ namespace SimpleForum.Internal
         /// <returns></returns>
         public async Task<OutgoingServerToken> GetOutgoingServerTokenByNameAsync(string name)
         {
-            return await _context.OutgoingServerTokens.FindAsync(name);
+            return await _context.OutgoingServerTokens.FirstOrDefaultAsync(x => x.Address == name);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace SimpleForum.Internal
         /// </summary>
         /// <param name="token">The token to find</param>
         /// <returns></returns>
-        public async Task<IncomingServerToken> GetIncomingServerTokenAsync(string token)
+        public async Task<IncomingServerToken> GetIncomingServerTokenByValueAsync(string token)
         {
             return await _context.IncomingServerTokens.FirstOrDefaultAsync(x => x.Token == token);
         }
