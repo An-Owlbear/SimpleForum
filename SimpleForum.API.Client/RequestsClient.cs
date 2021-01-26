@@ -14,29 +14,50 @@ namespace SimpleForum.API.Client
     {
         private readonly HttpClient _client;
         private readonly ITokenStorage _tokenStorage;
-        private string _fqdn;
+        private readonly string _fqdn;
 
-        public RequestsClient(string fqdn, ITokenStorage tokenStorage)
+        public RequestsClient(string fqdn) : this()
         {
-            // Sets FQDN and token storage
+            _fqdn = fqdn;
+        }
+
+        public RequestsClient(ITokenStorage tokenStorage) : this()
+        {
+            _tokenStorage = tokenStorage;
+        }
+        
+        public RequestsClient(string fqdn, ITokenStorage tokenStorage) : this()
+        {
             _fqdn = fqdn;
             _tokenStorage = tokenStorage;
-            
+        }
+        
+        public RequestsClient()
+        {
             // Configures and creates HttpClient
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            HttpClientHandler handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
             _client = new HttpClient(handler);
             _client.DefaultRequestHeaders.Add("Connection", "keep-alive");
         }
 
-        public async Task<HttpResponseMessage> SendRequest(Endpoint endpoint, Dictionary<string, string> parameters = null)
+        public async Task<HttpResponseMessage> SendRequest(Endpoint endpoint, Dictionary<string, string> parameters = null, string auth = null)
         {
+            // Throws exception if _fqdn is null
+            if (String.IsNullOrEmpty(_fqdn)) throw new InvalidOperationException();
+
+            return await SendRequest(_fqdn, endpoint, parameters);
+        }
+
+        public async Task<HttpResponseMessage> SendRequest(string fqdn, Endpoint endpoint, Dictionary<string, string> parameters = null, string auth = null)
+        { 
             // Sets parameters as an empty dictionary if null
             parameters ??= new Dictionary<string, string>();
             
             // Creates request
-            HttpRequestMessage request = new HttpRequestMessage();
-            request.Method = endpoint.Method;
+            HttpRequestMessage request = new HttpRequestMessage { Method = endpoint.Method };
 
             // Creates a list of parameters in the url path
             Dictionary<string, string> pathParameters = parameters
@@ -49,7 +70,7 @@ namespace SimpleForum.API.Client
                 .ToDictionary(x => x.Key, x => x.Value);
 
             // Creates url string
-            string url = _fqdn + pathParameters
+            string url = fqdn + pathParameters
                 .Aggregate(endpoint.Path,
                     (acc, next) =>
                         Regex.Replace(acc, $@":{next.Key}(?!\w)", next.Value));
@@ -71,7 +92,7 @@ namespace SimpleForum.API.Client
             // Adds authentication
             if (endpoint.AuthRequired)
             {
-                request.Headers.Add("Authorization", $"Bearer {_tokenStorage.GetToken()}");
+                request.Headers.Add("Authorization", $"Bearer {auth ?? _tokenStorage.GetToken()}");
             }
 
             // Returns response
