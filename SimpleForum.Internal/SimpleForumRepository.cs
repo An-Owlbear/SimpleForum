@@ -287,10 +287,20 @@ namespace SimpleForum.Internal
             return addedToken.Entity;
         }
 
-        public async Task<IncomingServerToken> AddIncomingServerToken(IncomingServerToken serverToken)
+        /// <summary>
+        /// Adds an incoming server token to the database
+        /// </summary>
+        /// <param name="serverToken"></param>
+        /// <returns></returns>
+        public async Task<Result<IncomingServerToken>> AddIncomingServerToken(IncomingServerToken serverToken)
         {
+            // Returns failure if token for the given domain already exists
+            if (await _context.IncomingServerTokens.AnyAsync(x => x.Address == serverToken.Address))
+                return Result.Fail<IncomingServerToken>("Token for given address already exists", 400);
+            
+            // Adds and returns token
             EntityEntry<IncomingServerToken> addedToken = await _context.IncomingServerTokens.AddAsync(serverToken);
-            return addedToken.Entity;
+            return Result.Ok(addedToken.Entity);
         }
 
 
