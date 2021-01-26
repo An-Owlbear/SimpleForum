@@ -39,20 +39,7 @@ namespace SimpleForum.Web
                 });
 
             services.AddHttpContextAccessor();
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ThreadOwnerOrAdmin", policy =>
-                {
-                    policy.Requirements.Add(new ThreadOwnerOrAdminRequirement());
-                });
-                options.AddPolicy("UserOwnerOrAdmin", policy =>
-                {
-                    policy.Requirements.Add(new UserOwnerOrAdminRequirement());
-                });
-            });
-            services.AddScoped<IAuthorizationHandler, ThreadOwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
-            services.AddScoped<IAuthorizationHandler, UserOwnerOrAdminHandler>();
 
             services.AddScoped<VerifiedEmail>();
             services.AddScoped<CheckPassword>();

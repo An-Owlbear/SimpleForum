@@ -86,13 +86,4 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-        <Compile Update="Policies\ThreadOwnerOrAdminHandler.cs">
-            <DependentUpon>ThreadOwnerOrAdminRequirement.cs</DependentUpon>
-        </Compile>
-        <Compile Update="Policies\UserOwnerOrAdminHandler.cs">
-            <DependentUpon>UserOwnerOrAdminRequirement.cs</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
 </Project>
