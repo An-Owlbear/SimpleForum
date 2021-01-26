@@ -1,15 +1,12 @@
-using System;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NETCore.MailKit.Extensions;
-using NETCore.MailKit.Infrastructure.Internal;
+using SimpleForum.API.Client;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Internal;
 
@@ -28,6 +25,7 @@ namespace SimpleForum.CrossConnection
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSimpleForum(_configuration);
+            services.AddSingleton<CrossConnectionClient>();
             
             services.AddScoped<AuthenticationHandler>();
 
