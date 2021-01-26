@@ -5,5 +5,5 @@
     "PrivateKey": "moAlQg6tJBBDJ1bk2QxDnebQ4Zyjnwos",
     "WebPort": 5000,
     "ApiPort": 5001,
-    "CrossInstancePort": 5002 
+    "CrossConnectionPort": 5002 
 }
