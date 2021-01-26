@@ -49,15 +49,10 @@ namespace SimpleForum.Web
                 {
                     policy.Requirements.Add(new UserOwnerOrAdminRequirement());
                 });
-                options.AddPolicy("CommentOwner", policy =>
-                {
-                    policy.Requirements.Add(new CommentOwnerRequirement());
-                });
             });
             services.AddScoped<IAuthorizationHandler, ThreadOwnerOrAdminHandler>();
             services.AddScoped<IAuthorizationHandler, RolesAuthorizationHandler>();
             services.AddScoped<IAuthorizationHandler, UserOwnerOrAdminHandler>();
-            services.AddScoped<IAuthorizationHandler, CommentOwnerHandler>();
 
             services.AddScoped<VerifiedEmail>();
             services.AddScoped<CheckPassword>();

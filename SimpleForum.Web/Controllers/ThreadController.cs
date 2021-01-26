@@ -282,13 +282,15 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Deletes a comment from a thread
-        [Authorize(Policy = "CommentOwner")]
+        [Authorize]
         [ServiceFilter(typeof(VerifiedEmail))]
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            // Deletes the comment and saves changes
-            await _repository.DeleteCommentAsync(id);
+            // Deletes the comment and saves changes if successful
+            Result result = await _repository.DeleteCommentAsync(id);
+            if (result.Failure) return StatusCode(result.Code);
+            
             await _repository.SaveChangesAsync();
 
             // Creates model and returns view
