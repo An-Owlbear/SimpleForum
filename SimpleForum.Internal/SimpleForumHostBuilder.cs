@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -36,7 +37,7 @@ namespace SimpleForum.Internal
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls($"http://localhost:{port}");
+                    webBuilder.UseUrls($"http://localhost:{args.FirstOrDefault() ?? port.ToString()}");
                     webBuilder.UseStartup<Startup>();
                 });
         }
