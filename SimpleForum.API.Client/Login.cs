@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using SimpleForum.API.Models.Responses;
+using SimpleForum.Internal;
 
 namespace SimpleForum.API.Client
 {

@@ -1,5 +1,6 @@
 using System;
 using SimpleForum.API.Models.Responses;
+using SimpleForum.Internal;
 
 namespace SimpleForum.API.Client.Tests
 {
