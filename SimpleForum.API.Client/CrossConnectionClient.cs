@@ -45,5 +45,52 @@ namespace SimpleForum.API.Client
             Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
             return Result.Fail(error.Message, error.Type);
         }
+
+        /// <summary>
+        /// Checks if a domain has already been registered in the given server
+        /// </summary>
+        /// <param name="address">The server to query</param>
+        /// <param name="checkAddress">The address to check</param>
+        /// <returns>Returns a successful when it has not been registered, otherwise returns a failure result</returns>
+        public async Task<Result> CheckAddress(string address, string checkAddress)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "address", checkAddress }
+            };
+
+            HttpResponseMessage response = await _requestsClient
+                .SendRequest(address, CrossConnectionEndpoints.CheckAddress, parameters).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode) return Result.Ok();
+
+            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
+            return Result.Fail(error.Message, error.Type);
+        }
+
+        /// <summary>
+        /// Registers an outgoing token at the given address
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="registerAddress"></param>
+        /// <returns></returns>
+        public async Task<Result> RegisterAddress(string address, string registerAddress, string token)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "address", registerAddress },
+                { "token", token }
+            };
+
+            HttpResponseMessage response = await _requestsClient
+                .SendRequest(address, CrossConnectionEndpoints.RegisterToken, parameters).ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode) return Result.Ok();
+
+            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
+            return Result.Fail(error.Message, error.Type);
+        }
     }
 }
