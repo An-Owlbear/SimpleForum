@@ -22,6 +22,7 @@
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.11" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.11" />
+      <ProjectReference Include="..\SimpleForum.API.Client\SimpleForum.API.Client.csproj" />
       <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
       <ProjectReference Include="..\SimpleForum.Common\SimpleForum.Common.csproj" />
       <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />

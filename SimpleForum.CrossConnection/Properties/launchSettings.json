@@ -23,7 +23,10 @@
     },
     "SimpleForum.CrossConnection2": {
       "commandName": "Project",
-      "commandLineArgs": "5003"
+      "commandLineArgs": "5003",
+      "environmentVariables": {
+        "DbConnectionString": "Server=localhost;User Id=simpleforum;Password=simpleforum_pass;Database=simpleforum2"
+      }
     }
   }
 }

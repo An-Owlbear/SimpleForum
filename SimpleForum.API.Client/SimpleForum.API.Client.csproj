@@ -6,7 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
-      <ProjectReference Include="..\SimpleForum.Common.Server\SimpleForum.Common.Server.csproj" />
+      <ProjectReference Include="..\SimpleForum.Common\SimpleForum.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
