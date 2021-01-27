@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 
 namespace SimpleForum.Web
 {

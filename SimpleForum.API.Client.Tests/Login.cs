@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using SimpleForum.API.Models.Responses;
-using SimpleForum.Internal;
+using SimpleForum.Common;
 
 namespace SimpleForum.API.Client.Tests
 {

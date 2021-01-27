@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SimpleForum.Internal;
+using SimpleForum.Common;
+using SimpleForum.Common.Server;
 using SimpleForum.Models;
 
 namespace SimpleForum.API

@@ -5,13 +5,13 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Models", "SimpleForum.Models\SimpleForum.Models.csproj", "{4BB520A4-819D-4B7D-8310-B8532D80BA02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Internal", "SimpleForum.Internal\SimpleForum.Internal.csproj", "{660C9D8C-47D1-4D00-A8C5-B9ADA3A56724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Common.Server", "SimpleForum.Common.Server\SimpleForum.Common.Server.csproj", "{660C9D8C-47D1-4D00-A8C5-B9ADA3A56724}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API", "SimpleForum.API\SimpleForum.API.csproj", "{6757F49C-C745-43ED-9155-C92D98EFF197}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Web", "SimpleForum.Web\SimpleForum.Web.csproj", "{F54AEB90-6273-47CB-9936-B0DDDB0D9878}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Internal.Tests", "SimpleForum.Internal.Tests\SimpleForum.Internal.Tests.csproj", "{92186F81-A78B-4D32-A73A-98906ADB2A18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Common.Tests", "SimpleForum.Common.Tests\SimpleForum.Common.Tests.csproj", "{92186F81-A78B-4D32-A73A-98906ADB2A18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.API.Models", "SimpleForum.API.Models\SimpleForum.API.Models.csproj", "{A0B65E78-1702-417F-9390-971BE8203FD5}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SimpleForum.TextParser.Tests", "SimpleForum.TextParser.Tests\SimpleForum.TextParser.Tests.fsproj", "{EB81C390-5387-4859-A8D1-386C9FECC966}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.CrossConnection", "SimpleForum.CrossConnection\SimpleForum.CrossConnection.csproj", "{2804B295-980B-48AA-9B57-39F937048873}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleForum.Common", "SimpleForum.Common\SimpleForum.Common.csproj", "{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,5 +172,17 @@ Global
 		{2804B295-980B-48AA-9B57-39F937048873}.Release|x64.Build.0 = Release|Any CPU
 		{2804B295-980B-48AA-9B57-39F937048873}.Release|x86.ActiveCfg = Release|Any CPU
 		{2804B295-980B-48AA-9B57-39F937048873}.Release|x86.Build.0 = Release|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Debug|x64.Build.0 = Debug|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Debug|x86.Build.0 = Debug|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Release|x64.Build.0 = Release|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F0484B3-AF82-4187-84D1-F9B4D8713B2E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

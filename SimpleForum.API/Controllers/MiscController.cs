@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Responses;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 
 namespace SimpleForum.API.Controllers
 {

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Hosting;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 
 namespace SimpleForum.API
 {

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 
 namespace SimpleForum.API.Policies
 {

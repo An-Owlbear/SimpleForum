@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 using SimpleForum.Models;
 
 namespace SimpleForum.CrossConnection

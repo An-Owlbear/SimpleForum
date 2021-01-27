@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 using SimpleForum.Models;
 
 namespace SimpleForum.Web.Policies

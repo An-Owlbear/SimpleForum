@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
-using SimpleForum.Internal;
+using SimpleForum.Common;
+using SimpleForum.Common.Server;
 
 namespace SimpleForum.API.Controllers
 {

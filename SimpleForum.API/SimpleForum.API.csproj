@@ -10,7 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SimpleForum.API.Models\SimpleForum.API.Models.csproj" />
-      <ProjectReference Include="..\SimpleForum.Internal\SimpleForum.Internal.csproj" />
+      <ProjectReference Include="..\SimpleForum.Common.Server\SimpleForum.Common.Server.csproj" />
       <ProjectReference Include="..\SimpleForum.Models\SimpleForum.Models.csproj" />
     </ItemGroup>
 

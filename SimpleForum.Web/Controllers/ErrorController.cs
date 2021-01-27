@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 using SimpleForum.Models;
 using SimpleForum.Web.Models;
 

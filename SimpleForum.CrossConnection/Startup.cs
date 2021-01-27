@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleForum.API.Client;
 using SimpleForum.API.Models.Responses;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 
 namespace SimpleForum.CrossConnection
 {

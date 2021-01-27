@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Client;
-using SimpleForum.API.Models.Requests.CrossConnection;
-using SimpleForum.Internal;
+using SimpleForum.Common;
+using SimpleForum.Common.Server;
 using SimpleForum.Models;
 
 namespace SimpleForum.CrossConnection.Controllers

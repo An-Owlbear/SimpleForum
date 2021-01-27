@@ -1,18 +1,13 @@
-using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NETCore.MailKit.Extensions;
-using NETCore.MailKit.Infrastructure.Internal;
-using SimpleForum.Internal;
-using SimpleForum.Internal.Policies;
+using SimpleForum.Common.Server;
+using SimpleForum.Common.Server.Policies;
 using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web

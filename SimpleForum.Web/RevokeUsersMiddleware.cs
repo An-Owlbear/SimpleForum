@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using SimpleForum.Internal;
+using SimpleForum.Common.Server;
 using SimpleForum.Models;
 
 namespace SimpleForum.Web
