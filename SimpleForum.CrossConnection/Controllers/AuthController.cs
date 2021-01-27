@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Client;
+using SimpleForum.API.Models.Requests.CrossConnection;
 using SimpleForum.Common;
 using SimpleForum.Common.Server;
 using SimpleForum.Models;
@@ -37,11 +38,26 @@ namespace SimpleForum.CrossConnection.Controllers
             return Ok();
         }
 
+        // Checks if an incoming token for the given address has been registered
+        [HttpGet("CheckAddress")]
+        public async Task<IActionResult> CheckAddress(string address)
+        {
+            IncomingServerToken serverToken = await _repository.GetIncomingServerTokenByNameAsync(address);
+            if (serverToken == null) return Ok();
+            return Conflict();
+        }
+
         // Adds an incoming server token to the database
         [HttpPut("RegisterToken")]
-        public async Task<IActionResult> RegisterIncomingToken(IncomingServerToken request)
+        public async Task<IActionResult> RegisterIncomingToken(RegisterTokenRequest request)
         {
-            Result addResult = await _repository.AddIncomingServerToken(request);
+            IncomingServerToken token = new IncomingServerToken()
+            {
+                Address = request.Address,
+                Token = request.Token
+            };
+            
+            Result addResult = await _repository.AddIncomingServerToken(token);
             if (addResult.Failure) return StatusCode(addResult.Code, addResult.Error); 
             Result checkResult = await _crossConnectionClient.CheckToken(request.Address, request.Token);
             

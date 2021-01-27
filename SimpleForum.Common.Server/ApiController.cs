@@ -104,6 +104,14 @@ namespace SimpleForum.Common.Server
         }
 
         /// <summary>
+        /// Returns a conflict 
+        /// </summary>
+        public new ConflictObjectResult Conflict()
+        {
+            return new ConflictObjectResult(new Error(409));
+        }
+
+        /// <summary>
         /// Returns a result of the given status code
         /// </summary>
         /// <param name="statusCode">The status code to use for the result</param>

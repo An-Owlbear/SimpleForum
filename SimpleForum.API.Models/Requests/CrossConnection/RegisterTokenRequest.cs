@@ -2,7 +2,7 @@
 {
     public class RegisterTokenRequest
     {
+        public string Address { get; set; }
         public string Token { get; set; }
-        public string Domain { get; set; }
     }
 }

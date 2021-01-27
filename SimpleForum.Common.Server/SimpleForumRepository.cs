@@ -195,6 +195,16 @@ namespace SimpleForum.Common.Server
             return await _context.IncomingServerTokens.FirstOrDefaultAsync(x => x.Token == token);
         }
 
+        /// <summary>
+        /// Returns the incoming token for the given name
+        /// </summary>
+        /// <param name="name">The address of the server</param>
+        /// <returns></returns>
+        public async Task<IncomingServerToken> GetIncomingServerTokenByNameAsync(string name)
+        {
+            return await _context.IncomingServerTokens.FirstOrDefaultAsync(x => x.Address == name);
+        }
+
         //
         // Methods for adding a single item to the database
         //
