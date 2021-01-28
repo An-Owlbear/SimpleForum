@@ -160,7 +160,7 @@ namespace SimpleForum.Common.Server
         /// </summary>
         /// <param name="token">The token to return</param>
         /// <returns><see cref="RemoteAuthToken"/></returns>
-        public async Task<RemoteAuthToken> GetAuthTokenAsync(string token)
+        public async Task<RemoteAuthToken> GetRemoteAuthTokenAsync(string token)
         {
             return await _context.RemoteAuthTokens.FindAsync(token);
         }
@@ -280,7 +280,7 @@ namespace SimpleForum.Common.Server
         /// </summary>
         /// <param name="remoteAuthToken">The authentication token to be added</param>
         /// <returns>the added <see cref="RemoteAuthToken"/></returns>
-        public async Task<RemoteAuthToken> AddAuthTokenAsync(RemoteAuthToken remoteAuthToken)
+        public async Task<RemoteAuthToken> AddRemoteAuthTokenAsync(RemoteAuthToken remoteAuthToken)
         {
             EntityEntry<RemoteAuthToken> addedToken = await _context.RemoteAuthTokens.AddAsync(remoteAuthToken);
             return addedToken.Entity;
@@ -898,7 +898,7 @@ namespace SimpleForum.Common.Server
             {
                 // Creates and adds auth token if token is unique
                 string code = Tools.GenerateCode(32);
-                if (await GetAuthTokenAsync(code) == null)
+                if (await GetRemoteAuthTokenAsync(code) == null)
                 {
                     RemoteAuthToken token = new RemoteAuthToken()
                     {
@@ -906,7 +906,7 @@ namespace SimpleForum.Common.Server
                         ValidUntil = DateTime.Now.AddMonths(1),
                         UserID = userID
                     };
-                    await AddAuthTokenAsync(token);
+                    await AddRemoteAuthTokenAsync(token);
                     
                     // Returns auth token
                     return token;
