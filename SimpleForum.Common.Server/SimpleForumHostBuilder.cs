@@ -10,12 +10,16 @@ namespace SimpleForum.Common.Server
     public class SimpleForumHostBuilder
     {
         // Creates a host builder for the given service
-        public static IHostBuilder CreateHostBuilder<Startup>(string[] args, Service service) where Startup : class 
+        public static IHostBuilder CreateHostBuilder<Startup>(string[] args, Service service) where Startup : class
         {
+            ServerArguments arguments = ArgumentParser.ParseArguments(args);
+            
+            string path = arguments.Config ?? 
+                          Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "/SimpleForumConfig.json";
+            
             SimpleForumConfig config = new SimpleForumConfig();
             new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory()).FullName)
-                .AddJsonFile("SimpleForumConfig.json", false)
+                .AddJsonFile(path, false)
                 .Build()
                 .Bind(config);
 
@@ -27,8 +31,6 @@ namespace SimpleForum.Common.Server
                 _ => throw new ArgumentOutOfRangeException(nameof(service), service, null)
             };
 
-            string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "/SimpleForumConfig.json";
-
             return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
                 {
@@ -37,7 +39,7 @@ namespace SimpleForum.Common.Server
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls($"http://localhost:{args.FirstOrDefault() ?? port.ToString()}");
+                    webBuilder.UseUrls($"http://localhost:{arguments.Port ?? port}");
                     webBuilder.UseStartup<Startup>();
                 });
         }
