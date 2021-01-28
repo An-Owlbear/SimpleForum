@@ -29,7 +29,11 @@ namespace SimpleForum.Common.Server
             return new ServerArguments()
             {
                 Port = port,
-                Config = Path.Combine(Directory.GetCurrentDirectory(), config ?? "")
+                Config = config switch
+                {
+                    null => null,
+                    _ => Path.Combine(Directory.GetCurrentDirectory(), config) 
+                }
             };
         }
     }
