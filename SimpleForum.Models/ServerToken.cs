@@ -9,6 +9,8 @@ namespace SimpleForum.Models
     public abstract class ServerToken
     {
         public string Address { get; set; }
+        public string ApiAddress { get; set; }
+        public string CrossConnectionAddress { get; set; }
         public string Token { get; set; }
     }
 

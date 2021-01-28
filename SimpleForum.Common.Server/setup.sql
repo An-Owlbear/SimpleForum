@@ -1,6 +1,8 @@
 ﻿CREATE TABLE `OutgoingServerTokens` (
     `OutgoingServerTokenID` int NOT NULL AUTO_INCREMENT,
     `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ApiAddress` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `CrossConnectionAddress` varchar(255) CHARACTER SET  utf8mb4 NOT NULL,
     `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
     CONSTRAINT `PK_OutgoingServerTokens` PRIMARY KEY (`OutgoingServerTokenID`)
 );
@@ -8,6 +10,8 @@
 CREATE TABLE `IncomingServerTokens` (
     `IncomingServerTokenID` int NOT NULL AUTO_INCREMENT,
     `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `ApiAddress` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `CrossConnectionAddress` varchar(255) CHARACTER SET  utf8mb4 NOT NULL,
     `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
     CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`IncomingServerTokenID`)
 );
