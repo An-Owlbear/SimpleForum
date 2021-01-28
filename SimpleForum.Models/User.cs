@@ -23,6 +23,8 @@ namespace SimpleForum.Models
         public string BanReason { get; set; }
         public bool Deleted { get; set; }
 
+        public int? ServerID { get; set; }
+        public virtual IncomingServerToken Server { get; set; }
         public virtual ICollection<Thread> Threads { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         

@@ -24,6 +24,12 @@ namespace SimpleForum.Common.Server
             modelBuilder.Entity<Thread>().HasIndex(x => x.DatePosted);
             modelBuilder.Entity<Comment>().HasIndex(x => x.DatePosted);
             modelBuilder.Entity<UserComment>().HasIndex(x => x.DatePosted);
+
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.Server)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.ServerID)
+                .IsRequired(false);
         }
     }
 }

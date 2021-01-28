@@ -1,9 +1,24 @@
-﻿CREATE TABLE `Users` (
+﻿CREATE TABLE `OutgoingServerTokens` (
+    `OutgoingServerTokenID` int NOT NULL AUTO_INCREMENT,
+    `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_OutgoingServerTokens` PRIMARY KEY (`OutgoingServerTokenID`)
+);
+
+CREATE TABLE `IncomingServerTokens` (
+    `IncomingServerTokenID` int NOT NULL AUTO_INCREMENT,
+    `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
+    `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`IncomingServerTokenID`)
+);
+
+CREATE TABLE `Users` (
     `UserID` int NOT NULL AUTO_INCREMENT,
     `Username` longtext CHARACTER SET utf8mb4 NULL,
     `Email` longtext CHAR SET utf8mb4 NULL,
     `Password` longtext CHARACTER SET utf8mb4 NULL,
     `SignupDate` datetime(6) NOT NULL,
+    `ServerID` int NULL,
     `Bio` longtext CHARACTER SET utf8mb4 NULL,
     `Activated` tinyint(1) NOT NULL DEFAULT FALSE,
     `Role` longtext CHARACTER SET utf8mb4 NULL,
@@ -13,7 +28,9 @@
     `Banned` tinyint(1) NOT NULL DEFAULT FALSE,
     `BanReason` longtext CHARACTER SET utf8mb4 NULL,
     `Deleted` tinyint(1) NOT NULL DEFAULT FALSE,
-    CONSTRAINT `PK_Users` PRIMARY KEY (`UserID`)
+    CONSTRAINT `PK_Users` PRIMARY KEY (`UserID`),
+    CONSTRAINT `FK_Users_IncomingServerTokens_ServerID` FOREIGN KEY (`ServerID`) 
+        REFERENCES `IncomingServerTokens` (`IncomingServerTokenID`) ON DELETE RESTRICT
 );
 
 CREATE TABLE `Threads` (
@@ -89,20 +106,7 @@ CREATE TABLE `Notifications` (
     CONSTRAINT `FK_Notifications_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
 
-CREATE TABLE `OutgoingServerTokens` (
-    `OutgoingServerTokenID` int NOT NULL AUTO_INCREMENT,
-    `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-    `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
-    CONSTRAINT `PK_OutgoingServerTokens` PRIMARY KEY (`OutgoingServerTokenID`)
-)
-
-CREATE TABLE `IncomingServerTokens` (
-    `IncomingServerTokenID` int NOT NULL AUTO_INCREMENT,
-    `Address` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-    `TOKEN` longtext CHARACTER SET utf8mb4 NOT NULL,
-    CONSTRAINT `PK_IncomingServerTokens` PRIMARY KEY (`IncomingServerTokenID`)
-)
-
+CREATE INDEX `IX_Users_ServerID` on `Users` (`ServerID`);
 CREATE INDEX `IX_Comments_ThreadID` ON `Comments` (`ThreadID`);
 CREATE INDEX `IX_Comments_UserID` ON `Comments` (`UserID`);
 CREATE INDEX `IX_Comments_DatePosted` ON `Comments` (`DatePosted`);

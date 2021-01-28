@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleForum.Models
 {
@@ -21,5 +22,6 @@ namespace SimpleForum.Models
     {
         [Key]
         public int IncomingServerTokenID { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
