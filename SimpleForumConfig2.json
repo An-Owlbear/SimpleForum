@@ -1,8 +1,8 @@
 ﻿{
     "InstanceName": "ComplexForum",
-    "InstanceURL": "http://localhost:5003",
-    "APIURL": "http://localhost:5004",
-    "CrossConnectionURL": "http://localhost:5005",
+    "InstanceURL": "http://127.0.0.1:5003",
+    "APIURL": "http://127.0.0.1:5004",
+    "CrossConnectionURL": "http://127.0.0.1:5005",
     "RequireEmailVerification": true,
     "PrivateKey": "moAlQg6tJBBDJ1bk2QxDnebQ4Zyjnwos",
     "WebPort": 5003,

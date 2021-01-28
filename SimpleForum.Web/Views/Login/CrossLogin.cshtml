@@ -1,0 +1,12 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Cross instance login";
+}
+
+<div class="variable-container">
+    <span class="login-form-title cross-login-title">Are you sure you want to login to @Model.ReturnUrl?</span>
+    <form class="login-form" asp-action="SendCrossLogin" method="post">
+        <input name="address" type="hidden" value="@Model.ReturnUrl">
+        <button class="login-button cross-login-button" type="submit">Login</button>
+    </form>
+</div>

@@ -74,6 +74,7 @@ namespace SimpleForum.API.Client
         /// </summary>
         /// <param name="address"></param>
         /// <param name="registerAddress"></param>
+        /// <param name="token">The token to register on the remote server</param>
         /// <returns></returns>
         public async Task<Result> RegisterAddress(string address, string registerAddress, string token)
         {

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 using SimpleForum.Web.Models;
 using SimpleForum.Common.Server;
 using SimpleForum.Models;
@@ -48,6 +49,16 @@ namespace SimpleForum.Web.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult InstanceInfo()
+        {
+            return Json(new
+            {
+                InstanceURL = _config.InstanceURL,
+                APIURL = _config.APIURL,
+                CrossConnectionURL = _config.CrossConnectionURL
+            });
         }
     }
 }

@@ -1005,6 +1005,10 @@ textarea.edit-container-item {
   border-left: 0.25rem solid var(--text-primary) ;
 }
 
+.cross-login-button {
+  width: 100%;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar {
     height: 4rem;
@@ -1321,5 +1325,21 @@ textarea.edit-container-item {
   
   .profile-info-name {
     margin-bottom: 0;
+  }
+  
+  .cross-login-button {
+    width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .cross-login-title {
+    padding: 1rem;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    width: 90%;
+    word-break: break-word;
+    margin: 0 auto;
   }
 }

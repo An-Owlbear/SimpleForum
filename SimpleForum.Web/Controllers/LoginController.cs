@@ -16,10 +16,12 @@ namespace SimpleForum.Web.Controllers
     public class LoginController : Controller
     {
         private readonly SimpleForumRepository _repository;
+        private readonly CrossConnectionManager _crossConnectionManager;
 
-        public LoginController(SimpleForumRepository repository)
+        public LoginController(SimpleForumRepository repository, CrossConnectionManager crossConnectionManager)
         {
             _repository = repository;
+            _crossConnectionManager = crossConnectionManager;
         }
         
         // Returns the login page
@@ -167,5 +169,33 @@ namespace SimpleForum.Web.Controllers
             };
             return View("Message", model);
         }
+
+        // Displays the page asking the user if they want to login to another instance
+        [Authorize]
+        public IActionResult CrossLogin(string address)
+        {
+            if (String.IsNullOrEmpty(address)) return Redirect("/");
+            LoginViewModel model = new LoginViewModel() { ReturnUrl = address };
+            return View(model);
+        }
+        
+        // Logs into the other instance
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> SendCrossLogin(string address)
+        {
+            if (String.IsNullOrEmpty(address)) return Redirect("/");
+            await _crossConnectionManager.SetupContact(address);
+
+            RemoteAuthToken token = new RemoteAuthToken()
+            {
+                Token = Guid.NewGuid().ToString(),
+                UserID = Tools.GetUserID(User),
+                ValidUntil = DateTime.Now.AddMonths(1)
+            };
+            await _repository.AddRemoteAuthTokenAsync(token);
+            await _repository.SaveChangesAsync();
+            return Redirect($"{address}/Login/Callback?token={token.Token}");
+        }
+        
     }
 }

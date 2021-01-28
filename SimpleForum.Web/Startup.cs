@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SimpleForum.API.Client;
 using SimpleForum.Common.Server;
 using SimpleForum.Common.Server.Policies;
 using SimpleForum.Web.Policies;
@@ -25,6 +26,8 @@ namespace SimpleForum.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSimpleForum(_configuration);
+            services.AddScoped<CrossConnectionClient>();
+            services.AddScoped<CrossConnectionManager>();
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>

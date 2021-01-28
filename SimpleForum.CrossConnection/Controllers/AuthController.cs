@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Client;
 using SimpleForum.API.Models.Requests.CrossConnection;
+using SimpleForum.API.Models.Responses;
 using SimpleForum.Common;
 using SimpleForum.Common.Server;
 using SimpleForum.Models;
@@ -51,18 +52,25 @@ namespace SimpleForum.CrossConnection.Controllers
         [HttpPut("RegisterToken")]
         public async Task<IActionResult> RegisterIncomingToken(RegisterTokenRequest request)
         {
+            // Retrieves the urls of the services of the instance, and returns error if unsuccessful
+            Result<ServerURLs> urlResult = await SimpleForumClient.GetServerURLs(request.Address);
+            if (urlResult.Failure) return StatusCode(urlResult.Code, urlResult.Error);
+            
+            // Adds the token to checks it is valid
             IncomingServerToken token = new IncomingServerToken()
             {
                 Address = request.Address,
+                ApiAddress = urlResult.Value.APIURL,
+                CrossConnectionAddress = urlResult.Value.CrossConnectionURL,
                 Token = request.Token
             };
             
             Result addResult = await _repository.AddIncomingServerToken(token);
             if (addResult.Failure) return StatusCode(addResult.Code, addResult.Error); 
-            Result checkResult = await _crossConnectionClient.CheckToken(request.Address, request.Token);
+            Result checkResult = await _crossConnectionClient.CheckToken(token.CrossConnectionAddress, request.Token);
             
+            // Returns error if token is invalid, otherwise saves changes
             if (checkResult.Failure) return StatusCode(checkResult.Code, checkResult.Error);
-
             await _repository.SaveChangesAsync();
             return Ok();
         }
