@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SimpleForum.Models
 {
-    public class AuthToken
+    public class RemoteAuthToken
     {
         [Key]
         public string Token { get; set; }

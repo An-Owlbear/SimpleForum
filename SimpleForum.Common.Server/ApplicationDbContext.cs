@@ -11,7 +11,7 @@ namespace SimpleForum.Common.Server
         public DbSet<Thread> Threads { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserComment> UserComments { get; set; }
-        public DbSet<AuthToken> AuthTokens { get; set; }
+        public DbSet<RemoteAuthToken> RemoteAuthTokens { get; set; }
         public DbSet<EmailCode> EmailCodes { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<OutgoingServerToken> OutgoingServerTokens { get; set; }

@@ -159,10 +159,10 @@ namespace SimpleForum.Common.Server
         /// Returns the matching authentication token
         /// </summary>
         /// <param name="token">The token to return</param>
-        /// <returns><see cref="AuthToken"/></returns>
-        public async Task<AuthToken> GetAuthTokenAsync(string token)
+        /// <returns><see cref="RemoteAuthToken"/></returns>
+        public async Task<RemoteAuthToken> GetAuthTokenAsync(string token)
         {
-            return await _context.AuthTokens.FindAsync(token);
+            return await _context.RemoteAuthTokens.FindAsync(token);
         }
 
         /// <summary>
@@ -278,11 +278,11 @@ namespace SimpleForum.Common.Server
         /// <summary>
         /// Adds an authentication token to the database 
         /// </summary>
-        /// <param name="authToken">The authentication token to be added</param>
-        /// <returns>the added <see cref="AuthToken"/></returns>
-        public async Task<AuthToken> AddAuthTokenAsync(AuthToken authToken)
+        /// <param name="remoteAuthToken">The authentication token to be added</param>
+        /// <returns>the added <see cref="RemoteAuthToken"/></returns>
+        public async Task<RemoteAuthToken> AddAuthTokenAsync(RemoteAuthToken remoteAuthToken)
         {
-            EntityEntry<AuthToken> addedToken = await _context.AuthTokens.AddAsync(authToken);
+            EntityEntry<RemoteAuthToken> addedToken = await _context.RemoteAuthTokens.AddAsync(remoteAuthToken);
             return addedToken.Entity;
         }
 
@@ -890,8 +890,8 @@ namespace SimpleForum.Common.Server
         /// Creates an authentication token, ensuring it is unique
         /// </summary>
         /// <param name="userID">The user to create an authentication token for</param>
-        /// <returns>The created <see cref="AuthToken"/></returns>
-        public async Task<AuthToken> CreateAuthTokenAsync(int userID)
+        /// <returns>The created <see cref="RemoteAuthToken"/></returns>
+        public async Task<RemoteAuthToken> CreateRemoteAuthTokenAsync(int userID)
         {
             // Loops until a unique auth token is created
             while (true)
@@ -900,7 +900,7 @@ namespace SimpleForum.Common.Server
                 string code = Tools.GenerateCode(32);
                 if (await GetAuthTokenAsync(code) == null)
                 {
-                    AuthToken token = new AuthToken()
+                    RemoteAuthToken token = new RemoteAuthToken()
                     {
                         Token = code,
                         ValidUntil = DateTime.Now.AddMonths(1),

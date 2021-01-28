@@ -76,12 +76,12 @@ CREATE TABLE `UserComments` (
     CONSTRAINT `FK_UserComments_Users_UserPageID` FOREIGN KEY (`UserPageID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
 
-CREATE TABLE `AuthTokens` (
+CREATE TABLE `RemoteAuthTokens` (
     `Token` varchar(255) CHARACTER SET utf8mb4 NULL,
     `ValidUntil` datetime(6) NOT NULL,
     `UserID` int NOT NULL,
-    CONSTRAINT `PK_AuthTokens` PRIMARY KEY (`Token`),
-    CONSTRAINT `FK_AuthTokens_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
+    CONSTRAINT `PK_RemoteAuthTokens` PRIMARY KEY (`Token`),
+    CONSTRAINT `FK_RemoteAuthTokens_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
 
 CREATE TABLE `EmailCodes` (
@@ -115,5 +115,5 @@ CREATE INDEX `IX_Threads_DatePosted` ON `Threads` (`DatePosted`);
 CREATE INDEX `IX_UserComments_UserID` ON `UserComments` (`UserID`);
 CREATE INDEX `IX_UserComments_UserPageID` ON `UserComments` (`UserPageID`);
 CREATE INDEX `IX_UserComments_DatePosted` ON `UserComments` (`DatePosted`);
-CREATE INDEX `IX_AuthTokens_UserID` ON `AuthTokens` (`UserID`);
+CREATE INDEX `IX_RemoteAuthTokens_UserID` ON `RemoteAuthTokens` (`UserID`);
 CREATE INDEX `IX_EmailCodes_UserID` ON `EmailCodes` (`UserID`);
