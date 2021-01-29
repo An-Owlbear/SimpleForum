@@ -15,7 +15,7 @@ namespace SimpleForum.API.Models.Responses
         public bool Read { get; set; }
         
         // Parameterless constructor for use with json deserialization
-        public ApiNotification() : base() { }
+        public ApiNotification() { }
 
         /// <summary>
         /// Creates an API model from internal notification model

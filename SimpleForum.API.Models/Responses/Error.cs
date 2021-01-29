@@ -11,7 +11,7 @@ namespace SimpleForum.API.Models.Responses
         public string Message { get; set; }
         
         // Parameterless constructor for use with json deserialization
-        public Error() : base() { }
+        public Error() { }
 
         /// <summary>
         /// Creates an error with a message attached

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using SimpleForum.Web.Models;
 using SimpleForum.Common.Server;
 using SimpleForum.Models;

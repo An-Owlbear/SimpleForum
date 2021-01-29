@@ -17,7 +17,7 @@ namespace SimpleForum.API.Models.Responses
         public ApiUser User { get; set;}
         
         // Parameterless constructor for use with json deserialization
-        public ApiThread() : base() { }
+        public ApiThread() { }
         
         public ApiThread(SimpleForum.Models.Thread thread)
         {

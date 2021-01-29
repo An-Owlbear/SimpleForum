@@ -16,7 +16,7 @@ namespace SimpleForum.API.Models.Responses
         public DateTime DateJoined { get; set; }
         
         // Parameterless constructor for use with json deserialization
-        public ApiUser() : base() { }
+        public ApiUser() { }
 
         /// <summary>
         /// Creates an API model user from a database model user
