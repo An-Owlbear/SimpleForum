@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleForum.Models
 {
@@ -12,6 +14,12 @@ namespace SimpleForum.Models
         public string ApiAddress { get; set; }
         public string CrossConnectionAddress { get; set; }
         public string Token { get; set; }
+
+        [NotMapped]
+        public string ShortAddress
+        {
+            get => Address.Replace("https://", "").Replace("http://", "");
+        }
     }
 
     public class OutgoingServerToken : ServerToken

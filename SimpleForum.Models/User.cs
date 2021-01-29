@@ -34,5 +34,15 @@ namespace SimpleForum.Models
         public virtual ICollection<UserComment> UserPageComments { get; set; }
         
         public virtual ICollection<Notification> Notifications { get; set; }
+        
+        [NotMapped]
+        public string FullUsername
+        {
+            get => Server switch
+            {
+                null => Username,
+                _ => $"{Username}@{Server.ShortAddress}"
+            };
+        }
     }
 }

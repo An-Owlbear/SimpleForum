@@ -1,6 +1,6 @@
 @model UserPageViewModel
 @{
-    ViewData["Title"] = Model.User.Username;
+    ViewData["Title"] = Model.User.FullUsername;
 }
 
 <div class="variable-container main-profile-container">
@@ -8,9 +8,9 @@
         <div class="profile-info">
 
             <div class="profile-info-section">
-                <img class="profile-info-image" src="/Files/ProfileImg?id=@Model.User.UserID" alt="@Model.User.Username">
+                <img class="profile-info-image" src="/Files/ProfileImg?id=@Model.User.UserID" alt="@Model.User.FullUsername">
                 <div class="profile-info-text-container">
-                    <span class="profile-info-name">@Model.User.Username</span>
+                    <span class="profile-info-name">@Model.User.FullUsername</span>
                     @if (Model.User.Banned)
                     {
                         <span class="ban-text profile">(banned)</span>

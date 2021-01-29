@@ -42,7 +42,7 @@
         {
             <li class="list-item">
                 <a class="list-item-profile" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">
-                    <img class="list-item-profile-image" src="/Files/ProfileImg?id=@thread.UserID" alt="@thread.User.Username" title="@thread.User.Username">
+                    <img class="list-item-profile-image" src="/Files/ProfileImg?id=@thread.UserID" alt="@thread.User.FullUsername" title="@thread.User.FullUsername">
                 </a>
                 <div class="list-item-property-container">
                     @if (thread.Pinned)
@@ -55,7 +55,7 @@
                     }
                     <a class="list-item-title list-item-property" asp-controller="Thread" asp-action="Index" asp-route-id="@thread.ThreadID">@thread.Title</a>
                     <div class="list-item-break flex-break"></div>
-                    <a class="list-item-property" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">@thread.User.Username</a>
+                    <a class="list-item-property" asp-controller="User" asp-action="Index" asp-route-id="@thread.UserID">@thread.User.FullUsername</a>
                     <span class="list-item-property">@thread.Comments.Count(x => !x.Deleted) replies</span>
                     <span class="list-item-property">@thread.DatePosted.ToShortDateString()</span>
                 </div>

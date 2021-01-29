@@ -4,7 +4,7 @@
 }
 
 <div class="variable-container">
-    <span class="login-form-title">Mute @Model.Username</span>
+    <span class="login-form-title">Mute @Model.FullUsername</span>
     <form class="login-form" asp-action="SendMuteUser" method="post">
         <input type="hidden" name="id" value="@Model.UserID">
         <input class="login-input" type="text" placeholder="Mute reason" name="reason">
