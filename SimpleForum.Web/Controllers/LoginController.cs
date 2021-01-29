@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SimpleForum.Common;
 using SimpleForum.Common.Server;
 using SimpleForum.Models;
@@ -17,11 +18,14 @@ namespace SimpleForum.Web.Controllers
     {
         private readonly SimpleForumRepository _repository;
         private readonly CrossConnectionManager _crossConnectionManager;
+        private readonly SimpleForumConfig _config;
 
-        public LoginController(SimpleForumRepository repository, CrossConnectionManager crossConnectionManager)
+        public LoginController(SimpleForumRepository repository, CrossConnectionManager crossConnectionManager,
+            IOptionsSnapshot<SimpleForumConfig> config)
         {
             _repository = repository;
             _crossConnectionManager = crossConnectionManager;
+            _config = config.Value;
         }
         
         // Returns the login page
@@ -48,40 +52,9 @@ namespace SimpleForum.Web.Controllers
             User user = await _repository.GetUserAsync(username);
             if (user == null) return Redirect("/Login?error=1");
             
-
             // Returns error if password is incorrect
             if (user.Password != password || user.Deleted) return Redirect("/Login?error=1");
-
-            // Returns error if user is banned
-            if (user.Banned)
-            {
-                MessageViewModel model = new MessageViewModel()
-                {
-                    Title = "Account banned",
-                    MessageTitle = "Your account is banned",
-                    MessageContent =  "Ban reason: " + user.BanReason
-                };
-                return View("Message", model);
-            }
-
-            // Creates a ClaimIdentity for the user
-            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-            
-            // Signs in the user
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
-                new AuthenticationProperties
-                {
-                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),
-                    IsPersistent = true,
-                    AllowRefresh = false
-                });
-
-            // Redirects the user to the previously requested page if needed, otherwise returns to index
-            if (Url.IsLocalUrl(ReturnUrl)) return Redirect(ReturnUrl);
-            return Redirect("/");
+            return await SignInUser(user, ReturnUrl);
         }
 
         // Signs out a user
@@ -194,8 +167,51 @@ namespace SimpleForum.Web.Controllers
             };
             await _repository.AddRemoteAuthTokenAsync(token);
             await _repository.SaveChangesAsync();
-            return Redirect($"{address}/Login/Callback?token={token.Token}");
+            return Redirect($"{address}/Login/Callback?token={token.Token}&address={_config.InstanceURL}");
         }
-        
+
+        // Signs in a remote user
+        [AnonymousOnly]
+        public async Task<IActionResult> Callback(string token, string address)
+        {
+            Result<User> result = await _crossConnectionManager.AuthenticateUser(address, token);
+            if (result.Failure) return StatusCode(result.Code);
+            return await SignInUser(result.Value, "/");
+        }
+
+        // Signs any user in
+        private async Task<IActionResult> SignInUser(User user, string ReturnUrl)
+        {
+            // Returns error if user is banned
+            if (user.Banned)
+            {
+                MessageViewModel model = new MessageViewModel()
+                {
+                    Title = "Account banned",
+                    MessageTitle = "Your account is banned",
+                    MessageContent =  "Ban reason: " + user.BanReason
+                };
+                return View("Message", model);
+            }
+
+            // Creates a ClaimIdentity for the user
+            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
+            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            
+            // Signs in the user
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),
+                    IsPersistent = true,
+                    AllowRefresh = false
+                });
+
+            // Redirects the user to the previously requested page if needed, otherwise returns to index
+            if (Url.IsLocalUrl(ReturnUrl)) return Redirect(ReturnUrl);
+            return Redirect("/");
+        }
     }
 }

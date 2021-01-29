@@ -88,8 +88,10 @@ namespace SimpleForum.Common.Server
         {
             return username switch
             {
-                _ when username.Contains('@') => await _context.Users.FirstOrDefaultAsync(x => x.Email == username),
-                _ => await _context.Users.FirstOrDefaultAsync(x => x.Username == username)
+                _ when username.Contains('@') => await _context.Users.
+                    Where(x => x.ServerID == null).FirstOrDefaultAsync(x => x.Email == username),
+                _ => await _context.Users
+                    .Where(x => x.ServerID == null).FirstOrDefaultAsync(x => x.Username == username)
             };
         }
 
@@ -726,7 +728,7 @@ namespace SimpleForum.Common.Server
         public async Task<Result<User>> SignupAsync(User user)
         {
             // Returns failure if any relevant details are null
-            if (user.Username == null || user.Email == null || user.Password == null)
+            if (user.Username == null || user.Email == null)
             {
                 return Result.Fail<User>("Incomplete details", 400);
             }
@@ -737,7 +739,7 @@ namespace SimpleForum.Common.Server
                 return Result.Fail<User>("Duplicate email", 400);
             }
 
-            if (_context.Users.Any(x => x.Username == user.Username))
+            if (_context.Users.Any(x => x.Username == user.Username && x.ServerID == user.ServerID))
             {
                 return Result.Fail<User>("Duplicate username", 400);
             }
@@ -886,6 +888,12 @@ namespace SimpleForum.Common.Server
             return Result.Ok();
         }
 
+        
+        //
+        // Methods relating to cross instance operations
+        //
+        
+        
         /// <summary>
         /// Creates an authentication token, ensuring it is unique
         /// </summary>
@@ -912,6 +920,18 @@ namespace SimpleForum.Common.Server
                     return token;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the user of a remote server for a given server id and username
+        /// </summary>
+        /// <param name="serverID">The server to search users for</param>
+        /// <param name="username">The username to find</param>
+        /// <returns></returns>
+        public async Task<User> GetRemoteUserAsync(int serverID, string username)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.ServerID == serverID && x.Username == username);
         }
     }
 }

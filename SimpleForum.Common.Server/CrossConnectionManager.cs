@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SimpleForum.API.Client;
 using SimpleForum.API.Models.Responses;
+using SimpleForum.API.Models.Responses.CrossConnection;
 using SimpleForum.Models;
 
 namespace SimpleForum.Common.Server
@@ -62,6 +63,35 @@ namespace SimpleForum.Common.Server
         {
             OutgoingServerToken checkResult = await _repository.GetOutgoingServerTokenByNameAsync(address);
             if (checkResult == null) await RegisterToken(address);
+        }
+
+        // Retrieves the token and adds the user to the database
+        public async Task<Result<User>> AuthenticateUser(string address, string token)
+        {
+            // Finds server ID, and returns failure if none found
+            IncomingServerToken server = await _repository.GetIncomingServerTokenByNameAsync(address);
+            if (server == null) return Result.Fail<User>("Invalid address", 400);
+            
+            // Checks tokens, and returns failure if invalid
+            Result<CrossConnectionUser> result = await _client.AuthenticateToken(server.CrossConnectionAddress, token);
+            if (result.Failure) return Result.Fail<User>(result.Error, result.Code);
+            
+            // Finds user and returns if no null, otherwise creates new user
+            User user = await _repository.GetRemoteUserAsync(server.IncomingServerTokenID, result.Value.Username);
+            if (user != null) return Result.Ok(user);
+
+            // Creates new user and adds to database
+            User newUser = new User()
+            {
+                Username = result.Value.Username,
+                Email = result.Value.Email,
+                ServerID = server.IncomingServerTokenID,
+                SignupDate = DateTime.Now
+            };
+            Result signUpResult = await _repository.SignupAsync(newUser);
+            await _repository.SaveChangesAsync();
+            if (signUpResult.Failure) return Result.Fail<User>(signUpResult.Error, signUpResult.Code);
+            return Result.Ok(newUser);
         }
     }
 }

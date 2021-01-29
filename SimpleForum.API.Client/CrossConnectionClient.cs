@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using SimpleForum.API.Models.Responses;
+using SimpleForum.API.Models.Responses.CrossConnection;
 using SimpleForum.Common;
 
 namespace SimpleForum.API.Client
@@ -92,6 +93,33 @@ namespace SimpleForum.API.Client
             Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
             return Result.Fail(error.Message, error.Type);
+        }
+
+        /// <summary>
+        /// Queries the given server with the given authentication token, return user information if available
+        /// </summary>
+        /// <param name="address">The instance to query</param>
+        /// <param name="token">The token to send</param>
+        public async Task<Result<CrossConnectionUser>> AuthenticateToken(string address, string token)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "token", token }
+            };
+
+            HttpResponseMessage response = await _requestsClient
+                .SendRequest(address, CrossConnectionEndpoints.AuthenticateToken, parameters).ConfigureAwait(false);
+            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                CrossConnectionUser user = await JsonSerializer.DeserializeAsync<CrossConnectionUser>(streamResult, jsonOptions)
+                    .ConfigureAwait(false);
+                return Result.Ok(user);
+            }
+
+            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
+            return Result.Fail<CrossConnectionUser>(error.Message, error.Type);
         }
     }
 }

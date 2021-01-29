@@ -37,7 +37,11 @@ namespace SimpleForum.Web
             {
                 User user = await repository.GetUserAsync(httpContext.User);
 
-                if (user.Deleted)
+                if (user == null)
+                {
+                    await httpContext.SignOutAsync();
+                }
+                else if (user.Deleted)
                 {
                     await httpContext.SignOutAsync();
                 }
