@@ -11,7 +11,7 @@ using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class ErrorController : Controller
+    public class ErrorController : WebController
     {
         private readonly ApplicationDbContext _context;
 

@@ -9,7 +9,7 @@ using SimpleForum.Models;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : WebController
     {
         private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;

@@ -11,7 +11,7 @@ using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class ThreadController : Controller
+    public class ThreadController : WebController
     {
         private readonly SimpleForumRepository _repository;
         private int PostsPerPage = 30;

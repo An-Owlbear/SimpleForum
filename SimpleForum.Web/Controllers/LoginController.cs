@@ -14,7 +14,7 @@ using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : WebController
     {
         private readonly SimpleForumRepository _repository;
         private readonly CrossConnectionManager _crossConnectionManager;

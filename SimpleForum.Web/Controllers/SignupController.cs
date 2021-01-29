@@ -13,7 +13,7 @@ using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class SignupController : Controller
+    public class SignupController : WebController
     {
         private readonly SimpleForumRepository _repository;
         private readonly SimpleForumConfig _config;
@@ -54,7 +54,7 @@ namespace SimpleForum.Web.Controllers
             Result<User> result = await _repository.SignupAsync(user);
             
             // Returns error if unsuccessful
-            if (result.Failure) return new StatusCodeResult(result.Code);
+            if (result.Failure) return StatusCode(result.Code, result.Error);
 
             User addedUser = result.Value;
             await _repository.SaveChangesAsync();

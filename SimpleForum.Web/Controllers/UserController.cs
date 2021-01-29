@@ -15,7 +15,7 @@ using SimpleForum.Web.Policies;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class UserController : Controller
+    public class UserController : WebController
     {
         private readonly SimpleForumRepository _repository;
         private int CommentsPerPage = 15;

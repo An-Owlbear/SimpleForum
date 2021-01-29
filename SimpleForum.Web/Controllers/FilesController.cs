@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleForum.Web.Controllers
 {
-    public class FilesController : Controller
+    public class FilesController : WebController
     {
         // Returns a user's profile picture
         public IActionResult ProfileImg(int? id)
