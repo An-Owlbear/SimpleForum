@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Remote login";
+}
+
+<div class="variable-container">
+    <span class="login-form-title">Remote server login</span>
+    <form class="login-form" asp-action="RemoteLoginRedirect">
+        <input class="login-input" type="text" name="address" placeholder="Remote server address">
+        <button class="login-button remote-login-link remote-login-button" type="submit">Login remotely</button>
+    </form>
+</div>

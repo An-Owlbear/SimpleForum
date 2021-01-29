@@ -143,6 +143,19 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns the RemoteLogin view
+        public IActionResult RemoteLogin()
+        {
+            return View();
+        }
+
+        // Redirects the user to the remote CrossLogin page
+        public IActionResult RemoteLoginRedirect(string address)
+        {
+            if (address.StartsWith("http://") || address.StartsWith("https://")) return Redirect(address);
+            return Redirect($"http://{address}/Login/CrossLogin?address={_config.InstanceURL}");
+        }
+        
         // Displays the page asking the user if they want to login to another instance
         [Authorize]
         public IActionResult CrossLogin(string address)

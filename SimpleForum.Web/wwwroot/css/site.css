@@ -1009,6 +1009,18 @@ textarea.edit-container-item {
   width: 100%;
 }
 
+.remote-login-link {
+  width: 80%;
+  background-color: royalblue;
+  color: var(--text-primary-light);
+  margin-top: 0.5rem;
+}
+
+.remote-login-button {
+  margin-top: 1rem;
+  margin-left: 10%;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar {
     height: 4rem;
