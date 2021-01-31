@@ -41,21 +41,8 @@ namespace SimpleForum.API
             if (user.Deleted) return Result.Fail<string>("username incorrect", 400);
             
             // Creates and returns a JWT token
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            byte[] tokenKey = Encoding.ASCII.GetBytes(_config.PrivateKey);
-            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString())
-                }),
-                Expires = DateTime.Now.AddMonths(1),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
-            };
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return Result.Ok(tokenHandler.WriteToken(token));
+            string token = JwtToken.CreateToken(username, user.UserID.ToString(), _config.PrivateKey);
+            return Result.Ok(token);
         }
     }
 }

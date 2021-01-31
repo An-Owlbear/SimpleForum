@@ -6,6 +6,7 @@
     <span class="login-form-title">Remote server login</span>
     <form class="login-form" asp-action="RemoteLoginRedirect">
         <input class="login-input" type="text" name="address" placeholder="Remote server address">
+        <input type="hidden" name="type" value="web">
         <button class="login-button remote-login-link remote-login-button" type="submit">Login remotely</button>
     </form>
 </div>

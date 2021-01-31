@@ -150,24 +150,32 @@ namespace SimpleForum.Web.Controllers
         }
 
         // Redirects the user to the remote CrossLogin page
-        public IActionResult RemoteLoginRedirect(string address)
+        public IActionResult RemoteLoginRedirect(string address, string type)
         {
-            if (address.StartsWith("http://") || address.StartsWith("https://")) return Redirect(address);
-            return Redirect($"http://{address}/Login/CrossLogin?address={_config.InstanceURL}");
+            string url = (address.StartsWith("http://") || address.StartsWith("https://")) switch
+            {
+                true => address,
+                false => $"http://{address}"
+            };
+            
+            return Redirect($"{url}/Login/CrossLogin?address={_config.InstanceURL}&type={type}");
         }
         
         // Displays the page asking the user if they want to login to another instance
         [Authorize]
-        public IActionResult CrossLogin(string address)
+        public async Task<IActionResult> CrossLogin(string address, string type)
         {
+            User user = await _repository.GetUserAsync(User);
+            if (user.ServerID != null) return StatusCode(400, "Cannot remotely sign in with remote account");
+            
             if (String.IsNullOrEmpty(address)) return Redirect("/");
-            LoginViewModel model = new LoginViewModel() { ReturnUrl = address };
+            CrossLoginViewModel model = new CrossLoginViewModel() { ReturnUrl = address, Type = type };
             return View(model);
         }
         
         // Logs into the other instance
         [ServiceFilter(typeof(CheckPassword))]
-        public async Task<IActionResult> SendCrossLogin(string address)
+        public async Task<IActionResult> SendCrossLogin(string address, string type)
         {
             if (String.IsNullOrEmpty(address)) return Redirect("/");
             await _crossConnectionManager.SetupContact(address);
@@ -180,16 +188,21 @@ namespace SimpleForum.Web.Controllers
             };
             await _repository.AddRemoteAuthTokenAsync(token);
             await _repository.SaveChangesAsync();
-            return Redirect($"{address}/Login/Callback?token={token.Token}&address={_config.InstanceURL}");
+            return Redirect($"{address}/Login/Callback?token={token.Token}&address={_config.InstanceURL}&type={type}");
         }
 
         // Signs in a remote user
         [AnonymousOnly]
-        public async Task<IActionResult> Callback(string token, string address)
+        public async Task<IActionResult> Callback(string token, string address, string type)
         {
+            // Authenticates the token
             Result<User> result = await _crossConnectionManager.AuthenticateUser(address, token);
             if (result.Failure) return StatusCode(result.Code);
-            return await SignInUser(result.Value, "/");
+            
+            // Signs in with cookie if web, otherwise returns JWT
+            if (type == "web") return await SignInUser(result.Value, "/");
+            if (type == "api") return Ok(JwtToken.CreateToken(result.Value.Username, result.Value.UserID.ToString(), _config.PrivateKey));
+            return BadRequest();
         }
 
         // Signs any user in
