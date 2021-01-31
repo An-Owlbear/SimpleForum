@@ -365,6 +365,9 @@ a.list-item-property {
 a.post-user-property {
   text-decoration: none;
   color: royalblue;
+  word-break: break-word;
+  max-width: 120px;
+  text-align: center;
 }
 
 img.post-user-property {
@@ -1353,5 +1356,9 @@ textarea.edit-container-item {
     width: 90%;
     word-break: break-word;
     margin: 0 auto;
+  }
+  
+  a.post-user-property {
+    max-width: initial;
   }
 }
