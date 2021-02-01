@@ -103,8 +103,10 @@ namespace SimpleForum.Web.Controllers
         [Authorize]
         [ServiceFilter(typeof(VerifiedEmail))]
         [ServiceFilter(typeof(PreventMuted))]
-        public async Task<IActionResult> PostComment(string content, int threadID)
+        public async Task<IActionResult> PostComment(string content, int? threadID)
         {
+            if (content == null || threadID == null) return Redirect("/");
+            
             // Retrieves user
             User user = await _repository.GetUserAsync(User);
 
@@ -113,7 +115,7 @@ namespace SimpleForum.Web.Controllers
             {
                 Content = content,
                 DatePosted = DateTime.Now,
-                ThreadID = threadID,
+                ThreadID = (int)threadID,
                 UserID = user.UserID
             };
             Result result = await _repository.PostCommentAsync(comment);
