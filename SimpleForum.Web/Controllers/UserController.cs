@@ -357,7 +357,7 @@ namespace SimpleForum.Web.Controllers
         {
             // Retrieves notification from database and return 403 if not owner
             Notification notification = await _repository.GetNotificationAsync(id);
-            if (Tools.GetUserID(User) == notification.UserID) return Forbid();
+            if (Tools.GetUserID(User) != notification.UserID) return Forbid();
             
             // Sets notification as read if unread
             if (!notification.Read)
