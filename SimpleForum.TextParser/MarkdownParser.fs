@@ -56,7 +56,7 @@ let bold =
 // Parses a block of italic text
 let italic =
     let quote = parseChar '*'
-    let conditionParser = quote <&> notParser (parseString "**")
+    let conditionParser = quote <&> (notParser (parseString "**") <|> parseString "***")
     let parser = conditionParser <!&> markdownValue
     quote >>. parseMany1 parser .>> quote
     |>> Italic

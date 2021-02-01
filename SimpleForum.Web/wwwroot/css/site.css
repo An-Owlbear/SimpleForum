@@ -974,7 +974,8 @@ textarea.edit-container-item {
   display: none;
 }
 
-.post-contents strong, .top-message-text strong, .notification-contents strong {
+.post-contents strong, .top-message-text strong, .notification-contents strong,
+.post-contents em, .top-message-text em, .notification-contents em {
   font-weight: revert;
 }
 
