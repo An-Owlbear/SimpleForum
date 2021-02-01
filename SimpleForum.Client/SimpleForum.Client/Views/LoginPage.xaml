@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SimpleForum.Client.Views.LoginPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry x:Name="Username" Text="{Binding Username}" Placeholder="Username" />
+            <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" />
+            <Button Command="{Binding SubmitCommand}" Text="Login" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

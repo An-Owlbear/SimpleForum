@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,6 +22,10 @@
       <Compile Update="UserComments.cs">
         <DependentUpon>SimpleForumClient.cs</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" Version="5.0.1" />
     </ItemGroup>
 
 </Project>
