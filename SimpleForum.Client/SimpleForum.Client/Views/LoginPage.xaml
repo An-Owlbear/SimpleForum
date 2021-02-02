@@ -7,7 +7,7 @@
         <StackLayout>
             <Entry x:Name="Address" Text="{Binding Address}" Placeholder="Address" />
             <Entry x:Name="Username" Text="{Binding Username}" Placeholder="Username" />
-            <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" />
+            <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
             <Button Command="{Binding SubmitCommand}" Text="Login" />
             <Button Clicked="Return" Text="Cancel" />
             <Label x:Name="ResultLabel" Text="{Binding Result}" />
