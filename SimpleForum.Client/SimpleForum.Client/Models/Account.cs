@@ -5,12 +5,13 @@ using SimpleForum.Common;
 
 namespace SimpleForum.Client.Models
 {
-    class Account
+    public class Account
     {
         public string Username { get; set; }
         public string Token { get; set; }
         public ServerURLs ServerURLs { get; set; }
         public SimpleForumClient Client { get; set; }
+        public string Fullname => $"{Username}@{ServerURLs.InstanceURL.Replace("http://", "").Replace("https://", "")}";
 
         public async Task<Result> AuthenticateUser(string password)
         {

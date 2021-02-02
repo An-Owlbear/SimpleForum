@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using SimpleForum.API.Client;
 using SimpleForum.API.Models.Responses;
@@ -7,20 +8,20 @@ using SimpleForum.Common;
 
 namespace SimpleForum.Client.Services
 {
-    class AccountService
+    public static class AccountService
     {
-        public List<AccountService> Accounts { get; set; }
+        public static ObservableCollection<Account> Accounts { get; set; } = new ObservableCollection<Account>();
+        public static ObservableCollection<string> Strings { get; set; } = new ObservableCollection<string>();
 
-        public async Task<Result> AddAccount(string username, string url)
+        public static void AddAccount(string username, string token, ServerURLs serverURLs, SimpleForumClient client)
         {
-            Result<ServerURLs> result = await SimpleForumClient.GetServerURLs(url);
-            if (result.Failure) return result;
             Account account = new Account()
             {
                 Username = username,
-                ServerURLs = result.Value
+                Token = token,
+                ServerURLs = serverURLs
             };
-            return Result.Ok();
+            Accounts.Add(account);
         }
     }
 }
