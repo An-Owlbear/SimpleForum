@@ -17,10 +17,8 @@
     },
     "SimpleForum.API": {
       "commandName": "Project",
-      "applicationUrl": "https://localhost:5003;http://localhost:5002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:5003;http://localhost:5002"
       }
     },
     "SimpleForum.API2": {
@@ -28,6 +26,13 @@
       "commandLineArgs": "--config ../SimpleForumConfig2.json",
       "environmentVariables": {
         "DbConnectionString": "Server=localhost;User Id=simpleforum;Password=simpleforum_pass;Database=simpleforum2"
+      }
+    },
+    "SimpleForum.API Android": {
+      "commandName": "Project",
+      "commandLineArgs": "--config ../SimpleForumAndroidConfig.json",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }

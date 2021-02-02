@@ -27,6 +27,13 @@
       "environmentVariables": {
         "DbConnectionString": "Server=localhost;User Id=simpleforum;Password=simpleforum_pass;Database=simpleforum2"
       }
+    },
+    "SimpleForum.CrossConnection Android": {
+      "commandName": "Project",
+      "commandLineArgs": "--config ../SimpleForumAndroidConfig.json",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }
