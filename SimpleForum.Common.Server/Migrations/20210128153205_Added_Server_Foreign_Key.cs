@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SimpleForum.Common.Server.Migrations
 {
@@ -6,6 +7,38 @@ namespace SimpleForum.Common.Server.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "IncomingServerTokenID",
+                table: "IncomingServerTokens",
+                nullable: false,
+                defaultValue: 0)
+                .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);;
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_IncomingServerTokens",
+                table: "IncomingServerTokens");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_IncomingServerTokens",
+                table: "IncomingServerTokens",
+                column: "IncomingServerTokenID");
+            
+            migrationBuilder.AddColumn<int>(
+                name: "OutgoingServerTokenID",
+                table: "OutgoingServerTokens",
+                nullable: false,
+                defaultValue: 0)
+                .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);;
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_OutgoingServerTokens",
+                table: "OutgoingServerTokens");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_OutgoingServerTokens",
+                table: "OutgoingServerTokens",
+                column: "OutgoingServerTokenID");
+            
             migrationBuilder.AddColumn<int>(
                 name: "ServerID",
                 table: "Users",
@@ -38,6 +71,32 @@ namespace SimpleForum.Common.Server.Migrations
             migrationBuilder.DropColumn(
                 name: "ServerID",
                 table: "Users");
+            
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_OutgoingServerTokens",
+                table: "OutgoingServerTokens");
+            
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_OutgoingServerTokens",
+                table: "OutgoingServerTokens",
+                column: "address");
+
+            migrationBuilder.DropColumn(
+                name: "OutgoingServerTokenID",
+                table: "OutgoingServerTokens");
+            
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_IncomingServerTokens",
+                table: "IncomingServerTokens");
+            
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_IncomingServerTokens",
+                table: "IncomingServerTokens",
+                column: "Address");
+
+            migrationBuilder.DropColumn(
+                name: "IncomingServerTokenID",
+                table: "IncomingServerTokens");
         }
     }
 }
