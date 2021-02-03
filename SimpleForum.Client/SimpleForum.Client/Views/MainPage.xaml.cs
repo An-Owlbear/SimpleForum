@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SimpleForum.Client.ViewModels;
 using Xamarin.Forms;
 
 namespace SimpleForum.Client.Views
 {
     public partial class MainPage : ContentPage
     {
+        private readonly MainViewModel _viewModel;
+        
         public MainPage()
         {
+            _viewModel = new MainViewModel();
+            BindingContext = _viewModel;
             InitializeComponent();
         }
 
         async void AddAccount(object sender, EventArgs e)
         {
-            LoginPage loginPage = new LoginPage();
+            LoginViewModel loginViewModel = new LoginViewModel(_viewModel.AccountService);
+            LoginPage loginPage = new LoginPage(loginViewModel);
             await Navigation.PushModalAsync(loginPage);
         }
     }

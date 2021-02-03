@@ -8,15 +8,9 @@ using Xamarin.Forms;
 
 namespace SimpleForum.Client.ViewModels
 {
-    class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel : INotifyPropertyChanged
     {
-        private INavigation _navigation;
-
-        public LoginViewModel(INavigation navigation)
-        {
-            _navigation = navigation;
-            SubmitCommand = new Command(Login);
-        }
+        private AccountService _accountService;
         
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
@@ -77,6 +71,12 @@ namespace SimpleForum.Client.ViewModels
         }
 
         public ICommand SubmitCommand { get; set; }
+        
+        public LoginViewModel(AccountService accountService)
+        {
+            _accountService = accountService;
+            SubmitCommand = new Command(Login);
+        }
 
         private async void Login()
         {
@@ -102,8 +102,8 @@ namespace SimpleForum.Client.ViewModels
             }
 
             Result = "OK";
-            AccountService.AddAccount(username, loginResult.Value.Token, urlsResult.Value, client);
-            await _navigation.PopModalAsync();
+            _accountService.AddAccount(username, loginResult.Value.Token, urlsResult.Value, client);
+            await Application.Current.MainPage.Navigation.PopModalAsync();
         }
     }
 }

@@ -3,5 +3,6 @@
   <PropertyGroup>
     <SelectedDevice>Nexus_4_API_28</SelectedDevice>
     <DefaultDevice>Nexus_4_API_28</DefaultDevice>
+    <AndroidDesignerPreferredTheme>Theme.AppCompat.Light.NoActionBar</AndroidDesignerPreferredTheme>
   </PropertyGroup>
 </Project>

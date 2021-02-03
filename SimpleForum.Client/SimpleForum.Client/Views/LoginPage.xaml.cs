@@ -9,9 +9,8 @@ namespace SimpleForum.Client.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        public LoginPage()
+        public LoginPage(LoginViewModel viewModel)
         {
-            LoginViewModel viewModel = new LoginViewModel(Navigation);
             BindingContext = viewModel;
             InitializeComponent();
         }

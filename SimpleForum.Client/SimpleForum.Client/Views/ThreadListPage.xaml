@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
+             xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
+             x:Class="SimpleForum.Client.Views.ThreadListPage" x:DataType="viewModels:ThreadListViewModel">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="ThreadList" ItemsSource="{Binding Threads}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Thread">
+                        <ViewCell>
+                            <StackLayout BackgroundColor="Transparent">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ThreadCommand}" />
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="{Binding ApiThread.Title}" FontAttributes="Bold" />
+                                <Label Text="{Binding ApiThread.User.Username}" FontSize="Small" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

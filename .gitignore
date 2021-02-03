@@ -7,3 +7,4 @@ obj/
 SimpleForum.Web/UploadedImages/**
 !UploadedImages/ProfilePictures/defaultprofile.png
 SimpleForum.TextParser.Tests/*.html
+*.csproj.user
