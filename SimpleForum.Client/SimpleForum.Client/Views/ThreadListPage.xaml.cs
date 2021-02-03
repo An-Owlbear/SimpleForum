@@ -14,12 +14,7 @@ namespace SimpleForum.Client.Views
             _viewModel = viewModel;
             BindingContext = _viewModel;
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            await _viewModel.LoadThreads();
-            base.OnAppearing();
+            _viewModel.LoadThreads().ContinueWith(t => t);
         }
     }
 }
