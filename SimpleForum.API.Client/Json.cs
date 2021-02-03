@@ -29,6 +29,17 @@ namespace SimpleForum.API.Client
                 : Result.Fail<T>(result.Error, result.Code);
         }
 
+        // Attempts to parse a HttpResponseMessage when an empty body is expected
+        public static async Task<Result> ParseHttpResponse(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode) return Result.Ok();
+            Stream stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            Result<Error> result = await TryDeserialize<Error>(stream).ConfigureAwait(false);
+            return result.Success
+                ? Result.Fail(result.Value.Message, result.Value.Type)
+                : Result.Fail(result.Error, result.Code);
+        }
+
         // Attempts parsing a stream to the given type, returning a Result
         private static async Task<Result<T>> TryDeserialize<T>(Stream json)
         {

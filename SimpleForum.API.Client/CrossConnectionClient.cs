@@ -40,11 +40,7 @@ namespace SimpleForum.API.Client
                 await _requestsClient.SendRequest(address, CrossConnectionEndpoints.CheckToken, parameters)
                     .ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode) return Result.Ok();
-
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail(error.Message, error.Type);
+            return await Json.ParseHttpResponse(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -63,11 +59,7 @@ namespace SimpleForum.API.Client
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(address, CrossConnectionEndpoints.CheckAddress, parameters).ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode) return Result.Ok();
-
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail(error.Message, error.Type);
+            return await Json.ParseHttpResponse(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -88,11 +80,7 @@ namespace SimpleForum.API.Client
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(address, CrossConnectionEndpoints.RegisterToken, parameters).ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode) return Result.Ok();
-
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail(error.Message, error.Type);
+            return await Json.ParseHttpResponse(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -109,17 +97,8 @@ namespace SimpleForum.API.Client
 
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(address, CrossConnectionEndpoints.AuthenticateToken, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
-            if (response.IsSuccessStatusCode)
-            {
-                CrossConnectionUser user = await JsonSerializer.DeserializeAsync<CrossConnectionUser>(streamResult, jsonOptions)
-                    .ConfigureAwait(false);
-                return Result.Ok(user);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<CrossConnectionUser>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<CrossConnectionUser>(response);
         }
     }
 }
