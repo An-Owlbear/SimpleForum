@@ -17,8 +17,6 @@ namespace SimpleForum.Client.ViewModels
         private string address;
         private string username;
         private string password;
-        private string result;
-        private string result2;
 
         public string Address
         {
@@ -50,26 +48,6 @@ namespace SimpleForum.Client.ViewModels
             }
         }
 
-        public string Result
-        {
-            get => result;
-            set
-            {
-                result = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Result"));
-            }
-        }
-        
-        public string Result2
-        {
-            get => result2;
-            set
-            {
-                result2 = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("Result2"));
-            }
-        }
-
         public ICommand SubmitCommand { get; set; }
         
         public LoginViewModel(AccountService accountService)
@@ -89,7 +67,7 @@ namespace SimpleForum.Client.ViewModels
             Result<ServerURLs> urlsResult = await SimpleForumClient.GetServerURLs(url);
             if (urlsResult.Failure)
             {
-                Result = urlsResult.Error;
+                MessagingCenter.Send<LoginViewModel, string>(this, "Error", urlsResult.Error);
                 return;
             }
 
@@ -97,11 +75,10 @@ namespace SimpleForum.Client.ViewModels
             Result<LoginResponse> loginResult = await client.LoginAsync(username, password);
             if (loginResult.Failure)
             {
-                Result = loginResult.Error;
+                MessagingCenter.Send<LoginViewModel, string>(this, "Error", loginResult.Error);
                 return;
             }
-
-            Result = "OK";
+            
             _accountService.AddAccount(username, loginResult.Value.Token, urlsResult.Value, client);
             await Application.Current.MainPage.Navigation.PopModalAsync();
         }

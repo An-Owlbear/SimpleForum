@@ -13,6 +13,11 @@ namespace SimpleForum.Client.Views
         {
             BindingContext = viewModel;
             InitializeComponent();
+            
+            MessagingCenter.Subscribe<LoginViewModel, string>(viewModel, "Error", (sender, data) =>
+            {
+                DisplayAlert("Error", data, "Ok");
+            });
         }
 
         private async void Return(object sender, EventArgs e)

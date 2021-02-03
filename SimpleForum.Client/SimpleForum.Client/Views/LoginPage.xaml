@@ -10,7 +10,6 @@
             <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
             <Button Command="{Binding SubmitCommand}" Text="Login" />
             <Button Clicked="Return" Text="Cancel" />
-            <Label x:Name="ResultLabel" Text="{Binding Result}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
