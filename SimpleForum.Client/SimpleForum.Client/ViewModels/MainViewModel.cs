@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SimpleForum.Client.Services;
+﻿using SimpleForum.Client.Services;
 
 namespace SimpleForum.Client.ViewModels
 {
