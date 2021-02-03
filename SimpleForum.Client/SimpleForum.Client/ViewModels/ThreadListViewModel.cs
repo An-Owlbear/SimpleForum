@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Client.Models;
+using SimpleForum.Common;
 
 namespace SimpleForum.Client.ViewModels
 {
@@ -20,8 +21,9 @@ namespace SimpleForum.Client.ViewModels
         public async Task LoadThreads(int page = 1)
         {
             Threads.Clear();
-            List<ApiThread> threads = await _account.Client.GetFrontPageAsync(page);
-            threads.ForEach(x => Threads.Add(new Thread(x, _account)));
+            Result<List<ApiThread>> threads = await _account.Client.GetFrontPageAsync(page);
+            if (!this.HandleResult(threads)) return;
+            threads.Value.ForEach(x => Threads.Add(new Thread(x, _account)));
         }
     }
 }

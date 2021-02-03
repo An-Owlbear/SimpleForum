@@ -6,7 +6,7 @@ namespace SimpleForum.API.Client.Tests
     static partial class Tests
     {
         private const string separator = "-----------------------------------------------------------------";
-        private static readonly SimpleForumClient client = new SimpleForumClient("http://localhost:5002");
+        private static readonly SimpleForumClient client = new SimpleForumClient("http://localhost:5001");
         
         static async Task Main()
         {

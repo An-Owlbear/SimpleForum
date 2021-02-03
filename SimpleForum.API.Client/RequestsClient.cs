@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SimpleForum.API.Models.Responses;
 
 namespace SimpleForum.API.Client
 {
@@ -96,7 +97,17 @@ namespace SimpleForum.API.Client
             }
 
             // Returns response
-            return await _client.SendAsync(request).ConfigureAwait(false);
+            try
+            {
+                return await _client.SendAsync(request).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                string json = JsonSerializer.Serialize(new Error(500, "Connection failed"));
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                result.Content = new StringContent(json);
+                return result;
+            }
         }
     }
 }

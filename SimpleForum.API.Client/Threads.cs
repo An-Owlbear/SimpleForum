@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Common;
@@ -14,18 +12,16 @@ namespace SimpleForum.API.Client
         /// Retrieves the list of threads at the front page
         /// </summary>
         /// <returns>The list of threads</returns>
-        public async Task<List<ApiThread>> GetFrontPageAsync(int page = 1)
+        public async Task<Result<List<ApiThread>>> GetFrontPageAsync(int page = 1)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
             {
                 { "page", page.ToString() }
             };
             
-            // Retrieves response, converts to a Stream, JsonDocument, and then list of threads
+            // Retrieves response, converts to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.FrontPage, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            JsonDocument jsonResult = await JsonDocument.ParseAsync(streamResult).ConfigureAwait(false);
-            return JsonSerializer.Deserialize<List<ApiThread>>(jsonResult.RootElement.GetRawText(), jsonOptions);
+            return await Json.ParseHttpResponse<List<ApiThread>>(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -40,19 +36,9 @@ namespace SimpleForum.API.Client
                 { "id", threadID.ToString() }
             };
             
-            // Retrieves response, and converts it to a stream
+            // Retrieves response, and converts it to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Thread, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            // Converts to a thread if the request was successful, otherwise an error
-            if (response.IsSuccessStatusCode)
-            {
-                ApiThread thread = await JsonSerializer.DeserializeAsync<ApiThread>(streamResult, jsonOptions).ConfigureAwait(false);
-                return Result.Ok(thread);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<ApiThread>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<ApiThread>(response);
         }
 
         /// <summary>
@@ -69,19 +55,9 @@ namespace SimpleForum.API.Client
                 { "content", contents }
             };
             
-            // Retrieves response, and converts it to a stream
+            // Retrieves response, and converts it to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.CreateThread, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            
-            // Converts to a thread if successful, otherwise converts to error
-            if (response.IsSuccessStatusCode)
-            {
-                ApiThread thread = await JsonSerializer.DeserializeAsync<ApiThread>(streamResult, jsonOptions).ConfigureAwait(false);
-                return Result.Ok(thread);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<ApiThread>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<ApiThread>(response);
         }
 
         /// <summary>
@@ -98,19 +74,9 @@ namespace SimpleForum.API.Client
                 { "page", page.ToString() }
             };
             
-            // Retrieves response and converts to stream
+            // Retrieves response and converts to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ThreadComments, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            
-            // Converts to list of comments if request was successful, otherwise converts to error
-            if (response.IsSuccessStatusCode)
-            {
-                List<ApiComment> comments = await JsonSerializer.DeserializeAsync<List<ApiComment>>(streamResult, jsonOptions).ConfigureAwait(false);
-                return Result.Ok(comments);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<List<ApiComment>>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<List<ApiComment>>(response);
         }
     }
 }

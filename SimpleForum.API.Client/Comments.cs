@@ -24,17 +24,7 @@ namespace SimpleForum.API.Client
 
             // Retrieves response and converts it to stream 
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.GetComment, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            
-            // if successful return ApiComment, otherwise returns error
-            if (response.IsSuccessStatusCode)
-            {
-                ApiComment comment = await JsonSerializer.DeserializeAsync<ApiComment>(streamResult, jsonOptions).ConfigureAwait(false);
-                return Result.Ok(comment);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<ApiComment>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<ApiComment>(response).ConfigureAwait(false);
         }
     }
 }

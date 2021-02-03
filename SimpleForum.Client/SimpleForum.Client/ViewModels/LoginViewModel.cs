@@ -67,7 +67,7 @@ namespace SimpleForum.Client.ViewModels
             Result<ServerURLs> urlsResult = await SimpleForumClient.GetServerURLs(url);
             if (urlsResult.Failure)
             {
-                MessagingCenter.Send<LoginViewModel, string>(this, "Error", urlsResult.Error);
+                MessagingCenter.Send(this, "Error", urlsResult.Error);
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace SimpleForum.Client.ViewModels
             Result<LoginResponse> loginResult = await client.LoginAsync(username, password);
             if (loginResult.Failure)
             {
-                MessagingCenter.Send<LoginViewModel, string>(this, "Error", loginResult.Error);
+                MessagingCenter.Send(this, "Error", loginResult.Error);
                 return;
             }
             

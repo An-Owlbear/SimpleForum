@@ -26,18 +26,7 @@ namespace SimpleForum.API.Client
             
             // Sends login, and converts response to stream
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Login, parameters).ConfigureAwait(false);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            
-            // Converts to a LoginResponse if successful, otherwise converts to an error
-            if (response.IsSuccessStatusCode)
-            {
-                LoginResponse loginResponse = await JsonSerializer.DeserializeAsync<LoginResponse>(streamResult, jsonOptions).ConfigureAwait(false);
-                _tokenStorage.SetToken(loginResponse.Token);
-                return Result.Ok(loginResponse);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<LoginResponse>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<LoginResponse>(response).ConfigureAwait(false);
         }
     }
 }

@@ -33,21 +33,10 @@ namespace SimpleForum.API.Client
             // Instantiates temporary objects
             RequestsClient requestsClient = new RequestsClient();
             Endpoint target = new Endpoint("/Home/InstanceInfo", HttpMethod.Get);
-            JsonSerializerOptions jsonOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            
+
             // Retrieves URL information and converts to stream
             HttpResponseMessage response = await requestsClient.SendRequest(address, target);
-            Stream streamResult = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            // If successful parses to ServerURLs, otherwise parses to error
-            if (response.IsSuccessStatusCode)
-            {
-                ServerURLs result = await JsonSerializer.DeserializeAsync<ServerURLs>(streamResult, jsonOptions);
-                return Result.Ok(result);
-            }
-
-            Error error = await JsonSerializer.DeserializeAsync<Error>(streamResult, jsonOptions).ConfigureAwait(false);
-            return Result.Fail<ServerURLs>(error.Message, error.Type);
+            return await Json.ParseHttpResponse<ServerURLs>(response);
         }
     }
 }

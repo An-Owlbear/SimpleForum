@@ -15,15 +15,19 @@ namespace SimpleForum.API.Client.Tests
             Console.Write("Select a page to view\n> ");
             int page = int.Parse(Console.ReadLine());
             Console.Clear();
-            List<ApiThread> response = await client.GetFrontPageAsync();
+            Result<List<ApiThread>> response = await client.GetFrontPageAsync();
     
             // Outputs result
-            Console.WriteLine(separator);
-            foreach (ApiThread thread in response)
+            if (response.Success)
             {
-                DisplayItems.DisplayThread(thread);
                 Console.WriteLine(separator);
+                foreach (ApiThread thread in response.Value)
+                {
+                    DisplayItems.DisplayThread(thread);
+                    Console.WriteLine(separator);
+                }
             }
+            else DisplayItems.DisplayError(response);
         }
 
         // Tests receiving threads of a given ID
