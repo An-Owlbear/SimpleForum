@@ -21,6 +21,7 @@ namespace SimpleForum.API.Client.Tests
                                   "5 - Get thread comments\n" +
                                   "6 - Get comment\n" +
                                   "7 - Get UserComment\n" +
+                                  "8 - Download a profile picture\n" +
                                   "> ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -48,6 +49,9 @@ namespace SimpleForum.API.Client.Tests
                         break;
                     case 7:
                         await TestGetUserComment();
+                        break;
+                    case 8:
+                        await TestProfileImage();
                         break;
                 }
 

@@ -4,7 +4,7 @@
 bin/
 obj/
 *.DotSettings.user
-SimpleForum.Web/UploadedImages/**
+UploadedImages/**
 !UploadedImages/ProfilePictures/defaultprofile.png
 SimpleForum.TextParser.Tests/*.html
 *.csproj.user

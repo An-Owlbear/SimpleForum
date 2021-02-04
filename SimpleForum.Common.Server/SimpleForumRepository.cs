@@ -683,7 +683,7 @@ namespace SimpleForum.Common.Server
                 // TODO - Update method of saving files
                 await imageObject.SaveAsJpegAsync(outputImage);
                 await File.WriteAllBytesAsync(
-                    $"UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
+                    $"../UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());
             }
         }
 

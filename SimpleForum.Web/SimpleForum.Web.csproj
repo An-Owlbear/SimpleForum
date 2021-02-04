@@ -81,9 +81,6 @@
 
     <ItemGroup>
         <None Include="wwwroot\lib\**" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="UploadedImages\ProfilePictures\defaultprofile.png">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
 </Project>

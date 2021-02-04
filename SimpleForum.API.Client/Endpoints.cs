@@ -36,5 +36,8 @@ namespace SimpleForum.API.Client
         public static readonly Endpoint AdminDeleteThread = new Endpoint("/Admin/Threads/:id", HttpMethod.Delete, true);
         public static readonly Endpoint AdminDeleteComment = new Endpoint("/Admin/Comments/:id", HttpMethod.Delete, true);
         public static readonly Endpoint AdminDeleteUserComment = new Endpoint("/Admin/UserComments/:id", HttpMethod.Delete, true);
+        
+        // Files related endpoints
+        public static readonly Endpoint ProfilePicture = new Endpoint("/Files/ProfileImg", HttpMethod.Get);
     }
 }

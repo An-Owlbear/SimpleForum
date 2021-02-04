@@ -1,11 +1,15 @@
-using System.IO;
+﻿using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using SimpleForum.Common.Server;
 
-namespace SimpleForum.Web.Controllers
+namespace SimpleForum.API.Controllers
 {
-    public class FilesController : WebController
+    [ApiController]
+    [Route("Files")]
+    public class FilesController : ApiController
     {
         // Returns a user's profile picture
+        [HttpGet("ProfileImg")]
         public IActionResult ProfileImg(int? id)
         {
             // Returns if no id

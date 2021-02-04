@@ -22,6 +22,9 @@
       <Compile Update="UserComments.cs">
         <DependentUpon>SimpleForumClient.cs</DependentUpon>
       </Compile>
+      <Compile Update="Files.cs">
+        <DependentUpon>SimpleForumClient.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

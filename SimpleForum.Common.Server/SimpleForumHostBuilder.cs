@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,8 +12,11 @@ namespace SimpleForum.Common.Server
         // Creates a host builder for the given service
         public static IHostBuilder CreateHostBuilder<Startup>(string[] args, Service service) where Startup : class
         {
-            ServerArguments arguments = ArgumentParser.ParseArguments(args);
+            // Creates file directories if needed
+            CreateDirectories();
             
+            // Sets arguments, config and port values
+            ServerArguments arguments = ArgumentParser.ParseArguments(args);
             string path = arguments.Config ?? 
                           Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "/SimpleForumConfig.json";
             
@@ -30,6 +34,7 @@ namespace SimpleForum.Common.Server
                 _ => throw new ArgumentOutOfRangeException(nameof(service), service, null)
             };
 
+            // Creates HostBuilder
             return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
                 {
@@ -41,6 +46,27 @@ namespace SimpleForum.Common.Server
                     webBuilder.UseUrls($"http://localhost:{arguments.Port ?? port}");
                     webBuilder.UseStartup<Startup>();
                 });
+        }
+        
+        // Creates the required directories if they don't already exist
+        private static void CreateDirectories()
+        {
+            // List of required directories
+            List<string> directories = new List<string>()
+            {
+                "../UploadedImages",
+                "../UploadedImages/ProfilePictures",
+                "../UploadedImages/ThreadImages"
+            };
+
+            // Creates each directory if needed
+            foreach (string directory in directories)
+            {
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+            }
         }
     }
 }
