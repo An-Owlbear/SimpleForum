@@ -22,7 +22,7 @@ namespace SimpleForum.API.Client
             
             // Sends request, and converts response to stream
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.GetUserComment, parameters).ConfigureAwait(false);
-            return await Json.ParseHttpResponse<ApiComment>(response).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse<ApiComment>(response).ConfigureAwait(false);
         }
     }
 }

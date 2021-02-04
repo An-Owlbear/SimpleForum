@@ -36,7 +36,7 @@ namespace SimpleForum.API.Client
 
             // Retrieves URL information and converts to stream
             HttpResponseMessage response = await requestsClient.SendRequest(address, target);
-            return await Json.ParseHttpResponse<ServerURLs>(response);
+            return await ResponseParser.ParseJsonResponse<ServerURLs>(response);
         }
     }
 }

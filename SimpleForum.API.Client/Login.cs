@@ -24,7 +24,7 @@ namespace SimpleForum.API.Client
             
             // Sends login, and converts response to stream
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Login, parameters).ConfigureAwait(false);
-            return await Json.ParseHttpResponse<LoginResponse>(response).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse<LoginResponse>(response).ConfigureAwait(false);
         }
     }
 }

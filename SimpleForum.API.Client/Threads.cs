@@ -21,7 +21,7 @@ namespace SimpleForum.API.Client
             
             // Retrieves response, converts to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.FrontPage, parameters).ConfigureAwait(false);
-            return await Json.ParseHttpResponse<List<ApiThread>>(response).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse<List<ApiThread>>(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace SimpleForum.API.Client
             
             // Retrieves response, and converts it to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Thread, parameters).ConfigureAwait(false);
-            return await Json.ParseHttpResponse<ApiThread>(response);
+            return await ResponseParser.ParseJsonResponse<ApiThread>(response);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SimpleForum.API.Client
             
             // Retrieves response, and converts it to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.CreateThread, parameters).ConfigureAwait(false);
-            return await Json.ParseHttpResponse<ApiThread>(response);
+            return await ResponseParser.ParseJsonResponse<ApiThread>(response);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SimpleForum.API.Client
             
             // Retrieves response and converts to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ThreadComments, parameters).ConfigureAwait(false);
-            return await Json.ParseHttpResponse<List<ApiComment>>(response);
+            return await ResponseParser.ParseJsonResponse<List<ApiComment>>(response);
         }
     }
 }

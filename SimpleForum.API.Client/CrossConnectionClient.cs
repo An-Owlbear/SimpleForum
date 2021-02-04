@@ -40,7 +40,7 @@ namespace SimpleForum.API.Client
                 await _requestsClient.SendRequest(address, CrossConnectionEndpoints.CheckToken, parameters)
                     .ConfigureAwait(false);
 
-            return await Json.ParseHttpResponse(response).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SimpleForum.API.Client
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(address, CrossConnectionEndpoints.CheckAddress, parameters).ConfigureAwait(false);
 
-            return await Json.ParseHttpResponse(response).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace SimpleForum.API.Client
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(address, CrossConnectionEndpoints.RegisterToken, parameters).ConfigureAwait(false);
 
-            return await Json.ParseHttpResponse(response).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace SimpleForum.API.Client
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(address, CrossConnectionEndpoints.AuthenticateToken, parameters).ConfigureAwait(false);
 
-            return await Json.ParseHttpResponse<CrossConnectionUser>(response);
+            return await ResponseParser.ParseJsonResponse<CrossConnectionUser>(response);
         }
     }
 }
