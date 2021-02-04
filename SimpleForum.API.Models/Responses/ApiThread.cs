@@ -5,7 +5,7 @@ namespace SimpleForum.API.Models.Responses
     /// <summary>
     /// A thread object 
     /// </summary>
-    public class ApiThread
+    public class ApiThread : IApiPost
     {
         public int ID { get; set; }
         public string Title { get; set; }

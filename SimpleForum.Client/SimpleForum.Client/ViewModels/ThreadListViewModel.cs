@@ -21,7 +21,7 @@ namespace SimpleForum.Client.ViewModels
         public async Task LoadThreads(int page = 1)
         {
             Threads.Clear();
-            Result<List<ApiThread>> threads = await _account.Client.GetFrontPageAsync(page);
+            Result<List<ApiThread>> threads = await _account.CurrentClient.GetFrontPageAsync(page);
             if (!this.HandleResult(threads)) return;
             threads.Value.ForEach(x => Threads.Add(new Thread(x, _account)));
         }

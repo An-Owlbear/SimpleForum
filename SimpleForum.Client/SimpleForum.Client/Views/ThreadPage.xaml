@@ -2,12 +2,23 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SimpleForum.Client.Views.ThreadPage">
+             xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
+             xmlns:models="clr-namespace:SimpleForum.Models;assembly=SimpleForum.Models"
+             xmlns:controls="clr-namespace:SimpleForum.Client.Controls;assembly=SimpleForum.Client"
+             x:Class="SimpleForum.Client.Views.ThreadPage" x:DataType="viewModels:ThreadViewModel">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Hello, world!"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand" />
+            <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
+            <controls:CommentControl BindingContext="{Binding Thread}" />
+            <ListView ItemsSource="{Binding Comments}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Comment">
+                        <ViewCell>
+                            
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

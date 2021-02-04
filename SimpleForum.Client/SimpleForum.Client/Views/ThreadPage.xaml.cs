@@ -1,5 +1,4 @@
-﻿using SimpleForum.API.Models.Responses;
-using SimpleForum.Client.ViewModels;
+﻿using SimpleForum.Client.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,6 +11,11 @@ namespace SimpleForum.Client.Views
         {
             BindingContext = viewModel;
             InitializeComponent();
+            
+            MessagingCenter.Subscribe<ThreadViewModel, string>(viewModel, "Error", (sender, data) =>
+            {
+                DisplayAlert("Error", data, "Ok");
+            });
         }
     }
 }

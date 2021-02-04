@@ -24,7 +24,7 @@ namespace SimpleForum.API.Models.Responses
         /// <param name="user">The database model user</param>
         public ApiUser(SimpleForum.Models.User user)
         {
-            Username = user.Username;
+            Username = user.FullUsername;
             ID = user.UserID;
             Posts = user.Threads.Count;
             Comments = user.Comments.Count + user.UserComments.Count;

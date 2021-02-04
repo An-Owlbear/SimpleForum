@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
+             x:Class="SimpleForum.Client.Controls.CommentControl" x:DataType="models:IPost">
+    <ContentView.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Image Source="{Binding ProfileImage}" HeightRequest="25" WidthRequest="25" />
+                <Label Text="{Binding Post.User.Username}" FontSize="Small" />
+            </StackLayout>
+            <Label Text="{Binding Post.Content}" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using SimpleForum.API.Client;
 using SimpleForum.API.Models.Responses;
@@ -18,6 +19,9 @@ namespace SimpleForum.Client.Models
         public string Fullname => $"{Username}@{ServerURLs.InstanceURL.Replace("http://", "").Replace("https://", "")}";
         public ICommand UseUserCommand { get; set; }
 
+        public ObservableCollection<Instance> Instances { get; set; } = new ObservableCollection<Instance>();
+        public SimpleForumClient CurrentClient { get; set; }
+
         public Account(string username, string token, ServerURLs serverURLs, SimpleForumClient client)
         {
             Username = username;
@@ -25,6 +29,8 @@ namespace SimpleForum.Client.Models
             ServerURLs = serverURLs;
             Client = client;
             UseUserCommand = new Command(UseUser);
+            Instances.Add(new Instance(serverURLs, client));
+            CurrentClient = client;
         }
 
         private async void UseUser()

@@ -5,7 +5,7 @@ namespace SimpleForum.API.Models.Responses
     /// <summary>
     /// A comment object
     /// </summary>
-    public class ApiComment
+    public class ApiComment : IApiPost
     {
         public int ID { get; set; }
         public string Type { get; set; }
@@ -14,8 +14,10 @@ namespace SimpleForum.API.Models.Responses
         public ApiUser User { get; set; }
 
         // Parameterless constructor for use with json deserialization
-        public ApiComment() { }
-        
+        public ApiComment()
+        {
+        }
+
         /// <summary>
         /// Creates an API model comment from a database model comment
         /// </summary>
