@@ -22,7 +22,7 @@ namespace SimpleForum.API.Client
                 { "password", password }
             };
             
-            // Sends login, and converts response to stream
+            // Sends login and returns result, saving the token if successful
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Login, parameters).ConfigureAwait(false);
             Result<LoginResponse> loginResponse = await ResponseParser.ParseJsonResponse<LoginResponse>(response).ConfigureAwait(false);
             if (loginResponse.Success) _tokenStorage.SetToken(loginResponse.Value.Token);

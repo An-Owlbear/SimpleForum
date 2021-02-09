@@ -19,10 +19,10 @@ namespace SimpleForum.API.Client
             {
                 { "id", id.ToString() }
             };
-
+            
+            // Sends request and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ProfilePicture, parameters)
                 .ConfigureAwait(false);
-
             return await ResponseParser.ParseStreamResponse(response);
         }
     }

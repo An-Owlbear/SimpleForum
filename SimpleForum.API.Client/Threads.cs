@@ -20,7 +20,7 @@ namespace SimpleForum.API.Client
                 { "page", page.ToString() }
             };
             
-            // Retrieves response, converts to result
+            // Retrieves response and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.FrontPage, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<List<ApiThread>>(response).ConfigureAwait(false);
         }
@@ -37,7 +37,7 @@ namespace SimpleForum.API.Client
                 { "id", threadID.ToString() }
             };
             
-            // Retrieves response, and converts it to result
+            // Retrieves response and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Thread, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<ApiThread>(response);
         }
@@ -56,7 +56,7 @@ namespace SimpleForum.API.Client
                 { "content", contents }
             };
             
-            // Retrieves response, and converts it to result
+            // Retrieves response and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.CreateThread, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<ApiThread>(response);
         }
@@ -75,7 +75,7 @@ namespace SimpleForum.API.Client
                 { "page", page.ToString() }
             };
             
-            // Retrieves response and converts to result
+            // Retrieves response and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ThreadComments, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<List<ApiComment>>(response);
         }

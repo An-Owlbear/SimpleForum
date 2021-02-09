@@ -20,7 +20,7 @@ namespace SimpleForum.API.Client
                 { "id", id.ToString() }
             };
             
-            // Sends request, and converts response to stream
+            // Sends request and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.GetUserComment, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<ApiComment>(response).ConfigureAwait(false);
         }
@@ -37,12 +37,17 @@ namespace SimpleForum.API.Client
                 { "id", id.ToString() }
             };
             
-            // Sends request, and returns result
+            // Sends request and returns result
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(Endpoints.DeleteUserComment, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Deletes a UserComment as admin
+        /// </summary>
+        /// <param name="id">The ID of the comment to delete</param>
+        /// <returns></returns>
         public async Task<Result> AdminDeleteUserCommentAsync(int id)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
@@ -50,7 +55,7 @@ namespace SimpleForum.API.Client
                 { "id", id.ToString() }
             };
             
-            // Sends request, and returns result
+            // Sends request and returns result
             HttpResponseMessage response = await _requestsClient
                 .SendRequest(Endpoints.AdminDeleteUserComment, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
