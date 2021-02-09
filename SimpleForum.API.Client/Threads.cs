@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Common;
 
@@ -77,6 +78,57 @@ namespace SimpleForum.API.Client
             // Retrieves response and converts to result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ThreadComments, parameters).ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<List<ApiComment>>(response);
+        }
+
+        /// <summary>
+        /// Deletes a thread of the given ID
+        /// </summary>
+        /// <param name="id">The ID of the thread to delete</param>
+        /// <returns></returns>
+        public async Task<Result> DeleteThreadAsync(int id)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() }
+            };
+            
+            // Retrieves the response and returns result
+            HttpResponseMessage response =
+                await _requestsClient.SendRequest(Endpoints.DeleteThread, parameters).ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Deletes the thread of the given ID as admin
+        /// </summary>
+        /// <param name="id">The ID of the thread to delete</param>
+        /// <returns></returns>
+        public async Task<Result> AdminDeleteThreadAsync(int id)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() }
+            };
+            
+            // Retrieves response and returns result
+            HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.AdminDeleteThread, parameters)
+                .ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
+        }
+
+        public async Task<Result<ApiThread>> AdminUpdateThread(int id, UpdateThreadRequest request)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() }
+            };
+            if (request.Locked != null) parameters.Add("locked", request.Locked.ToString());
+            if (request.Pinned != null) parameters.Add("pinned", request.Pinned.ToString());
+            
+            // Retrieves response and returns result
+            HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.AdminUpdateThread, parameters)
+                .ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse<ApiThread>(response).ConfigureAwait(false);
         }
     }
 }

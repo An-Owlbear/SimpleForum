@@ -22,6 +22,12 @@ namespace SimpleForum.API.Client.Tests
                                   "6 - Get comment\n" +
                                   "7 - Get UserComment\n" +
                                   "8 - Download a profile picture\n" +
+                                  "9 - Delete thread\n" +
+                                  "10 - Admin delete thread\n" +
+                                  "11 - Delete comment\n" +
+                                  "12 - Admin delete comment\n" +
+                                  "13 - Delete UserComment\n" +
+                                  "14 - Admin delete UserComment\n" +
                                   "> ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -52,6 +58,24 @@ namespace SimpleForum.API.Client.Tests
                         break;
                     case 8:
                         await TestProfileImage();
+                        break;
+                    case 9:
+                        await TestDeleteThread();
+                        break;
+                    case 10:
+                        await TestDeleteThreadAdmin();
+                        break;
+                    case 11:
+                        await TestDeleteComment();
+                        break;
+                    case 12:
+                        await TestAdminDeleteComment();
+                        break;
+                    case 13:
+                        await TestDeleteUserComment();
+                        break;
+                    case 14:
+                        await TestAdminDeleteUserComment();
                         break;
                 }
 

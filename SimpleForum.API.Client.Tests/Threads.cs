@@ -77,5 +77,29 @@ namespace SimpleForum.API.Client.Tests
             }
             else DisplayItems.DisplayError(result);
         }
+
+        // Tests deleting a thread
+        private static async Task TestDeleteThread()
+        {
+            // Receives user input and retrieves comment
+            Console.Write("Enter the ID of the thread to delete\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Result result = await client.DeleteThreadAsync(id);
+            
+            if (result.Success) Console.WriteLine("Thread deleted");
+            else DisplayItems.DisplayError(result);
+        }
+        
+        // Test deleting a thread as admin
+        private static async Task TestDeleteThreadAdmin()
+        {
+            // Receives user input and retrieves comment
+            Console.Write("Enter the ID of the thread to delete\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Result result = await client.AdminDeleteThreadAsync(id);
+
+            if (result.Success) Console.WriteLine("Thread deleted");
+            else DisplayItems.DisplayError(result);
+        }
     }
 }

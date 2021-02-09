@@ -7,7 +7,7 @@ namespace SimpleForum.API.Client.Tests
 {
     public partial class Tests
     {
-        public static async Task TestGetComment()
+        private static async Task TestGetComment()
         {
             // Receives user input and retrieves comment
             Console.Write("Enter the id of the comment to retrieve\n> ");
@@ -16,6 +16,32 @@ namespace SimpleForum.API.Client.Tests
             
             // Outputs result
             if (result.Success) DisplayItems.DisplayComment(result.Value);
+            else DisplayItems.DisplayError(result);
+        }
+
+        // Tests deleting comments
+        private static async Task TestDeleteComment()
+        {
+            // Receives user input and deletes comment
+            Console.Write("Enter the id of the comment to delete\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Result result = await client.DeleteCommentAsync(id);
+            
+            // Outputs result
+            if (result.Success) Console.WriteLine("Comment deleted");
+            else DisplayItems.DisplayError(result);
+        }
+
+        // Tests deleting comments as admin
+        private static async Task TestAdminDeleteComment()
+        {
+            // Receives user input and deletes comment as admin
+            Console.Write("Enter the id of the comment to delete\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Result result = await client.AdminDeleteCommentAsync(id);
+            
+            // Outputs result
+            if (result.Success) Console.WriteLine("Comment deleted");
             else DisplayItems.DisplayError(result);
         }
     }
