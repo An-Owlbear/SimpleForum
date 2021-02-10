@@ -25,6 +25,9 @@
       <Compile Update="Files.cs">
         <DependentUpon>SimpleForumClient.cs</DependentUpon>
       </Compile>
+      <Compile Update="Users.cs">
+        <DependentUpon>SimpleForumClient.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

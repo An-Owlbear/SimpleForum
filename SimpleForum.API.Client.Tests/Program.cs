@@ -28,6 +28,10 @@ namespace SimpleForum.API.Client.Tests
                                   "12 - Admin delete comment\n" +
                                   "13 - Delete UserComment\n" +
                                   "14 - Admin delete UserComment\n" +
+                                  "15 - Get user\n" +
+                                  "16 - Get UserComments\n" +
+                                  "17 - Post comment\n" +
+                                  "18 - Post UserComment\n" +
                                   "> ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -76,6 +80,18 @@ namespace SimpleForum.API.Client.Tests
                         break;
                     case 14:
                         await TestAdminDeleteUserComment();
+                        break;
+                    case 15:
+                        await TestGetUser();
+                        break;
+                    case 16:
+                        await TestGetUserComments();
+                        break;
+                    case 17:
+                        await TestPostComment();
+                        break;
+                    case 18:
+                        await TestPostUserComment();
                         break;
                 }
 

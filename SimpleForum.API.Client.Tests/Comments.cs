@@ -44,5 +44,20 @@ namespace SimpleForum.API.Client.Tests
             if (result.Success) Console.WriteLine("Comment deleted");
             else DisplayItems.DisplayError(result);
         }
+        
+        // Tests posting a comment
+        private static async Task TestPostComment()
+        {
+            // Receives user input and posts comment
+            Console.Write("Enter the ID of the post to comment on\n> ");
+            int id = int.Parse(Console.ReadLine());
+            Console.Write("Enter the contents of the comment to post\n> ");
+            string content = Console.ReadLine();
+            Result<ApiComment> result = await client.PostCommentAsync(id, content);
+            
+            // Outputs result
+            if (result.Success) DisplayItems.DisplayComment(result.Value);
+            else DisplayItems.DisplayError(result);
+        }
     }
 }
