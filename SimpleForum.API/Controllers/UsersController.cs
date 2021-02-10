@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.API.Policies;
+using SimpleForum.Common;
 using SimpleForum.Common.Server;
 using SimpleForum.Models;
 
@@ -62,10 +63,11 @@ namespace SimpleForum.API.Controllers
             {
                 Content = request.Content,
                 DatePosted = DateTime.Now,
-                User = currentUser,
-                UserPage = profileUser
+                UserID = currentUser.UserID,
+                UserPageID = profileUser.UserID
             };
-            await _repository.PostUserCommentAsync(userComment);
+            Result<UserComment> result = await _repository.PostUserCommentAsync(userComment);
+            if (result.Failure) return StatusCode(result.Code, result.Error);
             await _repository.SaveChangesAsync();
 
             // Returns JSON response
