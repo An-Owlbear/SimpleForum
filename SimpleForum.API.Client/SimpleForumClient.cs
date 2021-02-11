@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Net.Http;
-using System.Text.Json;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Common;
@@ -9,11 +7,6 @@ namespace SimpleForum.API.Client
 {
     public partial class SimpleForumClient
     {
-        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
         private readonly RequestsClient _requestsClient;
         private readonly ITokenStorage _tokenStorage;
 

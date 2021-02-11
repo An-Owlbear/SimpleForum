@@ -15,7 +15,7 @@ namespace SimpleForum.API.Client.Tests
             Console.Write("Select a page to view\n> ");
             int page = int.Parse(Console.ReadLine());
             Console.Clear();
-            Result<List<ApiThread>> response = await client.GetFrontPageAsync();
+            Result<List<ApiThread>> response = await client.GetFrontPageAsync(page);
     
             // Outputs result
             if (response.Success)

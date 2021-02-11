@@ -7,7 +7,7 @@ namespace SimpleForum.Client.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ThreadListPage : ContentPage
     {
-        private ThreadListViewModel _viewModel;
+        private readonly ThreadListViewModel _viewModel;
         
         public ThreadListPage(ThreadListViewModel viewModel)
         {

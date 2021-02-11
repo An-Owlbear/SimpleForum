@@ -1,5 +1,4 @@
-﻿using System.IO;
-using SimpleForum.API.Models.Responses;
+﻿using SimpleForum.API.Models.Responses;
 using Xamarin.Forms;
 
 namespace SimpleForum.Client.Models

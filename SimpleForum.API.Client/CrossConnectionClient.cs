@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
-using SimpleForum.API.Models.Responses;
 using SimpleForum.API.Models.Responses.CrossConnection;
 using SimpleForum.Common;
 
@@ -11,11 +8,6 @@ namespace SimpleForum.API.Client
 {
     public class CrossConnectionClient
     {
-        private readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-
         private readonly RequestsClient _requestsClient;
 
         public CrossConnectionClient()
