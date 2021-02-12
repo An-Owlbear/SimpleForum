@@ -109,5 +109,38 @@ namespace SimpleForum.API.Client
                 return result;
             }
         }
+
+        /// <summary>
+        /// Creates a URI
+        /// </summary>
+        /// <param name="endpoint">The endpoint to request</param>
+        /// <param name="parameters">The parameters to add</param>
+        /// <returns></returns>
+        public async Task<Uri> BuildUrl(Endpoint endpoint, Dictionary<string, string> parameters)
+        {
+            // Creates a list of parameters in the url path
+            Dictionary<string, string> pathParameters = parameters
+                .Where(x => Regex.IsMatch(endpoint.Path, $@":{x.Key}(?!\w)"))
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            // Creates url string
+            string url = _fqdn + pathParameters
+                .Aggregate(endpoint.Path,
+                    (acc, next) =>
+                        Regex.Replace(acc, $@":{next.Key}(?!\w)", next.Value));
+
+            // Returns url if not get request
+            if (endpoint.Method != HttpMethod.Get) return new Uri(url);
+            
+            // Creates a list of remaining parameters
+            Dictionary<string, string> remainingParams = parameters
+                .Except(pathParameters)
+                .ToDictionary(x => x.Key, x => x.Value);
+            
+            // Adds parameters to url and returns
+            UriBuilder address = new UriBuilder(url);
+            address.Query = await new FormUrlEncodedContent(remainingParams).ReadAsStringAsync().ConfigureAwait(false);
+            return new Uri(address.ToString());
+        }
     }
 }

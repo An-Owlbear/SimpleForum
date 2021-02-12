@@ -5,7 +5,6 @@ using System.Windows.Input;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Client.ViewModels;
 using SimpleForum.Client.Views;
-using SimpleForum.Common;
 using Xamarin.Forms;
 
 namespace SimpleForum.Client.Models
@@ -30,8 +29,8 @@ namespace SimpleForum.Client.Models
 
         private async Task LoadProfileImage()
         {
-            Result<Stream> result = await _account.CurrentClient.GetProfileImg(Post.User.ID);
-            if (result.Success) ProfileImage = ImageSource.FromStream(() => CreateStream(result.Value));
+            Uri imageUri = await _account.CurrentClient.GetProfileImgUrl(ApiThread.ID);
+            ProfileImage = ImageSource.FromUri(imageUri);
         }
 
         // Copies stream to a new MemoryStream

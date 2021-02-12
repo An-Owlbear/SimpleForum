@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,6 +25,16 @@ namespace SimpleForum.API.Client
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.ProfilePicture, parameters)
                 .ConfigureAwait(false);
             return await ResponseParser.ParseStreamResponse(response);
+        }
+
+        public async Task<Uri> GetProfileImgUrl(int id)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() }
+            };
+
+            return await _requestsClient.BuildUrl(Endpoints.ProfilePicture, parameters);
         }
     }
 }
