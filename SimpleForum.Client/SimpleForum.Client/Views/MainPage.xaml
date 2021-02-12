@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.MainPage" x:DataType="viewModels:MainViewModel">
 
-    <StackLayout>
+    <StackLayout Margin="10">
         <ListView ItemsSource="{Binding AccountService.Accounts}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Account">

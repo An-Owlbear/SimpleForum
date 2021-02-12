@@ -6,7 +6,7 @@
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.ThreadListPage" x:DataType="viewModels:ThreadListViewModel">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="10">
             <ListView x:Name="ThreadList" ItemsSource="{Binding Threads}">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Thread">

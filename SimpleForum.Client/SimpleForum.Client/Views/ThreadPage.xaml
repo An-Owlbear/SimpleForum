@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:SimpleForum.Client.Controls;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.ThreadPage" x:DataType="viewModels:ThreadViewModel">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="10">
             <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
             <controls:CommentControl BindingContext="{Binding Thread}" />
             <ListView ItemsSource="{Binding Comments}">

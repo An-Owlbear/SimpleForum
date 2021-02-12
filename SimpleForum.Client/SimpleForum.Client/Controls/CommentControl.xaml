@@ -5,12 +5,12 @@
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Controls.CommentControl" x:DataType="models:IPost">
     <ContentView.Content>
-        <StackLayout>
+        <StackLayout Margin="20 0">
             <StackLayout Orientation="Horizontal">
                 <Image Source="{Binding ProfileImage}" HeightRequest="25" WidthRequest="25" />
                 <Label Text="{Binding Post.User.Username}" FontSize="Small" />
             </StackLayout>
-            <Label Text="{Binding Post.Content}" />
+            <Label Text="{Binding Content}" TextType="Html" />
         </StackLayout>
     </ContentView.Content>
 </ContentView>

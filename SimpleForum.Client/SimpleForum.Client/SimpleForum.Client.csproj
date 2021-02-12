@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\SimpleForum.API.Client\SimpleForum.API.Client.csproj" />
+      <ProjectReference Include="..\..\SimpleForum.TextParser\SimpleForum.TextParser.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
