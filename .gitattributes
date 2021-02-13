@@ -1,3 +1,3 @@
 SimpleForum.Web/wwwroot/lib/remix/* linguist-vendored
 SimpleForum.Web/wwwroot/lib/open-sans/* linguist-vendored
-SimpleForum.Internal/Migrations/* linguist-vendored
+SimpleForum.Common.Server/Migrations/* linguist-vendored
