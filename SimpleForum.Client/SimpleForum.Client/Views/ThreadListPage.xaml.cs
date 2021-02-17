@@ -20,7 +20,7 @@ namespace SimpleForum.Client.Views
                 DisplayAlert("Error", data, "Ok");
             });
 
-            _viewModel.LoadThreads().ContinueWith(t => t);
+            _viewModel.LoadThreads();
         }
     }
 }

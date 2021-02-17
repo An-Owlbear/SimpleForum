@@ -22,6 +22,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button Command="{Binding LoadThreadsCommand}" 
+                    Text="Load more threads" IsVisible="{Binding ThreadsRemaining}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
