@@ -5,7 +5,7 @@
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Controls.CommentControl" x:DataType="models:IPost">
     <ContentView.Content>
-        <StackLayout Margin="20 0">
+        <StackLayout Margin="0, 20">
             <StackLayout Orientation="Horizontal">
                 <Image Source="{Binding ProfileImage}" HeightRequest="25" WidthRequest="25" />
                 <Label Text="{Binding Post.User.Username}" FontSize="Small" />
