@@ -101,9 +101,9 @@ namespace SimpleForum.API.Client
             {
                 return await _client.SendAsync(request).ConfigureAwait(false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                string json = JsonSerializer.Serialize(new Error(500, "Connection failed"));
+                string json = JsonSerializer.Serialize(new Error(500, ex.Message));
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 result.Content = new StringContent(json);
                 return result;
