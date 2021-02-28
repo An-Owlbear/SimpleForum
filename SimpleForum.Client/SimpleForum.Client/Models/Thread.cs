@@ -10,36 +10,21 @@ using Xamarin.Forms;
 
 namespace SimpleForum.Client.Models
 {
-    public class Thread : IPost
+    public class Thread : Post
     {
         private readonly Account _account;
         
         public ApiThread ApiThread { get; set; }
-        public IApiPost Post { get; set; }
-        public string Content { get; set; }
-        public ImageSource ProfileImage { get; set; }
         public ICommand ThreadCommand { get; set; }
 
         public Thread(ApiThread thread, Account account)
         {
             _account = account;
             ApiThread = thread;
-            Post = thread;
+            ApiPost = thread;
             Content = ParseContent(thread.Content);
             ThreadCommand = new Command(NavigateThread);
             LoadProfileImage().ContinueWith(t => t);
-        }
-
-        private string ParseContent(string content)
-        {
-            IEnumerable<MarkdownParser.MarkdownValue> markdownValues = MarkdownParser.ParseMarkdown(content);
-            return MarkdownParser.MarkdownToHTML(markdownValues);
-        }
-        
-        private async Task LoadProfileImage()
-        {
-            Uri imageUri = await _account.CurrentClient.GetProfileImgUrl(ApiThread.User.ID);
-            ProfileImage = ImageSource.FromUri(imageUri);
         }
 
         private async void NavigateThread()
