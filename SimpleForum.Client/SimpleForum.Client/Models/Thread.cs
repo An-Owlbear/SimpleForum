@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Client.ViewModels;
 using SimpleForum.Client.Views;
-using SimpleForum.TextParser;
 using Xamarin.Forms;
 
 namespace SimpleForum.Client.Models
 {
     public class Thread : Post
     {
-        private readonly Account _account;
-        
         public ApiThread ApiThread { get; set; }
         public ICommand ThreadCommand { get; set; }
 
