@@ -38,7 +38,7 @@ namespace SimpleForum.Client.Models
         
         private async Task LoadProfileImage()
         {
-            Uri imageUri = await _account.CurrentClient.GetProfileImgUrl(ApiThread.ID);
+            Uri imageUri = await _account.CurrentClient.GetProfileImgUrl(ApiThread.User.ID);
             ProfileImage = ImageSource.FromUri(imageUri);
         }
 
