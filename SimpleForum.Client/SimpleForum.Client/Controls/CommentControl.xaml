@@ -10,7 +10,7 @@
                 <Image Source="{Binding ProfileImage}" HeightRequest="25" WidthRequest="25" />
                 <Label Text="{Binding ApiPost.User.Username}" FontSize="Small" />
             </StackLayout>
-            <Label Text="{Binding Content}" TextType="Html" />
+            <Label FormattedText="{Binding Content}" />
         </StackLayout>
     </ContentView.Content>
 </ContentView>

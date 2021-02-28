@@ -9,6 +9,12 @@
         <Compile Include="ParserCombinators.fs" />
         <Compile Include="StandardParsers.fs" />
         <Compile Include="MarkdownParser.fs" />
+        <Compile Include="XamarinParser.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+      <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />
     </ItemGroup>
 
 </Project>

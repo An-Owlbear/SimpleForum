@@ -12,15 +12,15 @@ namespace SimpleForum.Client.Models
         protected Account _account;
         
         public IApiPost ApiPost { get; set; }
-        public string Content { get; set; }
+        public FormattedString Content { get; set; } = new FormattedString(); 
         public ImageSource ProfileImage { get; set; }
         
-        protected string ParseContent(string content)
+        protected void ParseContent(string content)
         {
             IEnumerable<MarkdownParser.MarkdownValue> markdownValues = MarkdownParser.ParseMarkdown(content);
-            return MarkdownParser.MarkdownToHTML(markdownValues);
+            Content = XamarinParser.RenderFormattedString(markdownValues);
         }
-        
+
         protected async Task LoadProfileImage()
         {
             Uri imageUri = await _account.CurrentClient.GetProfileImgUrl(ApiPost.User.ID);

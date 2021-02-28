@@ -16,7 +16,7 @@ namespace SimpleForum.Client.Models
             ApiComment = comment;
             ApiPost = comment;
             _account = account;
-            Content = ParseContent(comment.Content);
+            ParseContent(comment.Content);
             LoadProfileImage().ContinueWith(t => t);
         }
     }

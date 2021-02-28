@@ -16,8 +16,8 @@ namespace SimpleForum.Client.Models
             _account = account;
             ApiThread = thread;
             ApiPost = thread;
-            Content = ParseContent(thread.Content);
             ThreadCommand = new Command(NavigateThread);
+            ParseContent(thread.Content);
             LoadProfileImage().ContinueWith(t => t);
         }
 
