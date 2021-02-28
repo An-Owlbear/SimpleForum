@@ -11,7 +11,7 @@ namespace SimpleForum.Client.Views
         {
             BindingContext = viewModel;
             InitializeComponent();
-            
+            viewModel.LoadCommentsCommand.Execute(null);
             MessagingCenter.Subscribe<ThreadViewModel, string>(viewModel, "Error", (sender, data) =>
             {
                 DisplayAlert("Error", data, "Ok");

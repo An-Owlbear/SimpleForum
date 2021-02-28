@@ -3,18 +3,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
-             xmlns:models="clr-namespace:SimpleForum.Models;assembly=SimpleForum.Models"
+             xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              xmlns:controls="clr-namespace:SimpleForum.Client.Controls;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.ThreadPage" x:DataType="viewModels:ThreadViewModel">
     <ContentPage.Content>
         <StackLayout Margin="10">
             <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
             <controls:CommentControl BindingContext="{Binding Thread}" />
-            <ListView ItemsSource="{Binding Comments}">
+            <ListView ItemsSource="{Binding Comments}" HasUnevenRows="True" VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Comment">
                         <ViewCell>
-                            
+                            <controls:CommentControl />
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
