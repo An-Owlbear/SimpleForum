@@ -15,15 +15,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label>
-            <Label.FormattedText>
-                <FormattedString>
-                    <Span FontAttributes="Bold" Text="BoldText\n" />
-                    <Span FontAttributes="Bold, Italic" Text="Both\n" />
-                    <Span Text="None\n" />
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
         <Button Text="Add account" Clicked="AddAccount" />
     </StackLayout>
 

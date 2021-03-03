@@ -53,6 +53,10 @@ let renderBlock (text: string) (formattedString: FormattedString) (textAttribute
             | 5 -> 11.2
             | 6 -> 9.8
             | _ -> 14.0
+    
+    // Adds a background if quoted
+    if textAttributes.IsQuote then
+        span.BackgroundColor <- Color.LightGray
             
     formattedString.Spans.Add(span)
     
