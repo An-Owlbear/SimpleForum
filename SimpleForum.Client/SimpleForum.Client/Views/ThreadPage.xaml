@@ -7,16 +7,18 @@
              xmlns:controls="clr-namespace:SimpleForum.Client.Controls;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.ThreadPage" x:DataType="viewModels:ThreadViewModel">
     <ContentPage.Content>
-        <StackLayout Margin="10">
-            <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
-            <controls:CommentControl BindingContext="{Binding Thread}" />
-            <CollectionView ItemsSource="{Binding Comments}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Comment">
-                        <controls:CommentControl />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+        <CollectionView x:Name="ThreadPosts" ItemsSource="{Binding Comments}" SelectionMode="None" Margin="10">
+            <CollectionView.Header>
+                <StackLayout>
+                    <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
+                    <controls:CommentControl BindingContext="{Binding Thread}" />
+                </StackLayout>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Comment">
+                    <controls:CommentControl />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </ContentPage.Content>
 </ContentPage>
