@@ -5,7 +5,7 @@
              xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.CreateThreadPage" x:DataType="viewModels:CreateThreadViewModel">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="10">
             <Entry Text="{Binding Title}" Placeholder="Thread title" />
             <Entry Text="{Binding Content}" Placeholder="Thread content" />
             <Button Text="Create thread" Command="{Binding CreateThreadCommand}" />
