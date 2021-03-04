@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
+             x:Class="SimpleForum.Client.Views.CreateThreadPage" x:DataType="viewModels:CreateThreadViewModel">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry Text="{Binding Title}" Placeholder="Thread title" />
+            <Entry Text="{Binding Content}" Placeholder="Thread content" />
+            <Button Text="Create thread" Command="{Binding CreateThreadCommand}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

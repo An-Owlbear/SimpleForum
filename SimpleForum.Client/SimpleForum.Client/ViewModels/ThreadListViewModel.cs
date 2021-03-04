@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Client.Models;
+using SimpleForum.Client.Views;
 using SimpleForum.Common;
 using Xamarin.Forms;
 
@@ -21,11 +22,13 @@ namespace SimpleForum.Client.ViewModels
         {
             _account = account;
             LoadThreadsCommand = new Command(LoadThreads);
+            CreateThreadCommand = new Command(CreateThread);
         }
 
         public ObservableCollection<Thread> Threads { get; set; } = new ObservableCollection<Thread>();
         public ICommand LoadThreadsCommand { get; set; }
-
+        public ICommand CreateThreadCommand { get; set; }
+        
         public bool ThreadsRemaining
         {
             get => threadsRemaining;
@@ -52,6 +55,14 @@ namespace SimpleForum.Client.ViewModels
             // Adds threads to list and increments page
             threads.Value.ForEach(x => Threads.Add(new Thread(x, _account)));
             currentPage++;
+        }
+
+        // Navigates the user to the create thead page
+        private async void CreateThread()
+        {
+            CreateThreadViewModel model = new CreateThreadViewModel(_account);
+            CreateThreadPage page = new CreateThreadPage(model);
+            await Application.Current.MainPage.Navigation.PushModalAsync(page);
         }
     }
 }

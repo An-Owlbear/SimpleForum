@@ -8,6 +8,9 @@
     <ContentPage.Content>
         <StackLayout Margin="10">
             <CollectionView x:Name="ThreadList" ItemsSource="{Binding Threads}">
+                <CollectionView.Header>
+                    <Button Command="{Binding CreateThreadCommand}" Text="Create thread" />
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Thread">
                         <StackLayout BackgroundColor="Transparent">
@@ -20,9 +23,11 @@
                             </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <Button Command="{Binding LoadThreadsCommand}" 
+                                        Text="Load more threads" IsVisible="{Binding ThreadsRemaining}" />
+                </CollectionView.Footer>
             </CollectionView>
-            <Button Command="{Binding LoadThreadsCommand}" 
-                    Text="Load more threads" IsVisible="{Binding ThreadsRemaining}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
