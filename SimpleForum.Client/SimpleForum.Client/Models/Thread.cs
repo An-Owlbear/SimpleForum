@@ -25,7 +25,7 @@ namespace SimpleForum.Client.Models
         {
             ThreadViewModel viewModel = new ThreadViewModel(this, _account);
             ThreadPage page = new ThreadPage(viewModel);
-            await Application.Current.MainPage.Navigation.PushModalAsync(page);
+            await Application.Current.MainPage.Navigation.PushAsync(page);
         }
     }
 }

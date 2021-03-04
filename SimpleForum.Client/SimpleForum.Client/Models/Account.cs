@@ -37,7 +37,7 @@ namespace SimpleForum.Client.Models
         {
             ThreadListViewModel viewModel = new ThreadListViewModel(this);
             ThreadListPage page = new ThreadListPage(viewModel);
-            await Application.Current.MainPage.Navigation.PushModalAsync(page);
+            await Application.Current.MainPage.Navigation.PushAsync(page);
         }
         
         public async Task<Result> AuthenticateUser(string password)

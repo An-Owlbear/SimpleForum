@@ -62,7 +62,7 @@ namespace SimpleForum.Client.ViewModels
         {
             CreateThreadViewModel model = new CreateThreadViewModel(_account);
             CreateThreadPage page = new CreateThreadPage(model);
-            await Application.Current.MainPage.Navigation.PushModalAsync(page);
+            await Application.Current.MainPage.Navigation.PushAsync(page);
         }
     }
 }

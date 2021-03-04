@@ -29,7 +29,7 @@ namespace SimpleForum.Client.ViewModels
             if (!this.HandleResult(result)) return;
 
             // Navigates to the thread
-            await Application.Current.MainPage.Navigation.PopModalAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
             Thread thread = new Thread(result.Value, _account);
             thread.ThreadCommand.Execute(null);
         }

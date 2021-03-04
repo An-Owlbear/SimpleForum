@@ -22,12 +22,12 @@ namespace SimpleForum.Client.Views
 
         private async void Return(object sender, EventArgs e)
         {
-            await Navigation.PopModalAsync();
+            await Navigation.PopAsync();
         }
 
         private async void LoginHandler(Result result)
         {
-            if (result.Success) await Navigation.PopModalAsync();
+            if (result.Success) await Navigation.PopAsync();
             else await DisplayAlert("Error", result.Error, "OK");
         }
     }

@@ -4,7 +4,6 @@
              xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.MainPage" x:DataType="viewModels:MainViewModel">
-
     <StackLayout Margin="10">
         <CollectionView ItemsSource="{Binding AccountService.Accounts}">
             <CollectionView.ItemTemplate>

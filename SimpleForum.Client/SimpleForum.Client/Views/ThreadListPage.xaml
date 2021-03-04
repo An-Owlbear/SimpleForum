@@ -6,28 +6,26 @@
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.ThreadListPage" x:DataType="viewModels:ThreadListViewModel">
     <ContentPage.Content>
-        <StackLayout Margin="10">
-            <CollectionView x:Name="ThreadList" ItemsSource="{Binding Threads}">
-                <CollectionView.Header>
-                    <Button Command="{Binding CreateThreadCommand}" Text="Create thread" />
-                </CollectionView.Header>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Thread">
-                        <StackLayout BackgroundColor="Transparent">
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ThreadCommand}" />
-                                </StackLayout.GestureRecognizers>
-                                <Label Text="{Binding ApiThread.Title}" FontAttributes="Bold" />
-                                <Label Text="{Binding ApiThread.User.Username}" FontSize="Small" />
-                                <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0, 10" />
-                            </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                <CollectionView.Footer>
-                    <Button Command="{Binding LoadThreadsCommand}" 
-                                        Text="Load more threads" IsVisible="{Binding ThreadsRemaining}" />
-                </CollectionView.Footer>
-            </CollectionView>
-        </StackLayout>
+        <CollectionView x:Name="ThreadList" ItemsSource="{Binding Threads}" Margin="10">
+            <CollectionView.Header>
+                <Button Command="{Binding CreateThreadCommand}" Text="Create thread" />
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Thread">
+                    <StackLayout BackgroundColor="Transparent">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ThreadCommand}" />
+                            </StackLayout.GestureRecognizers>
+                            <Label Text="{Binding ApiThread.Title}" FontAttributes="Bold" />
+                            <Label Text="{Binding ApiThread.User.Username}" FontSize="Small" />
+                            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0, 10" />
+                        </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <Button Command="{Binding LoadThreadsCommand}" 
+                                    Text="Load more threads" IsVisible="{Binding ThreadsRemaining}" />
+            </CollectionView.Footer>
+        </CollectionView>
     </ContentPage.Content>
 </ContentPage>

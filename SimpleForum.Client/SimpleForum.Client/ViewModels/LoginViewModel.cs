@@ -80,7 +80,7 @@ namespace SimpleForum.Client.ViewModels
             }
             
             _accountService.AddAccount(username, loginResult.Value.Token, urlsResult.Value, client);
-            await Application.Current.MainPage.Navigation.PopModalAsync();
+            await Application.Current.MainPage.Navigation.PopAsync();
         }
     }
 }

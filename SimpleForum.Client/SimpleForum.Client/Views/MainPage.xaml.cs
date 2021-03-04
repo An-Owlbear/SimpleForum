@@ -19,7 +19,7 @@ namespace SimpleForum.Client.Views
         {
             LoginViewModel loginViewModel = new LoginViewModel(_viewModel.AccountService);
             LoginPage loginPage = new LoginPage(loginViewModel);
-            await Navigation.PushModalAsync(loginPage);
+            await Navigation.PushAsync(loginPage);
         }
     }
 }
