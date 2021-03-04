@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using SimpleForum.API.Models.Responses;
-using SimpleForum.TextParser;
-using Xamarin.Forms;
+﻿using SimpleForum.API.Models.Responses;
 
 namespace SimpleForum.Client.Models
 {
