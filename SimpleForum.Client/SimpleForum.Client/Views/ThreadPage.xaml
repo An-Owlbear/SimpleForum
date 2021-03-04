@@ -19,6 +19,21 @@
                     <controls:CommentControl />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <StackLayout>
+                    <Button IsVisible="{Binding CommentsRemaining}" Text="Load more comments"
+                            Command="{Binding LoadCommentsCommand}"/>
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout.Triggers>
+                            <DataTrigger TargetType="StackLayout" Binding="{Binding CommentsRemaining}" Value="False">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+                        <Entry Text="{Binding ReplyText}" Placeholder="Reply" />
+                        <Button Text="Post" Command="{Binding PostCommentCommand}" />
+                    </StackLayout>
+                </StackLayout>
+            </CollectionView.Footer>
         </CollectionView>
     </ContentPage.Content>
 </ContentPage>
