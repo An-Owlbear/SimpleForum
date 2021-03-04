@@ -5,6 +5,10 @@
              xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
              xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
              x:Class="SimpleForum.Client.Views.ThreadListPage" x:DataType="viewModels:ThreadListViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="refresh_line.png" Command="{Binding RefreshListCommand}" />
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
         <CollectionView x:Name="ThreadList" ItemsSource="{Binding Threads}" Margin="10">
             <CollectionView.Header>

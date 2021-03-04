@@ -23,11 +23,13 @@ namespace SimpleForum.Client.ViewModels
             _account = account;
             LoadThreadsCommand = new Command(LoadThreads);
             CreateThreadCommand = new Command(CreateThread);
+            RefreshListCommand = new Command(RefreshList);
         }
 
         public ObservableCollection<Thread> Threads { get; set; } = new ObservableCollection<Thread>();
         public ICommand LoadThreadsCommand { get; set; }
         public ICommand CreateThreadCommand { get; set; }
+        public ICommand RefreshListCommand { get; set; }
         
         public bool ThreadsRemaining
         {
@@ -63,6 +65,15 @@ namespace SimpleForum.Client.ViewModels
             CreateThreadViewModel model = new CreateThreadViewModel(_account);
             CreateThreadPage page = new CreateThreadPage(model);
             await Application.Current.MainPage.Navigation.PushAsync(page);
+        }
+        
+        // Refreshes the list of threads
+        private void RefreshList()
+        {
+            // Resets page and retrieves threads
+            currentPage = 1;
+            Threads.Clear();
+            LoadThreads();
         }
     }
 }
