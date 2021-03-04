@@ -36,8 +36,8 @@ namespace SimpleForum.Client.ViewModels
             get => commentsRemaining;
             set
             {
-                PropertyChanged(this, new PropertyChangedEventArgs("CommentsRemaining"));
                 commentsRemaining = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("CommentsRemaining"));
             }
         }
         public string ReplyText
@@ -63,8 +63,6 @@ namespace SimpleForum.Client.ViewModels
 
             if (Comments.Count == Thread.ApiThread.Replies)
             {
-                // CommentsRemaining is set twice as to ensure button properly changes visibility, likely a xamarin bug
-                CommentsRemaining = false;
                 CommentsRemaining = false;
             }
         }

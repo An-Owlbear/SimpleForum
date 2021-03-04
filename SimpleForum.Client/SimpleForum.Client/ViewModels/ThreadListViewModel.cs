@@ -31,8 +31,8 @@ namespace SimpleForum.Client.ViewModels
             get => threadsRemaining;
             set
             {
-                PropertyChanged(this, new PropertyChangedEventArgs("ThreadsRemaining"));
                 threadsRemaining = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("ThreadsRemaining"));
             }
         }
 
@@ -46,8 +46,6 @@ namespace SimpleForum.Client.ViewModels
             // Sets ThreadsRemaining to false if none retrieved
             if (threads.Value.Count == 0)
             {
-                // For some reason the button will only hide if ThreadsRemaining is set to false twice, likely a Xamarin bug
-                ThreadsRemaining = false;
                 ThreadsRemaining = false;
             }
             
