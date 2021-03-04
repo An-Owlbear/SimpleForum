@@ -11,6 +11,11 @@ namespace SimpleForum.Client.Views
         {
             BindingContext = viewModel;
             InitializeComponent();
+            
+            MessagingCenter.Subscribe<CreateThreadViewModel, string>(viewModel, "Error", (sender, data) =>
+            {
+                DisplayAlert("Error", data, "Ok");
+            });
         }
     }
 }
