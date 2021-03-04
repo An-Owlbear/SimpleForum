@@ -10,15 +10,13 @@
         <StackLayout Margin="10">
             <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
             <controls:CommentControl BindingContext="{Binding Thread}" />
-            <ListView ItemsSource="{Binding Comments}" HasUnevenRows="True" VerticalOptions="FillAndExpand">
-                <ListView.ItemTemplate>
+            <CollectionView ItemsSource="{Binding Comments}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Comment">
-                        <ViewCell>
-                            <controls:CommentControl />
-                        </ViewCell>
+                        <controls:CommentControl />
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

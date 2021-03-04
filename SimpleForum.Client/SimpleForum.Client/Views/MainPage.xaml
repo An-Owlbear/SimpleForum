@@ -6,15 +6,13 @@
              x:Class="SimpleForum.Client.Views.MainPage" x:DataType="viewModels:MainViewModel">
 
     <StackLayout Margin="10">
-        <ListView ItemsSource="{Binding AccountService.Accounts}">
-            <ListView.ItemTemplate>
+        <CollectionView ItemsSource="{Binding AccountService.Accounts}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Account">
-                    <ViewCell>
-                        <Button Text="{Binding Fullname}" Command="{Binding UseUserCommand}" />
-                    </ViewCell>
+                    <Button Text="{Binding Fullname}" Command="{Binding UseUserCommand}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
         <Button Text="Add account" Clicked="AddAccount" />
     </StackLayout>
 
