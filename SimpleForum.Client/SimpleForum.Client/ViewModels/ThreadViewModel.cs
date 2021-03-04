@@ -25,12 +25,14 @@ namespace SimpleForum.Client.ViewModels
             _account = account;
             LoadCommentsCommand = new Command(LoadComments);
             PostCommentCommand = new Command(PostComment);
+            RefreshListCommand = new Command(RefreshList);
         }
 
         public Thread Thread { get; set; }
         public ObservableCollection<Comment> Comments { get; set; } = new ObservableCollection<Comment>();
         public ICommand LoadCommentsCommand { get; set; }
         public ICommand PostCommentCommand { get; set; }
+        public ICommand RefreshListCommand { get; set; }
         public bool CommentsRemaining
         {
             get => commentsRemaining;
@@ -77,6 +79,15 @@ namespace SimpleForum.Client.ViewModels
             // Adds comment to list
             Comments.Add(new Comment(comment.Value, _account));
             ReplyText = String.Empty;
+        }
+        
+        // Refreshes the comments
+        private async void RefreshList()
+        {
+            // Resets the page count and comments and retrieves the comments
+            currentPage = 1;
+            Comments.Clear();
+            LoadComments();
         }
     }
 }
