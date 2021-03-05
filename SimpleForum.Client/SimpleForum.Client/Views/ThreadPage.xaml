@@ -34,7 +34,7 @@
                                 <Setter Property="IsVisible" Value="True" />
                             </DataTrigger>
                         </StackLayout.Triggers>
-                        <Editor HeightRequest="50" Text="{Binding ReplyText}" Placeholder="Reply" />
+                        <Editor HeightRequest="100" Text="{Binding ReplyText}" Placeholder="Reply" />
                         <Button Text="Post" Command="{Binding PostCommentCommand}" />
                     </StackLayout>
                 </StackLayout>
