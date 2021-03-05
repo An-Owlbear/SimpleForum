@@ -9,6 +9,7 @@ namespace SimpleForum.API.Models.Responses
     {
         public string Username { get; set; }
         public int ID { get; set; }
+        public string Bio { get; set; }
         public int Posts { get; set; }
         public int Comments { get; set; }
         public bool CommentsLocked { get; set; }
@@ -26,6 +27,7 @@ namespace SimpleForum.API.Models.Responses
         {
             Username = user.FullUsername;
             ID = user.UserID;
+            Bio = user.Bio?.Trim();
             Posts = user.Threads.Count;
             Comments = user.Comments.Count + user.UserComments.Count;
             CommentsLocked = user.CommentsLocked;
