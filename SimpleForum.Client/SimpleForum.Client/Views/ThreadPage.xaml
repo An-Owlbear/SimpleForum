@@ -15,6 +15,7 @@
             <CollectionView.Header>
                 <StackLayout>
                     <Label Text="{Binding Thread.ApiThread.Title}" FontSize="Large" FontAttributes="Bold" />
+                    <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0, 10" />
                     <controls:CommentControl BindingContext="{Binding Thread}" />
                 </StackLayout>
             </CollectionView.Header>
@@ -33,7 +34,7 @@
                                 <Setter Property="IsVisible" Value="True" />
                             </DataTrigger>
                         </StackLayout.Triggers>
-                        <Entry Text="{Binding ReplyText}" Placeholder="Reply" />
+                        <Editor HeightRequest="50" Text="{Binding ReplyText}" Placeholder="Reply" />
                         <Button Text="Post" Command="{Binding PostCommentCommand}" />
                     </StackLayout>
                 </StackLayout>
