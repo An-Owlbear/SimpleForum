@@ -82,7 +82,7 @@ namespace SimpleForum.Client.ViewModels
         }
         
         // Refreshes the comments
-        private async void RefreshList()
+        private void RefreshList()
         {
             // Resets the page count and comments and retrieves the comments
             currentPage = 1;
