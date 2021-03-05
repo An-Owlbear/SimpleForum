@@ -10,7 +10,7 @@ namespace SimpleForum.Client.Models
         {
             ApiComment = comment;
             ApiPost = comment;
-            _account = account;
+            Account = account;
             ParseContent(comment.Content);
             LoadProfileImage().ContinueWith(t => t);
         }

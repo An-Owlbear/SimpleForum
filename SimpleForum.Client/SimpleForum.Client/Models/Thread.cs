@@ -13,7 +13,7 @@ namespace SimpleForum.Client.Models
 
         public Thread(ApiThread thread, Account account)
         {
-            _account = account;
+            Account = account;
             ApiThread = thread;
             ApiPost = thread;
             ThreadCommand = new Command(NavigateThread);
@@ -23,7 +23,7 @@ namespace SimpleForum.Client.Models
 
         private async void NavigateThread()
         {
-            ThreadViewModel viewModel = new ThreadViewModel(this, _account);
+            ThreadViewModel viewModel = new ThreadViewModel(this, Account);
             ThreadPage page = new ThreadPage(viewModel);
             await Application.Current.MainPage.Navigation.PushAsync(page);
         }

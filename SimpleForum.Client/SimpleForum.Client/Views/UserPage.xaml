@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
+             xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
+             xmlns:controls="clr-namespace:SimpleForum.Client.Controls;assembly=SimpleForum.Client"
+             x:Class="SimpleForum.Client.Views.UserPage" x:DataType="viewModels:UserViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="refresh_line.png" Command="{Binding RefreshListCommand}" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding Comments}" SelectionMode="None" Margin="10">
+            <CollectionView.Header>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="{Binding ProfileImage}" HeightRequest="100" WidthRequest="100" 
+                               Margin="10" VerticalOptions="Start" />
+                        <StackLayout Margin="10" VerticalOptions="Center">
+                            <Label Text="{Binding ApiUser.Username}" FontSize="Large" />
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Posts: " />
+                                        <Span Text="{Binding ApiUser.Posts}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Replies: " />
+                                        <Span Text="{Binding ApiUser.Comments}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <Label Text="{Binding ApiUser.Bio}" Margin="10" />
+                    <Entry Text="{Binding ReplyText}" Placeholder="Comment" />
+                    <Button Text="Post comment" Command="{Binding PostCommentCommand}" />
+                </StackLayout>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Comment">
+                    <controls:CommentControl />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <Button Text="Load more comments" Command="{Binding LoadCommentsCommand}"
+                        IsVisible="{Binding CommentsRemaining}" />
+            </CollectionView.Footer>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>
