@@ -85,6 +85,7 @@ namespace SimpleForum.Client.ViewModels
             
             // Refreshes list of comments
             RefreshList();
+            ReplyText = String.Empty;
         }
 
         private void RefreshList()
