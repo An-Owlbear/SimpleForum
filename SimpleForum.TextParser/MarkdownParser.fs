@@ -1,4 +1,5 @@
 ﻿module SimpleForum.TextParser.MarkdownParser
+open System;
 open System.Text
 open System.Web
 open ParserCombinators
@@ -105,7 +106,7 @@ markdownValueRef := choice
 // Parses a line of markdown
 let lineStartParser = heading <|> blockQuote
 let markdownLineContent = ((lineStartParser |>> fun x -> [x]) <|> parseMany1 markdownValue)
-let endOfLineChar = parseString "\r\n" <|> parseInputEnd
+let endOfLineChar = parseString "\n" <|> parseString "\r\n" <|> parseInputEnd
 
 let markdownLine =
     (optional markdownLineContent .>>. endOfLineChar)
@@ -119,7 +120,7 @@ let parseMarkdownLines =
     parseMany0 markdownLine
     |>> List.fold (fun acc elem ->
         match elem with
-        | [] -> acc @ [ Text "\r\n" ]
+        | [] -> acc @ [ Text Environment.NewLine ]
         | _ -> acc @ elem
     ) []
     
@@ -139,7 +140,9 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
             | Image (alt, url) -> sprintf "<img src=%s alt=%s>" url alt
             | Link (title, url) -> sprintf "<a href=%s>%s</a>" url (markdownToHTML title)
             | BlockQuote blockquote -> sprintf "<blockquote>%s</blockquote>" (markdownToHTML blockquote)
-            | Text text -> HttpUtility.HtmlEncode(text) |> fun x -> x.Replace("\r\n", "<br>\r\n")
+            | Text text -> HttpUtility.HtmlEncode(text)
+                           |> fun x -> x.Replace("\r\n", $"<br>{Environment.NewLine}")
+                           |> fun x -> x.Replace("\n", $"<br>{Environment.NewLine}")
         acc.Append(value)
     ) (StringBuilder())
     |> fun x -> x.ToString()
