@@ -36,8 +36,7 @@ namespace SimpleForum.Client.Models
             ProfileImage = new UriImageSource()
             {
                 Uri = imageUri,
-                CachingEnabled = true,
-                CacheValidity = new TimeSpan(0, 10, 0)
+                CachingEnabled = false
             };
         }
 
