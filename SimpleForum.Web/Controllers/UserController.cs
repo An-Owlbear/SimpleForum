@@ -329,9 +329,10 @@ namespace SimpleForum.Web.Controllers
             
             // Retrieves user account and updates information
             User user = await _repository.GetUserAsync(User);
-            Stream stream = profilePicture.OpenReadStream();
+            Stream stream = profilePicture?.OpenReadStream();
             await _repository.UpdateProfileAsync(email, password, bio, stream, user);
-            
+            await _repository.SaveChangesAsync();
+
             // Redirects to profile
             return RedirectToAction("Index", new {id = user.UserID});
         }
