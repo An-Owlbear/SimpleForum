@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:SimpleForum.Client.ViewModels;assembly=SimpleForum.Client"
+             xmlns:models="clr-namespace:SimpleForum.Client.Models;assembly=SimpleForum.Client"
+             x:Class="SimpleForum.Client.Views.InstanceListPage" x:DataType="viewModels:InstanceListViewModel">
+    <ContentPage.Content>
+        <CollectionView x:Name="InstanceList" ItemsSource="{Binding Account.Instances}" Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Instance">
+                    <StackLayout Padding="0, 0, 0, 10">
+                        <Button Text="{Binding ServerName}" Command="{Binding 
+                            Path=BindingContext.NavigateInstanceCommand, Source={x:Reference InstanceList}}"
+                            CommandParameter="{Binding .}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <Button Text="Add instance" />
+            </CollectionView.Footer>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

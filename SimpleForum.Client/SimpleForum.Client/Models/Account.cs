@@ -35,8 +35,8 @@ namespace SimpleForum.Client.Models
 
         private async void UseUser()
         {
-            ThreadListViewModel viewModel = new ThreadListViewModel(this);
-            ThreadListPage page = new ThreadListPage(viewModel);
+            InstanceListViewModel viewModel = new InstanceListViewModel(this);
+            InstanceListPage page = new InstanceListPage(viewModel);
             await Application.Current.MainPage.Navigation.PushAsync(page);
         }
         
