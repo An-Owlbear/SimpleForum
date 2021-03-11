@@ -34,6 +34,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "SimpleForum.API Android2": {
+      "commandName": "Project",
+      "commandLineArgs": "--config ../SimpleForumAndroidConfig2.json",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DbConnectionString": "Server=localhost;User Id=simpleforum;Password=simpleforum_pass;Database=simpleforum2"
+      }
     }
   }
 }

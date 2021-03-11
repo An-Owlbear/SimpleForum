@@ -40,6 +40,16 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
       }
+    },
+    "SimpleForum.Web Android2": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "commandLineArgs": "--config ../SimpleForumAndroidConfig2.json",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation",
+        "DbConnectionString": "Server=localhost;User Id=simpleforum;Password=simpleforum_pass;Database=simpleforum2"
+      }
     }
   }
 }
