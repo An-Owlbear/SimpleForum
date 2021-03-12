@@ -110,6 +110,14 @@ CREATE TABLE `Notifications` (
     CONSTRAINT `FK_Notifications_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
 );
 
+CREATE TABLE `TempApiTokens` (
+    `Token` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+    `ValidUntil` datetime(6) NOT NULL,
+    `UserID` int NOT NULL,
+    CONSTRAINT `PK_TempApiTokens` PRIMARY KEY (`Token`),
+    CONSTRAINT `FK_TempApiTokens_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `Users` (`UserID`) ON DELETE CASCADE
+);
+
 CREATE INDEX `IX_Users_ServerID` on `Users` (`ServerID`);
 CREATE INDEX `IX_Comments_ThreadID` ON `Comments` (`ThreadID`);
 CREATE INDEX `IX_Comments_UserID` ON `Comments` (`UserID`);
@@ -121,3 +129,4 @@ CREATE INDEX `IX_UserComments_UserPageID` ON `UserComments` (`UserPageID`);
 CREATE INDEX `IX_UserComments_DatePosted` ON `UserComments` (`DatePosted`);
 CREATE INDEX `IX_RemoteAuthTokens_UserID` ON `RemoteAuthTokens` (`UserID`);
 CREATE INDEX `IX_EmailCodes_UserID` ON `EmailCodes` (`UserID`);
+CREATE INDEX `IX_TempApiTokens_Token` ON `TempApiTokens` (`Token`)
