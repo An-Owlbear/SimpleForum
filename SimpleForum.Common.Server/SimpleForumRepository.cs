@@ -207,6 +207,16 @@ namespace SimpleForum.Common.Server
             return await _context.IncomingServerTokens.FirstOrDefaultAsync(x => x.Address == name);
         }
 
+        /// <summary>
+        /// Returns a matching TempApiToken
+        /// </summary>
+        /// <param name="token">The token to find</param>
+        /// <returns></returns>
+        public async Task<TempApiToken> GetTempApiToken(string token)
+        {
+            return await _context.TempApiTokens.FindAsync(token);
+        }
+
         //
         // Methods for adding a single item to the database
         //
@@ -313,6 +323,24 @@ namespace SimpleForum.Common.Server
             // Adds and returns token
             EntityEntry<IncomingServerToken> addedToken = await _context.IncomingServerTokens.AddAsync(serverToken);
             return Result.Ok(addedToken.Entity);
+        }
+
+        /// <summary>
+        /// Adds a TempApiToken for the given user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<TempApiToken> AddTempApiToken(User user)
+        {
+            TempApiToken token = new TempApiToken()
+            {
+                Token = Tools.GenerateCode(128),
+                ValidUntil = DateTime.Now.AddMinutes(10),
+                User = user
+            };
+
+            EntityEntry<TempApiToken> addedToken = await _context.TempApiTokens.AddAsync(token);
+            return addedToken.Entity;
         }
 
 
