@@ -54,7 +54,8 @@ namespace SimpleForum.Web.Controllers
             
             // Returns error if password is incorrect
             if (user.Password != password || user.Deleted) return Redirect("/Login?error=1");
-            return await SignInUser(user, ReturnUrl);
+            IActionResult returnResult = Url.IsLocalUrl(ReturnUrl) ? Redirect(ReturnUrl) : Redirect("/");
+            return await SignInUser(user, returnResult);
         }
 
         // Signs out a user
@@ -160,15 +161,37 @@ namespace SimpleForum.Web.Controllers
             
             return Redirect($"{url}/Login/CrossLogin?address={_config.InstanceURL}&type={type}");
         }
+
+        // Authenticates an API user with the given token for a cross instance login
+        public async Task<IActionResult> ApiCrossLogin(string address, string token)
+        {
+            // Returns if token or address is null
+            if (address == null || token == null) return Redirect("/");
+            
+            // Retrieves token, returning if invalid
+            TempApiToken tempApiToken = await _repository.GetTempApiToken(token);
+            if (tempApiToken == null) return Unauthorized();
+            
+            // Signs in user
+            IActionResult returnResult = RedirectToAction("CrossLogin", new
+            {
+                address,
+                type = "api"
+            });
+            return await SignInUser(tempApiToken.User, returnResult);
+        }
         
         // Displays the page asking the user if they want to login to another instance
         [Authorize]
         public async Task<IActionResult> CrossLogin(string address, string type)
         {
+            // Returns error if logged in with remote account
             User user = await _repository.GetUserAsync(User);
             if (user.ServerID != null) return StatusCode(400, "Cannot remotely sign in with remote account");
             
+            // Redirects if address empty 
             if (String.IsNullOrEmpty(address)) return Redirect("/");
+
             CrossLoginViewModel model = new CrossLoginViewModel() { ReturnUrl = address, Type = type };
             return View(model);
         }
@@ -200,13 +223,13 @@ namespace SimpleForum.Web.Controllers
             if (result.Failure) return StatusCode(result.Code);
             
             // Signs in with cookie if web, otherwise returns JWT
-            if (type == "web") return await SignInUser(result.Value, "/");
+            if (type == "web") return await SignInUser(result.Value, Redirect("/"));
             if (type == "api") return Ok(JwtToken.CreateToken(result.Value.Username, result.Value.UserID.ToString(), _config.PrivateKey));
             return BadRequest();
         }
 
         // Signs any user in
-        private async Task<IActionResult> SignInUser(User user, string ReturnUrl)
+        private async Task<IActionResult> SignInUser(User user, IActionResult returnResult)
         {
             // Returns error if user is banned
             if (user.Banned)
@@ -236,8 +259,7 @@ namespace SimpleForum.Web.Controllers
                 });
 
             // Redirects the user to the previously requested page if needed, otherwise returns to index
-            if (Url.IsLocalUrl(ReturnUrl)) return Redirect(ReturnUrl);
-            return Redirect("/");
+            return returnResult;
         }
     }
 }

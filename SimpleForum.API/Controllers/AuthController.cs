@@ -6,6 +6,7 @@ using SimpleForum.API.Models.Requests;
 using SimpleForum.API.Models.Responses;
 using SimpleForum.Common;
 using SimpleForum.Common.Server;
+using SimpleForum.Models;
 
 namespace SimpleForum.API.Controllers
 {
@@ -14,10 +15,12 @@ namespace SimpleForum.API.Controllers
     public class AuthController : ApiController
     {
         private readonly IAuthenticationManager _manager;
+        private readonly SimpleForumRepository _repository;
 
-        public AuthController(IAuthenticationManager manager)
+        public AuthController(IAuthenticationManager manager, SimpleForumRepository repository)
         {
             _manager = manager;
+            _repository = repository;
         }
 
         // Logs in the user
@@ -41,6 +44,16 @@ namespace SimpleForum.API.Controllers
             return Json(response);
         }
 
+        [HttpPost("GenerateTempToken")]
+        [Authorize]
+        public async Task<IActionResult> GenerateTempToken()
+        {
+            User user = await _repository.GetUserAsync(User);
+            TempApiToken token = await _repository.AddTempApiToken(user);
+            await _repository.SaveChangesAsync();
+            return Ok(token.Token);
+        }
+        
         // Tests authorisation is working
         [HttpGet("Test")]
         [Authorize]
