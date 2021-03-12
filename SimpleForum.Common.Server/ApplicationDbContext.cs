@@ -16,6 +16,7 @@ namespace SimpleForum.Common.Server
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<OutgoingServerToken> OutgoingServerTokens { get; set; }
         public DbSet<IncomingServerToken> IncomingServerTokens { get; set; }
+        public DbSet<TempApiToken> TempApiTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
