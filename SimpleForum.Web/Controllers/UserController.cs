@@ -308,6 +308,32 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Makes a user an admin
+        [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> SendMakeUserAdmin(int id)
+        {
+            // Retrieves user and makes them an admin
+            User user = await _repository.GetUserAsync(id);
+            user.Role = "Admin";
+            await _repository.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { id });
+        }
+
+        // Changes a user's role back to 'User'
+        [Authorize(Roles = "Admin")]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> SendMakeUserNotAdmin(int id)
+        {
+            // Retrieves user and makes them not an admin
+            User user = await _repository.GetUserAsync(id);
+            user.Role = "User";
+            await _repository.SaveChangesAsync();
+
+            return RedirectToAction("Index", new { id });
+        }
+
         // Returns a page for editing the user's profile information
         [HttpGet]
         [Authorize]

@@ -40,5 +40,25 @@
                 </form>
             </li>
         }
+        @if (Model.Role != "Admin")
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Make user an admin</span>
+                <form asp-action="SendMakeUserAdmin">
+                    <input type="hidden" name="id" value="@Model.UserID">
+                    <button class="action-list-item-button" type="submit">Make user admin</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="action-list-item">
+                <span class="action-list-item-title">Make user to be not an item</span>
+                <form asp-action="SendMakeUserNotAdmin">
+                    <input type="hidden" name="id" value="@Model.UserID">
+                    <button class="action-list-item-button" type="submit">Remove admin privileges</button>
+                </form>
+            </li>
+        }
     </ul>
 </div>
