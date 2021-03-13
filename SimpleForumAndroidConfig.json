@@ -1,8 +1,8 @@
 ﻿{
     "InstanceName": "SimpleForum",
-    "InstanceURL": "http://10.0.2.2:5000",
-    "APIURL": "http://10.0.2.2:5001",
-    "CrossConnectionURL": "http://10.0.2.2:5002",
+    "InstanceURL": "http://simpleforum.anowlbear.com",
+    "APIURL": "http://api.simpleforum.anowlbear.com",
+    "CrossConnectionURL": "http://cc.simpleforum.anowlbear.com",
     "RequireEmailVerification": true,
     "PrivateKey": "moAlQg6tJBBDJ1bk2QxDnebQ4Zyjnwos",
     "WebPort": 5000,
