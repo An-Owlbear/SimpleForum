@@ -9,9 +9,9 @@ namespace SimpleForum.Client.Services
     {
         public ObservableCollection<Account> Accounts { get; set; } = new ObservableCollection<Account>();
 
-        public void AddAccount(string username, string token, ServerURLs serverURLs, SimpleForumClient client)
+        public void AddAccount(string username, ServerURLs serverURLs, SimpleForumClient client)
         {
-            Account account = new Account(username, token, serverURLs, client);
+            Account account = new Account(username, serverURLs, client);
             Accounts.Add(account);
         }
     }

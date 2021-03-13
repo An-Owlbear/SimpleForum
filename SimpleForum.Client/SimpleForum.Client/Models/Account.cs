@@ -21,7 +21,7 @@ namespace SimpleForum.Client.Models
         public ObservableCollection<Instance> Instances { get; set; } = new ObservableCollection<Instance>();
         public Instance CurrentInstance { get; set; }
 
-        public Account(string username, string token, ServerURLs serverURLs, SimpleForumClient client)
+        public Account(string username, ServerURLs serverURLs, SimpleForumClient client)
         {
             Username = username;
             ServerURLs = serverURLs;

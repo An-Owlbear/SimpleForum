@@ -79,7 +79,7 @@ namespace SimpleForum.Client.ViewModels
                 return;
             }
             
-            _accountService.AddAccount(username, loginResult.Value.Token, urlsResult.Value, client);
+            _accountService.AddAccount(username, urlsResult.Value, client);
             await Application.Current.MainPage.Navigation.PopAsync();
         }
     }
