@@ -10,8 +10,6 @@ namespace SimpleForum.Client.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
     {
-        private AccountService _accountService;
-        
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         private string address;
@@ -50,9 +48,8 @@ namespace SimpleForum.Client.ViewModels
 
         public ICommand SubmitCommand { get; set; }
         
-        public LoginViewModel(AccountService accountService)
+        public LoginViewModel()
         {
-            _accountService = accountService;
             SubmitCommand = new Command(Login);
         }
 
@@ -79,7 +76,7 @@ namespace SimpleForum.Client.ViewModels
                 return;
             }
             
-            _accountService.AddAccount(username, urlsResult.Value, client);
+            await AccountService.AddAccount(username, urlsResult.Value, client);
             await Application.Current.MainPage.Navigation.PopAsync();
         }
     }

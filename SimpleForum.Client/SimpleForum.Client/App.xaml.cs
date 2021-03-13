@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using SimpleForum.Client.Services;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using SimpleForum.Client.Views;
 
@@ -11,7 +12,7 @@ namespace SimpleForum.Client
         public App()
         {
             InitializeComponent();
-
+            AccountService.LoadAccounts().ContinueWith(t => t);
             MainPage = new NavigationPage(new MainPage());
         }
 

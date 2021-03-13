@@ -1,4 +1,5 @@
-﻿using SimpleForum.API.Client;
+﻿using System.Text.Json.Serialization;
+using SimpleForum.API.Client;
 using SimpleForum.API.Models.Responses;
 
 namespace SimpleForum.Client.Models
@@ -6,6 +7,8 @@ namespace SimpleForum.Client.Models
     public class Instance
     {
         public ServerURLs ServerUrLs { get; set; }
+        
+        [JsonIgnore]
         public SimpleForumClient Client { get; set; }
 
         public string ServerName

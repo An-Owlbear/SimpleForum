@@ -41,7 +41,7 @@ namespace SimpleForum.Client.ViewModels
             SimpleForumClient client = new SimpleForumClient(serverUrLs.Value.APIURL);
             client.TokenStorage.SetToken(response);
             Instance instance = new Instance(serverUrLs.Value, client);
-            _account.Instances.Add(instance);
+            await _account.AddInstance(instance);
             
             // Closes webview
             MainThread.BeginInvokeOnMainThread(async () => await Application.Current.MainPage.Navigation.PopAsync());
