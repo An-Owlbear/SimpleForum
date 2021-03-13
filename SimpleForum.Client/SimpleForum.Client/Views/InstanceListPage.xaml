@@ -17,7 +17,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.Footer>
-                <Button Text="Add instance" />
+                <Button Text="Add instance" Command="{Binding AddInstanceCommand}" />
             </CollectionView.Footer>
         </CollectionView>
     </ContentPage.Content>
