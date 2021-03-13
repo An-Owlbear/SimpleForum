@@ -1,5 +1,8 @@
 ﻿@model IndexViewModel
 @using System.Security.Claims
+@using Microsoft.Extensions.Options
+@using SimpleForum.Common.Server
+@inject IOptionsSnapshot<SimpleForumConfig> options;
 @{
     ViewData["Title"] = "SimpleForum";
 }
@@ -8,7 +11,7 @@
     @if (!User.Identity.IsAuthenticated)
     {
         <top-message-text-container>
-            <h1 class="top-message-text">Welcome to SimpleForum.
+            <h1 class="top-message-text">Welcome to @options.Value.InstanceName.
             <a class="top-message-link" asp-controller="Signup">Signup</a> to get started</h1>
         </top-message-text-container>
     }
