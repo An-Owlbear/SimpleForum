@@ -13,7 +13,6 @@ namespace SimpleForum.Client.Models
     public class Account
     {
         public string Username { get; set; }
-        public string Token { get; set; }
         public ServerURLs ServerURLs { get; set; }
         public SimpleForumClient Client { get; set; }
         public string Fullname => $"{Username}@{ServerURLs.InstanceURL.Replace("http://", "").Replace("https://", "")}";
@@ -25,7 +24,6 @@ namespace SimpleForum.Client.Models
         public Account(string username, string token, ServerURLs serverURLs, SimpleForumClient client)
         {
             Username = username;
-            Token = token;
             ServerURLs = serverURLs;
             Client = client;
             UseUserCommand = new Command(UseUser);
@@ -44,7 +42,6 @@ namespace SimpleForum.Client.Models
         {
             Result<LoginResponse> result = await Client.LoginAsync(Username, password);
             if (result.Failure) return result;
-            Token = result.Value.Token;
             return Result.Ok();
         }
     }
