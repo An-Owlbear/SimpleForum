@@ -25,7 +25,7 @@ namespace SimpleForum.Client.ViewModels
         private async void CreateThread()
         {
             // Sends request and returns if unsuccessful
-            Result<ApiThread> result = await _account.CurrentClient.CreateThreadAsync(Title, Content);
+            Result<ApiThread> result = await _account.CurrentInstance.Client.CreateThreadAsync(Title, Content);
             if (!this.HandleResult(result)) return;
 
             // Navigates to the thread

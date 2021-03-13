@@ -19,7 +19,7 @@ namespace SimpleForum.Client.Models
         public ICommand UseUserCommand { get; set; }
 
         public ObservableCollection<Instance> Instances { get; set; } = new ObservableCollection<Instance>();
-        public SimpleForumClient CurrentClient { get; set; }
+        public Instance CurrentInstance { get; set; }
 
         public Account(string username, string token, ServerURLs serverURLs, SimpleForumClient client)
         {
@@ -27,8 +27,10 @@ namespace SimpleForum.Client.Models
             ServerURLs = serverURLs;
             Client = client;
             UseUserCommand = new Command(UseUser);
-            Instances.Add(new Instance(serverURLs, client));
-            CurrentClient = client;
+            
+            Instance instance = new Instance(serverURLs, client);
+            Instances.Add(instance);
+            CurrentInstance = instance;
         }
 
         private async void UseUser()

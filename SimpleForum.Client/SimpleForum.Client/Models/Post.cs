@@ -32,7 +32,7 @@ namespace SimpleForum.Client.Models
 
         protected async Task LoadProfileImage()
         {
-            Uri imageUri = await Account.CurrentClient.GetProfileImgUrl(ApiPost.User.ID);
+            Uri imageUri = await Account.CurrentInstance.Client.GetProfileImgUrl(ApiPost.User.ID);
             ProfileImage = new UriImageSource()
             {
                 Uri = imageUri,

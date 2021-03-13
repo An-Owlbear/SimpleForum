@@ -56,7 +56,7 @@ namespace SimpleForum.Client.ViewModels
         private async void LoadComments()
         {
             // Requests comments, returning if failed
-            Result<List<ApiComment>> newComments = await _account.CurrentClient.GetThreadCommentsAsync(Thread.ApiPost.ID, currentPage);
+            Result<List<ApiComment>> newComments = await _account.CurrentInstance.Client.GetThreadCommentsAsync(Thread.ApiPost.ID, currentPage);
             if (!this.HandleResult(newComments)) return;
             
             // Adds new comments to lists and increments page
@@ -73,7 +73,7 @@ namespace SimpleForum.Client.ViewModels
         private async void PostComment()
         {
             // Posts comment, returning if failed
-            Result<ApiComment> comment = await _account.CurrentClient.PostCommentAsync(Thread.ApiPost.ID, ReplyText);
+            Result<ApiComment> comment = await _account.CurrentInstance.Client.PostCommentAsync(Thread.ApiPost.ID, ReplyText);
             if (!this.HandleResult(comment)) return;
             
             // Adds comment to list

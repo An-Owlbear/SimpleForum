@@ -62,7 +62,7 @@ namespace SimpleForum.Client.ViewModels
         private async void LoadComments()
         {
             // Requests comments, returning if failed
-            Result<List<ApiComment>> result = await _account.CurrentClient.GetUserCommentsAsync(ApiUser.ID, currentPage);
+            Result<List<ApiComment>> result = await _account.CurrentInstance.Client.GetUserCommentsAsync(ApiUser.ID, currentPage);
             if (!this.HandleResult(result)) return;
             
             // If there are no replies set CommentsRemaining
@@ -80,7 +80,7 @@ namespace SimpleForum.Client.ViewModels
         private async void PostComment()
         {
             // Posts comment, returning if failed
-            Result<ApiComment> result = await _account.CurrentClient.PostUserCommentAsync(ApiUser.ID, ReplyText);
+            Result<ApiComment> result = await _account.CurrentInstance.Client.PostUserCommentAsync(ApiUser.ID, ReplyText);
             if (!this.HandleResult(result)) return;
             
             // Refreshes list of comments

@@ -45,7 +45,7 @@ namespace SimpleForum.Client.ViewModels
         public async void LoadThreads()
         {
             // Retrieves threads and handles result
-            Result<List<ApiThread>> threads = await _account.CurrentClient.GetFrontPageAsync(currentPage);
+            Result<List<ApiThread>> threads = await _account.CurrentInstance.Client.GetFrontPageAsync(currentPage);
             if (!this.HandleResult(threads)) return;
             
             // Sets ThreadsRemaining to false if none retrieved
