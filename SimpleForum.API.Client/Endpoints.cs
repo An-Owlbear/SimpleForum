@@ -9,6 +9,7 @@ namespace SimpleForum.API.Client
     {
         // Authentication endpoint
         public static readonly Endpoint Login = new Endpoint("/Auth/Login", HttpMethod.Post);
+        public static readonly Endpoint GenerateToken = new Endpoint("/Auth/GenerateTempToken", HttpMethod.Post, true);
         
         // Thread endpoints
         public static readonly Endpoint FrontPage = new Endpoint("/Threads", HttpMethod.Get);

@@ -65,5 +65,17 @@ namespace SimpleForum.API.Client
                 ? Result.Fail<Stream>(result.Value.Message, result.Value.Type)
                 : Result.Fail<Stream>(result.Error, result.Code);
         }
+        
+        // Converts a response to a string if successful, otherwise returns failure
+        public static async Task<Result<string>> ParseStringResponse(HttpResponseMessage response)
+        {
+            // Gets stream result, returning if failure
+            Result<Stream> result = await ParseStreamResponse(response).ConfigureAwait(false);
+            if (result.Failure) return Result.Fail<string>(result.Error, result.Code);
+
+            using StreamReader streamReader = new StreamReader(result.Value);
+            string responseString = await streamReader.ReadToEndAsync().ConfigureAwait(false);
+            return Result.Ok(responseString);
+        }
     }
 }

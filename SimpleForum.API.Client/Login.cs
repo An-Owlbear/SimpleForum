@@ -25,8 +25,22 @@ namespace SimpleForum.API.Client
             // Sends login and returns result, saving the token if successful
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.Login, parameters).ConfigureAwait(false);
             Result<LoginResponse> loginResponse = await ResponseParser.ParseJsonResponse<LoginResponse>(response).ConfigureAwait(false);
-            if (loginResponse.Success) _tokenStorage.SetToken(loginResponse.Value.Token);
+            if (loginResponse.Success) TokenStorage.SetToken(loginResponse.Value.Token);
             return loginResponse;
+        }
+
+        /// <summary>
+        /// Generates a token for authentication when signing into other instances
+        /// </summary>
+        /// <remarks>
+        /// The user must be already authenticated to use this method
+        /// </remarks>
+        /// <returns></returns>
+        public async Task<Result<string>> GenerateTokenAsync()
+        {
+            // Sends generate token request, returning the result
+            HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.GenerateToken).ConfigureAwait(false);
+            return await ResponseParser.ParseStringResponse(response).ConfigureAwait(false);
         }
     }
 }
