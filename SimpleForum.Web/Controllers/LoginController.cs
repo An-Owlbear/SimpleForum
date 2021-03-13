@@ -220,7 +220,7 @@ namespace SimpleForum.Web.Controllers
         {
             // Authenticates the token
             Result<User> result = await _crossConnectionManager.AuthenticateUser(address, token);
-            if (result.Failure) return StatusCode(result.Code);
+            if (result.Failure) return StatusCode(result.Code, result.Error);
             
             // Signs in with cookie if web, otherwise returns JWT
             if (type == "web") return await SignInUser(result.Value, Redirect("/"));
