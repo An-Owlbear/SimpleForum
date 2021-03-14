@@ -55,6 +55,11 @@ namespace SimpleForum.Client.ViewModels
         // Loads the next page of comments
         private async void LoadComments()
         {
+            // Updates thread information
+            Result<ApiThread> thread = await _account.CurrentInstance.Client.GetThreadAsync(Thread.ApiThread.ID);
+            if (!this.HandleResult(thread)) return;
+            Thread = new Thread(thread.Value, _account);
+
             // Requests comments, returning if failed
             Result<List<ApiComment>> newComments = await _account.CurrentInstance.Client.GetThreadCommentsAsync(Thread.ApiPost.ID, currentPage);
             if (!this.HandleResult(newComments)) return;
@@ -63,10 +68,7 @@ namespace SimpleForum.Client.ViewModels
             newComments.Value.ForEach(x => Comments.Add(new Comment(x, _account)));
             currentPage++;
 
-            if (Comments.Count == Thread.ApiThread.Replies)
-            {
-                CommentsRemaining = false;
-            }
+            CommentsRemaining = Comments.Count != Thread.ApiThread.Replies;
         }
         
         // Posts a comment at the end of a thread
