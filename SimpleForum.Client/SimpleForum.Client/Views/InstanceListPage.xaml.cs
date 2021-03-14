@@ -19,7 +19,7 @@ namespace SimpleForum.Client.Views
             
             MessagingCenter.Subscribe<InstanceListViewModel>(this, "add_instance", async (sender) =>
             {
-                string response = await DisplayPromptAsync("Add instance", "Add instance URL");
+                string response = await DisplayPromptAsync("Add instance", "Add instance URL", keyboard:Keyboard.Url);
                 viewModel.OpenWebviewCommand.Execute(response);
             });
         }

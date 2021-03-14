@@ -5,8 +5,9 @@
              x:Class="SimpleForum.Client.Views.LoginPage" x:DataType="viewModels:LoginViewModel">
     <ContentPage.Content>
         <StackLayout Margin="10">
-            <Entry x:Name="Address" Text="{Binding Address}" Placeholder="Address" />
-            <Entry x:Name="Username" Text="{Binding Username}" Placeholder="Username" />
+            <Entry x:Name="Address" Text="{Binding Address}" Placeholder="Address" Keyboard="Url" />
+            <Entry x:Name="Username" Text="{Binding Username}" Placeholder="Username"
+                   IsTextPredictionEnabled="False" />
             <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
             <Button Command="{Binding SubmitCommand}" Text="Login" />
             <Button Clicked="Return" Text="Cancel" />
