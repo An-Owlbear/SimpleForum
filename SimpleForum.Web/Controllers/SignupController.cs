@@ -37,8 +37,11 @@ namespace SimpleForum.Web.Controllers
 
         // Creates a user account
         [AnonymousOnly]
-        public async Task<IActionResult> SendSignup(string email, string username, string password, string confirmPassword)
+        public async Task<IActionResult> SendSignup(string email, string username, string password, string confirmPassword, string accepted)
         {
+            // Returns if policies are not accepted
+            if (accepted != "on") return RedirectToAction("Index", new { error = 4 });
+            
             // Returns if any inputs are null
             if (email == null || username == null || password == null) return RedirectToAction("Index", new {error = 0});
             // Returns if passwords do not match
