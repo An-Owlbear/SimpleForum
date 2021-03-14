@@ -55,7 +55,24 @@ namespace SimpleForum.Web.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            string privacyPolicy = System.IO.File.ReadAllText("../Data/privacy.txt");
+            MessageViewModel model = new MessageViewModel()
+            {
+                MessageTitle = "Privacy Policy",
+                MessageContent = privacyPolicy
+            };
+            return View("Message", model);
+        }
+
+        public IActionResult Terms()
+        {
+            string terms = System.IO.File.ReadAllText("../Data/terms.txt");
+            MessageViewModel model = new MessageViewModel()
+            {
+                MessageTitle = "Terms and Conditions",
+                MessageContent = terms
+            };
+            return View("Message", model);
         }
 
         public IActionResult InstanceInfo()
