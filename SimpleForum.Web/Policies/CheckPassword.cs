@@ -65,7 +65,7 @@ namespace SimpleForum.Web.Policies
                 return;
             }
 
-            if (password != user.Password)
+            if (!user.CheckPassword(password))
             {
                 context.Result = new ViewResult()
                 {
