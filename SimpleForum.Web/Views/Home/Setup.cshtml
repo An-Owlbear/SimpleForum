@@ -1,0 +1,27 @@
+﻿@model FormViewModel
+@{
+    ViewData["Title"] = "Setup";
+    List<string> errors = new List<string>()
+    {
+        "Enter email, username and password",
+        "Passwords do not match"
+    };
+}
+
+<div class="variable-container">
+    <span class="login-form-title">First account setup</span>
+    <form class="login-form" asp-action="SendSetup" method="post">
+        <input class="login-input" type="text" placeholder="Email" name="email">
+        <input class="login-input" type="text" placeholder="Username" name="username">
+        <input class="login-input" type="password" placeholder="Password" name="password">
+        <input class="login-input" type="password" placeholder="Confirm password" name="confirmPassword">
+        
+        @if (Model.Error != null)
+        {
+            <span class="form-error">@errors[(int)Model.Error]</span>
+        }
+        
+        <a class="login-link" asp-controller="Login">Login</a>
+        <button class="login-button" type="submit">Signup</button>
+    </form>
+</div>

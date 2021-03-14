@@ -243,11 +243,8 @@ namespace SimpleForum.Web.Controllers
                 return View("Message", model);
             }
 
-            // Creates a ClaimIdentity for the user
-            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            // Creates a ClaimPrincipal for the user
+            ClaimsPrincipal principal = Auth.CreateClaims(user);
             
             // Signs in the user
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,

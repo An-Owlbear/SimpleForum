@@ -49,22 +49,14 @@ namespace SimpleForum.Web.Controllers
             {
                 Username = username,
                 Email = email,
-                Password = password
+                Password = password,
+                Activated = true
             };
-            Result<User> result = await _repository.SignupAsync(user);
-            
-            // Returns error if unsuccessful
-            if (result.Failure) return StatusCode(result.Code, result.Error);
-
-            User addedUser = result.Value;
+            User addedUser = await _repository.AddUserAsync(user);
             await _repository.SaveChangesAsync();
             
-            // Creates ClaimsIdentity
-            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme,
-                ClaimTypes.Name, ClaimTypes.Role);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.Username));
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            // Creates ClaimsPrincipal
+            ClaimsPrincipal principal = Auth.CreateClaims(user);
 
             // Signs in user
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
