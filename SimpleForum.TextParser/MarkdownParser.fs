@@ -141,7 +141,7 @@ let rec markdownToHTML (valueList : MarkdownValue list) : string =
             | Link (title, url) -> sprintf "<a href=%s>%s</a>" url (markdownToHTML title)
             | BlockQuote blockquote -> sprintf "<blockquote>%s</blockquote>" (markdownToHTML blockquote)
             | Text text -> HttpUtility.HtmlEncode(text)
-                           |> fun x -> x.Replace("\r\n", sprintf "<br>%s" Environment.NewLine)
+                           |> fun x -> x.Replace("\r", "")
                            |> fun x -> x.Replace("\n", sprintf "<br>%s" Environment.NewLine)
         acc.Append(value)
     ) (StringBuilder())
