@@ -95,10 +95,7 @@ namespace SimpleForum.Web.Controllers
                 Role = "Admin",
                 Activated = true
             };
-            Result<User> result = await _repository.SignupAsync(user);
-            
-            // Returns error if unsuccessful
-            if (result.Failure) return StatusCode(result.Code, result.Error);
+            User addedUser = await _repository.AddUserAsync(user);
             
             // Saves changes
             await _repository.SaveChangesAsync();
