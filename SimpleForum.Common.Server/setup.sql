@@ -45,6 +45,7 @@ CREATE TABLE `Threads` (
     `UserID` int NOT NULL,
     `Pinned` tinyint(1) NOT NULL DEFAULT FALSE,
     `Locked` tinyint(1) NOT NULL DEFAULT FALSE,
+    `LockedBy` longtext CHARACTER SET utf8mb4 NULL,
     `Deleted` tinyint(1) NOT NULL DEFAULT FALSE,
     `DeletedBy` longtext CHARACTER SET utf8mb4 NULL,
     `DeleteReason` longtext CHARACTER SET utf8mb4 NULL,

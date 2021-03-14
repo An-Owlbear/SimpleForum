@@ -22,6 +22,7 @@ namespace SimpleForum.Models
         public DateTime DatePosted { get; set; }
         public bool Pinned { get; set; }
         public bool Locked { get; set; }
+        public string LockedBy { get; set; }
         public bool Deleted { get; set; }
         public string DeletedBy { get; set; }
         public string DeleteReason { get; set; }
