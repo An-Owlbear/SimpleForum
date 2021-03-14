@@ -123,5 +123,25 @@ namespace SimpleForum.API.Controllers
             await _repository.SaveChangesAsync();
             return Ok();
         }
+
+        // Locks or unlocks a thread
+        [HttpPatch("{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateThread(int id, UpdateThreadRequest request)
+        {
+            // Requests the thread, returning if not authorized
+            Thread thread = await _repository.GetThreadAsync(id);
+            int userID = Tools.GetUserID(User);
+            if (thread.UserID != userID) return Unauthorized();
+            
+            // Updates thread and returns
+            if (request.Locked != null && thread.LockedBy != "Admin")
+            {
+                thread.LockedBy = (bool)request.Locked ? "User" : null;
+                thread.Locked = (bool)request.Locked;
+            }
+            await _repository.SaveChangesAsync();
+            return Json(new ApiThread(thread));
+        }
     }
 }

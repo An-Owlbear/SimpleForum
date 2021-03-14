@@ -116,6 +116,12 @@ namespace SimpleForum.API.Client
             return await ResponseParser.ParseJsonResponse(response).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Updates a thread as an admin
+        /// </summary>
+        /// <param name="id">The id of the thread to update it</param>
+        /// <param name="request">The update information of the request</param>
+        /// <returns></returns>
         public async Task<Result<ApiThread>> AdminUpdateThread(int id, UpdateThreadRequest request)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>()
@@ -127,6 +133,28 @@ namespace SimpleForum.API.Client
             
             // Retrieves response and returns result
             HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.AdminUpdateThread, parameters)
+                .ConfigureAwait(false);
+            return await ResponseParser.ParseJsonResponse<ApiThread>(response).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Updates a thread
+        /// </summary>
+        /// <remarks>
+        /// The user must be the owner of the thread to update it, and only the locked status of the thread can be changed
+        /// </remarks>
+        /// <param name="id">The id of the thread to update</param>
+        /// <param name="request">The update information of the request</param>
+        /// <returns></returns>
+        public async Task<Result<ApiThread>> UpdateThread(int id, UpdateThreadRequest request)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() }
+            };
+            if (request.Locked != null) parameters.Add("locked", request.Locked.ToString());
+
+            HttpResponseMessage response = await _requestsClient.SendRequest(Endpoints.UpdateThread, parameters)
                 .ConfigureAwait(false);
             return await ResponseParser.ParseJsonResponse<ApiThread>(response).ConfigureAwait(false);
         }

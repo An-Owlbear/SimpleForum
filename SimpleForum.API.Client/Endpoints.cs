@@ -18,6 +18,7 @@ namespace SimpleForum.API.Client
         public static readonly Endpoint CreateThread = new Endpoint("/Threads", HttpMethod.Put, true);
         public static readonly Endpoint PostComment = new Endpoint("/Threads/:id/Comments", HttpMethod.Put, true);
         public static readonly Endpoint DeleteThread = new Endpoint("/Threads/:id", HttpMethod.Delete, true);
+        public static readonly Endpoint UpdateThread = new Endpoint("/Threads/:id", HttpMethod.Patch, true);
         
         // Comment endpoints
         public static readonly Endpoint GetComment = new Endpoint("/Comments/:id", HttpMethod.Get);

@@ -212,9 +212,13 @@ namespace SimpleForum.Web.Controllers
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Lock(int id)
         {
-            // Retrieves and locks thread
+            // Retrieves and returns if unauthorized
             Thread thread = await _repository.GetThreadAsync(id);
+            if (thread.LockedBy == "User") return Unauthorized();
+            
+            // Updates information
             thread.Locked = true;
+            thread.LockedBy = "Admin";
             await _repository.SaveChangesAsync();
 
             // Creates model and returns view
@@ -270,9 +274,13 @@ namespace SimpleForum.Web.Controllers
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> Unlock(int id)
         {
-            // Retrieves and unlocks thread
+            // Retrieves thread, returning if already locked by user
             Thread thread = await _repository.GetThreadAsync(id);
+            if (thread.LockedBy == "User") return Unauthorized();
+            
+            // Updates information
             thread.Locked = false;
+            thread.LockedBy = null;
             await _repository.SaveChangesAsync();
             
             // Creates model and returns view
@@ -330,6 +338,39 @@ namespace SimpleForum.Web.Controllers
                 MessageTitle = "Comment deleted"
             };
             return View("Message", model);
+        }
+
+        // Locks a thread as a user
+        [Authorize]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> UserLockThread(int id)
+        {
+            // Retrieves thread, returning if unauthorized
+            Thread thread = await _repository.GetThreadAsync(id);
+            int userID = Tools.GetUserID(User);
+            if (thread.UserID != userID || thread.LockedBy == "Admin") return Unauthorized();
+            
+            // Updates thread and returns
+            thread.Locked = true;
+            thread.LockedBy = "User";
+            await _repository.SaveChangesAsync();
+            return RedirectToAction("Index", new { id });
+        }
+
+        [Authorize]
+        [ServiceFilter(typeof(CheckPassword))]
+        public async Task<IActionResult> UserUnlockThread(int id)
+        {
+            // Retrieves thread, returning if unauthorized
+            Thread thread = await _repository.GetThreadAsync(id);
+            int userID = Tools.GetUserID(User);
+            if (thread.UserID != userID || thread.LockedBy == "Admin") return Unauthorized();
+            
+            // Updates thread and returns
+            thread.Locked = false;
+            thread.LockedBy = null;
+            await _repository.SaveChangesAsync();
+            return RedirectToAction("Index", new { id });
         }
     }
 }
