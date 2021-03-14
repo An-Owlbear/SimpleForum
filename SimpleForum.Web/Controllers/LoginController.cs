@@ -53,7 +53,7 @@ namespace SimpleForum.Web.Controllers
             if (user == null) return Redirect("/Login?error=1");
             
             // Returns error if password is incorrect
-            if (user.Password != password || user.Deleted) return Redirect("/Login?error=1");
+            if (!user.CheckPassword(password) || user.Deleted) return Redirect("/Login?error=1");
             IActionResult returnResult = Url.IsLocalUrl(ReturnUrl) ? Redirect(ReturnUrl) : Redirect("/");
             return await SignInUser(user, returnResult);
         }

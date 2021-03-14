@@ -4,12 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleForum.Models
 {
+    using BCrypt.Net;
     public class User
     {
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+
+        private string password;
+        public string Password
+        {
+            get => password;
+            set => password = BCrypt.HashPassword(value);
+        }
+        
         public DateTime SignupDate { get; set; }
         public string Bio { get; set; }
         
@@ -36,13 +44,13 @@ namespace SimpleForum.Models
         public virtual ICollection<Notification> Notifications { get; set; }
         
         [NotMapped]
-        public string FullUsername
-        {
-            get => Server switch
+        public string FullUsername =>
+            Server switch
             {
                 null => Username,
                 _ => $"{Username}@{Server.ShortAddress}"
             };
-        }
+
+        public bool CheckPassword(string password) => BCrypt.Verify(password, Password);
     }
 }

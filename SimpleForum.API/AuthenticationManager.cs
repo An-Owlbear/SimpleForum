@@ -32,7 +32,7 @@ namespace SimpleForum.API
                 return Result.Fail<string>("username incorrect", 400);
             }
 
-            if (user.Password != password) return Result.Fail<string>("password incorrect", 400);
+            if (!user.CheckPassword(password)) return Result.Fail<string>("password incorrect", 400);
             if (user.Deleted) return Result.Fail<string>("username incorrect", 400);
             
             // Creates and returns a JWT token
