@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Http
 @model MessageViewModel
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Title ?? Model.MessageTitle;
 }
 
 <div class="top-message">
