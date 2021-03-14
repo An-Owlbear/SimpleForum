@@ -17,6 +17,13 @@
         <input class="login-input" type="text" placeholder="Username" name="username">
         <input class="login-input" type="password" placeholder="Password" name="password">
         <input class="login-input" type="password" placeholder="Confirm password" name="confirmPassword">
+        <label class="checkbox-label">
+            <input class="checkbox" type="checkbox" name="acceptTerms">
+            <span class="checkbox-span">
+                <span class="checked-span"></span>
+            </span>
+            <span>Accept the <a asp-controller="Home" asp-action="Terms">terms and conditions</a> and <a asp-controller="Home" asp-action="Privacy">privacy policy</a></span>
+        </label>
         
         @if (Model.Error != null)
         {

@@ -1025,6 +1025,47 @@ textarea.edit-container-item {
   margin-left: 10%;
 }
 
+.checkbox {
+  margin-right: 1rem;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  position: absolute;
+  cursor: pointer;
+}
+.checkbox-label {
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  margin: 0.5rem 10% 0.5rem 10%;
+}
+.checkbox-label a {
+  color: royalblue;
+  text-decoration: none;
+}
+.checkbox-span {
+  height: 2rem;
+  width: 2rem;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+.checked-span {
+  margin: 0.35rem;
+  height: 1.3rem;
+  width: 1.3rem;
+  background: royalblue;
+  border-radius: 8px;
+  display: none;
+}
+
+.checkbox:checked ~ .checkbox-span .checked-span {
+  display: block;
+}
+
 @media only screen and (max-width: 800px) {
   .navbar {
     height: 4rem;
