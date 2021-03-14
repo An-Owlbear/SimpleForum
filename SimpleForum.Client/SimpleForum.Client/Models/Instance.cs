@@ -11,15 +11,26 @@ namespace SimpleForum.Client.Models
         [JsonIgnore]
         public SimpleForumClient Client { get; set; }
 
-        public string ServerName
+        public string Token
         {
-            get => ServerUrLs.InstanceURL.Replace("https://", "").Replace("http://", "");
+            get => Client.TokenStorage.GetToken();
+            set => Client.TokenStorage.SetToken(value);
         }
+        
+        public string ServerName => ServerUrLs.InstanceURL.Replace("https://", "").Replace("http://", "");
 
         public Instance(ServerURLs serverUrLs, SimpleForumClient client)
         {
             ServerUrLs = serverUrLs;
             Client = client;
+        }
+
+        [JsonConstructor]
+        public Instance(ServerURLs serverURLs, string token)
+        {
+            Client = new SimpleForumClient(serverURLs.APIURL);
+            Token = token;
+            ServerUrLs = serverURLs;
         }
     }
 }

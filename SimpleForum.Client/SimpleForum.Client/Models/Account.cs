@@ -40,9 +40,10 @@ namespace SimpleForum.Client.Models
             
             Instance instance = new Instance(serverURLs, client);
             CurrentInstance = instance;
-            AddInstance(instance).ContinueWith(t => t);
+            Instances.Add(instance);
         }
 
+        // Navigates to the page for a specific account
         private async void UseUser()
         {
             InstanceListViewModel viewModel = new InstanceListViewModel(this);
@@ -50,6 +51,7 @@ namespace SimpleForum.Client.Models
             await Application.Current.MainPage.Navigation.PushAsync(page);
         }
         
+        // Authenticates the user
         public async Task<Result> AuthenticateUser(string password)
         {
             Result<LoginResponse> result = await Client.LoginAsync(Username, password);
@@ -57,10 +59,22 @@ namespace SimpleForum.Client.Models
             return Result.Ok();
         }
 
+        // Adds an instance to the instance list
         public async Task AddInstance(Instance instance)
         {
             Instances.Add(instance);
             await AccountService.SaveAccounts();
+        }
+
+        // Constructor used when loading JSON data
+        [JsonConstructor]
+        public Account(string username, ServerURLs serverUrLs, ObservableCollection<Instance> instances)
+        {
+            Username = username;
+            Client = instances[0].Client;
+            ServerURLs = serverUrLs;
+            Instances = instances;
+            UseUserCommand = new Command(UseUser);
         }
     }
 }

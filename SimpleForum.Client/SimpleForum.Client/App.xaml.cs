@@ -11,8 +11,8 @@ namespace SimpleForum.Client
     {
         public App()
         {
-            InitializeComponent();
-            AccountService.LoadAccounts().ContinueWith(t => t);
+            InitializeComponent(); 
+            AccountService.LoadAccounts();
             MainPage = new NavigationPage(new MainPage());
         }
 

@@ -23,7 +23,6 @@ namespace SimpleForum.Client.Services
         private static JsonSerializerOptions options = new JsonSerializerOptions()
         {
             IgnoreNullValues = true
-            
         };
         
         // Saves the accounts to a json file
@@ -36,10 +35,15 @@ namespace SimpleForum.Client.Services
 
         
         // Loads accounts from the json file
-        public static async Task LoadAccounts()
+        public static void LoadAccounts()
         {
+            // Checks path to see if file exists
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "data.json");
-            string jsonData = await File.ReadAllTextAsync(path);
+            if (!File.Exists(path)) return;
+            
+            string jsonData = File.ReadAllText(path);
+            ObservableCollection<Account> accounts = JsonSerializer.Deserialize<ObservableCollection<Account>>(jsonData);
+            Accounts = accounts;
         }
     }
 }
