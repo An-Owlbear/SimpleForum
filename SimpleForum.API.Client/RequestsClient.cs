@@ -76,6 +76,15 @@ namespace SimpleForum.API.Client
                     (acc, next) =>
                         Regex.Replace(acc, $@":{next.Key}(?!\w)", next.Value));
 
+            // Checks if uri is properly formatted
+            if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+            {
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                string json = JsonSerializer.Serialize(new Error(400, "Improper URL"));
+                response.Content = new StringContent(json);
+                return response;
+            }
+            
             // adds parameters to request
             if (request.Method == HttpMethod.Get)
             {
