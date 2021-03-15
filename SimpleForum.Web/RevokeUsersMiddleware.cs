@@ -8,6 +8,7 @@ using SimpleForum.Models;
 
 namespace SimpleForum.Web
 {
+    // Signs out a user if they are unknown or deleted, and prevents them accessing pages if banned
     public class RevokeUsersMiddleware
     {
         private readonly RequestDelegate _next;
@@ -17,7 +18,7 @@ namespace SimpleForum.Web
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, SimpleForumRepository repository, IViewRenderService renderService)
+        public async Task InvokeAsync(HttpContext httpContext, SimpleForumRepository repository)
         {
             // Urls which can be accessed whilst an account is banned
             List<string> urlExceptions = new List<string>()
