@@ -41,6 +41,7 @@ namespace SimpleForum.Common.Tests
             return connection;
         }
         
+        // Tests retrieving a user
         [Fact]
         public async Task TestGetUser()
         {

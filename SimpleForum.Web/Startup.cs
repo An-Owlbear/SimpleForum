@@ -42,9 +42,7 @@ namespace SimpleForum.Web
             services.AddScoped<VerifiedEmail>();
             services.AddScoped<CheckPassword>();
             services.AddScoped<PreventMuted>();
-
-            services.AddScoped<IViewRenderService, ViewRenderService>();
-
+            
             services.AddControllersWithViews();
         }
 

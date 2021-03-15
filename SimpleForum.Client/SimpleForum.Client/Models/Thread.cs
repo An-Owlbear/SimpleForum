@@ -21,6 +21,7 @@ namespace SimpleForum.Client.Models
             LoadProfileImage().ContinueWith(t => t);
         }
 
+        // Navigates the application to the thread
         private async void NavigateThread()
         {
             ThreadViewModel viewModel = new ThreadViewModel(this, Account);

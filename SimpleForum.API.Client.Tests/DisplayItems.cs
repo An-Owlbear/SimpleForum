@@ -6,6 +6,7 @@ namespace SimpleForum.API.Client.Tests
 {
     public class DisplayItems
     {
+        // Displays a thread in the console
         public static void DisplayThread(ApiThread thread)
         {
             Console.WriteLine($"Title - {thread.Title}\n" +
@@ -19,6 +20,7 @@ namespace SimpleForum.API.Client.Tests
             DisplayUser(thread.User);
         }
 
+        // Displays a user in the console
         public static void DisplayUser(ApiUser user)
         {
             Console.WriteLine($"Username - {user.Username}\n" +
@@ -30,6 +32,7 @@ namespace SimpleForum.API.Client.Tests
                               $"Comments locked - {user.CommentsLocked}");
         }
 
+        // Displays a comment in the console
         public static void DisplayComment(ApiComment comment)
         {
             Console.WriteLine($"ID - {comment.ID}\n" +
@@ -40,6 +43,7 @@ namespace SimpleForum.API.Client.Tests
             DisplayUser(comment.User);
         }
 
+        // Displays error in the console
         public static void DisplayError(Result error)
         {
             Console.WriteLine($"Error code - {error.Code}\n" +

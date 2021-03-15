@@ -5,6 +5,7 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace SimpleForum.Common.Server
 {
+    // Uses to connect to the server when using dotnet ef
     public class DesignTimeContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
         public ApplicationDbContext CreateDbContext(string[] args)

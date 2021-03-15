@@ -6,6 +6,7 @@ namespace SimpleForum.Web
 {
     public static class Auth
     {
+        // Creates ClaimsIdentity for the give user
         public static ClaimsPrincipal CreateClaims(User user)
         {
             ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme,

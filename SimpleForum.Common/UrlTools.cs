@@ -4,6 +4,7 @@ namespace SimpleForum.Common
 {
     public static class UrlTools
     {
+        // Combines a list of URLs
         public static string UrlCombine(string[] paths)
         {
             return paths.Aggregate("", (acc , x) =>

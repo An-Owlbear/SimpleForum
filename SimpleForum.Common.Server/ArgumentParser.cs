@@ -4,6 +4,7 @@ namespace SimpleForum.Common.Server
 {
     public class ArgumentParser
     {
+        // Parses arguments for the launching the server
         public static ServerArguments ParseArguments(string[] args)
         {
             int? port = null;

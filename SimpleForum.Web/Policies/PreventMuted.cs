@@ -9,6 +9,7 @@ using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web.Policies
 {
+    // Prevents muted users from accessing the page
     public class PreventMuted : ActionFilterAttribute
     {
         private readonly ApplicationDbContext _dbContext;

@@ -24,12 +24,14 @@ namespace SimpleForum.Client.Models
             NavigateUserCommand = new Command(NavigateUser);
         }
         
+        // Parsers the text content to a FormattedString
         protected void ParseContent(string content)
         {
             IEnumerable<MarkdownParser.MarkdownValue> markdownValues = MarkdownParser.ParseMarkdown(content);
             Content = XamarinParser.RenderFormattedString(markdownValues);
         }
 
+        // Loads the profile picture
         protected async Task LoadProfileImage()
         {
             Uri imageUri = await Account.CurrentInstance.Client.GetProfileImgUrl(ApiPost.User.ID);

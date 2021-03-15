@@ -20,12 +20,14 @@ namespace SimpleForum.Web.Controllers
             _context = context;
         }
 
+        // Returns information of exception
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
+        // Returns error for a given status code
         public IActionResult StatusError(int code)
         {
             MessageViewModel model = new MessageViewModel()
@@ -36,6 +38,7 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns access denied error
         public IActionResult AccessDenied()
         {
             MessageViewModel model = new MessageViewModel()
@@ -46,6 +49,7 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns banned message
         [Authorize]
         public async Task<IActionResult> Banned()
         {

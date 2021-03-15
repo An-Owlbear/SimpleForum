@@ -55,12 +55,14 @@ namespace SimpleForum.Client.ViewModels
 
         private async void Login()
         {
+            // Sets url protocol if missing
             string url = (address.StartsWith("http://") || address.StartsWith("https://")) switch
             {
                 true => address,
                 false => $"http://{address}"
             };
             
+            // Retrieves server URLs, returning if unsuccessful
             Result<ServerURLs> urlsResult = await SimpleForumClient.GetServerURLs(url);
             if (urlsResult.Failure)
             {
@@ -68,6 +70,7 @@ namespace SimpleForum.Client.ViewModels
                 return;
             }
 
+            // Creates client, and logs in, returning if unsuccessful
             SimpleForumClient client = new SimpleForumClient(urlsResult.Value.APIURL);
             Result<LoginResponse> loginResult = await client.LoginAsync(username, password);
             if (loginResult.Failure)
@@ -76,6 +79,7 @@ namespace SimpleForum.Client.ViewModels
                 return;
             }
             
+            // Adds account and pops view
             await AccountService.AddAccount(username, urlsResult.Value, client);
             await Application.Current.MainPage.Navigation.PopAsync();
         }

@@ -357,6 +357,7 @@ namespace SimpleForum.Web.Controllers
             return RedirectToAction("Index", new { id });
         }
 
+        // Unlocks a thread as a user
         [Authorize]
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> UserUnlockThread(int id)

@@ -1,5 +1,6 @@
 namespace SimpleForum.Common.Server
 {
+    // Contains information of the server config
     public class SimpleForumConfig
     {
         public string InstanceName { get; set; }

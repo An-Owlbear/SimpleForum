@@ -11,6 +11,7 @@ using SimpleForum.API.Models.Responses;
 
 namespace SimpleForum.API.Client
 {
+    // Class used for sending http requests
     public class RequestsClient
     {
         private readonly HttpClient _client;

@@ -3,6 +3,7 @@ using SimpleForum.Models;
 
 namespace SimpleForum.Common.Server
 {
+    // Represents the database
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

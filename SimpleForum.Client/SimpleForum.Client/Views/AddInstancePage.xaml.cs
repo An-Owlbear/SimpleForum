@@ -21,6 +21,7 @@ namespace SimpleForum.Client.Views
             });
         }
 
+        // Calls ViewModel OnNavigation method
         private async void OnNavigated(object sender, WebNavigatedEventArgs args)
         {
             await _viewModel.OnNavigate(sender as WebView, args);

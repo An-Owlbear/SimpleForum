@@ -53,6 +53,7 @@ namespace SimpleForum.Web.Controllers
             return View(model);
         }
 
+        // Returns the privacy policy screen
         public IActionResult Privacy()
         {
             string privacyPolicy = System.IO.File.ReadAllText("../Data/privacy.txt");
@@ -64,6 +65,7 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns the terms and conditions screen
         public IActionResult Terms()
         {
             string terms = System.IO.File.ReadAllText("../Data/terms.txt");
@@ -75,6 +77,7 @@ namespace SimpleForum.Web.Controllers
             return View("Message", model);
         }
 
+        // Returns instance information as json
         public IActionResult InstanceInfo()
         {
             return Json(new

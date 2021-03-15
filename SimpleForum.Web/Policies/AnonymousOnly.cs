@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace SimpleForum.Web.Policies
 {
+    // Prevents authenticated users from accessing a page
     public class AnonymousOnly : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)

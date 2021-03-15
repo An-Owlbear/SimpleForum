@@ -7,6 +7,7 @@ namespace SimpleForum.API.Client.Tests
 {
     public partial class Tests
     {
+        // Tests getting comments by ID
         private static async Task TestGetComment()
         {
             // Receives user input and retrieves comment

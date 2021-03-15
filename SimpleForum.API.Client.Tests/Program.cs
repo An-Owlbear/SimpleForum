@@ -8,6 +8,7 @@ namespace SimpleForum.API.Client.Tests
         private const string separator = "-----------------------------------------------------------------";
         private static readonly SimpleForumClient client = new SimpleForumClient("http://localhost:5001");
         
+        // Runs a test of the user's choice
         static async Task Main()
         {
             while (true)

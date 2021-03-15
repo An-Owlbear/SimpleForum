@@ -10,6 +10,7 @@ using SimpleForum.Web.Models;
 
 namespace SimpleForum.Web.Policies
 {
+    // Ensures users with verified emails access the page, if enabled in the settings
     public class VerifiedEmail : ActionFilterAttribute
     {
         private readonly ApplicationDbContext _context;

@@ -10,6 +10,7 @@ using SimpleForum.Models;
 
 namespace SimpleForum.Web.Policies
 {
+    // Checks the user's password before they access the page
     public class CheckPassword : ActionFilterAttribute
     {
         private readonly ApplicationDbContext _dbContext;

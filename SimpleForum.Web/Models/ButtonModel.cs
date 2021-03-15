@@ -1,5 +1,6 @@
 namespace SimpleForum.Web.Models
 {
+    // Represents the information of a button for a MessageViewModel
     public class ButtonModel
     {
         public string Text { get; set; }

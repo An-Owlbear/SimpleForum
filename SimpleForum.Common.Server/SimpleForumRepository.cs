@@ -708,7 +708,6 @@ namespace SimpleForum.Common.Server
                     imageObject.Mutate(x => x.Resize(1000, 1000));
 
                 // Writes image to file
-                // TODO - Update method of saving files
                 await imageObject.SaveAsJpegAsync(outputImage);
                 await File.WriteAllBytesAsync(
                     $"../UploadedImages/ProfilePictures/{user.UserID}.jpg", outputImage.ToArray());

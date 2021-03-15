@@ -33,6 +33,7 @@ namespace SimpleForum.CrossConnection
             _repository = repository;
         }
         
+        // Authenticates a request from request header
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             if (!Request.Headers.ContainsKey("Authorization")) return AuthenticateResult.Fail("Unauthorized");

@@ -1,4 +1,5 @@
-﻿function openDropdown(object) {
+﻿// Opens the signup/login dropdown
+function openDropdown(object) {
     object.classList.add('dropdown-clicked');
     object.removeEventListener('click', object.openDropdown);
     object.addEventListener('click', object.closeDropdown);
@@ -9,6 +10,7 @@
     })
 }
 
+// Closes the signup/login dropdown
 function closeDropdown(object) {
     object.classList.remove('dropdown-clicked');
     object.removeEventListener('click', object.closeDropdown);
@@ -20,8 +22,8 @@ function closeDropdown(object) {
     })
 }
 
+// Adds functions to dropdown elements
 let dropdowns = document.getElementsByClassName('dropdown');
-
 Array.from(dropdowns).forEach(function (element) {
     element.openDropdown = () => openDropdown(element);
     element.closeDropdown = () => closeDropdown(element);

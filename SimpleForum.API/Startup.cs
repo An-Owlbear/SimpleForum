@@ -31,7 +31,6 @@ namespace SimpleForum.API
             services.AddSimpleForum(_configuration);
             
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
-            services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
             services.AddScoped<PreventMuted>();
 
             string key = _configuration["PrivateKey"];

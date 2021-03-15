@@ -2,6 +2,9 @@
 
 namespace SimpleForum.API.Models.Responses
 {
+    /// <summary>
+    /// Represents any type of api post
+    /// </summary>
     public interface IApiPost
     {
         public int ID { get; set; }
