@@ -50,10 +50,10 @@
         </div>
     </div>
     <ul class="thread-posts">
-        @await Component.InvokeAsync("Post", new PostViewModel() { Post = Model.Thread, ID = "op" })
+        @await Component.InvokeAsync("Post", new PostViewModel() { Post = Model.Thread, ID = "op", CurrentUser = Model.User, PostType = PostType.ThreadPost})
         @foreach (Comment comment in Model.Comments)
         {
-            @await Component.InvokeAsync("Post", new PostViewModel() { Post = comment, ID = comment.ID.ToString() })
+            @await Component.InvokeAsync("Post", new PostViewModel() { Post = comment, ID = comment.ID.ToString(), CurrentUser = Model.User, PostType = PostType.Comment})
         }
     </ul>
 

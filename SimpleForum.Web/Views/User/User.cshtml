@@ -74,7 +74,7 @@
         <ul class="thread-posts user-comments">
             @foreach (UserComment comment in Model.CurrentPageComments)
             {
-                @await Component.InvokeAsync("Post", new PostViewModel() { Post = comment, ID = comment.ID.ToString() })
+                @await Component.InvokeAsync("Post", new PostViewModel() { Post = comment, ID = comment.ID.ToString(), CurrentUser = Model.CurrentUser, PostType = PostType.UserComment})
             }
         </ul>
 

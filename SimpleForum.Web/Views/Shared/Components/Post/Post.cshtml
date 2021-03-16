@@ -19,5 +19,34 @@
     <div class="post-footer">
         <a class="footer-link" href="javascript:void(0)">Reply</a>
         <a class="footer-link" href="#@Model.ID">@Model.ID</a>
+        
+        @if (Model.CurrentUser.UserID == Model.Post.UserID)
+            {
+                if (Model.PostType == PostType.Comment)
+                {
+                    <form asp-action="DeleteComment" method="post">
+                        <input type="hidden" name="id" value="@Model.Post.ID">
+                        <button class="footer-link" type="submit">Delete</button>
+                    </form>
+                }
+                else if (Model.PostType == PostType.UserComment)
+                {
+                    <form asp-action="DeleteUserComment" method="post">
+                        <input type="hidden" name="id" value="@Model.Post.ID">
+                        <button class="footer-link" type="submit">Delete</button>
+                    </form>
+                }
+            }
+            else if (Model.CurrentUser.Role == "Admin")
+            {
+                if (Model.PostType == PostType.Comment)
+                {
+                    <a class="footer-link" asp-action="AdminDeleteComment" asp-route-id="@Model.Post.ID">Delete (as admin)</a>
+                }
+                else if (Model.PostType == PostType.UserComment)
+                {
+                    <a class="footer-link" asp-action="AdminDeleteUserComment" asp-route-id="@Model.Post.ID">Delete (as admin)</a>
+                }
+            }
     </div>
 </li>
