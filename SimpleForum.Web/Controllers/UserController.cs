@@ -105,11 +105,12 @@ namespace SimpleForum.Web.Controllers
         {
             // Retrieves comment and returns view
             UserComment comment = await _repository.GetUserCommentAsync(userCommentID);
+            if (comment == null) return NotFound();
             return View(comment);
         }
         
         // Deletes a UserComment as an admin
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ServiceFilter(typeof(CheckPassword))]
         public async Task<IActionResult> AdminDeleteUserComment(int userCommentID, string reason)
