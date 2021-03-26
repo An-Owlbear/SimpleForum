@@ -17,7 +17,6 @@
     </div>
     <span class="post-contents">@HtmlExtensions.ParseText(Model.Post.Content)</span>
     <div class="post-footer">
-        <a class="footer-link" href="javascript:void(0)">Reply</a>
         <a class="footer-link" href="#@Model.ID">@Model.ID</a>
         
         @if (Model.CurrentUser?.UserID == Model.Post.UserID)
