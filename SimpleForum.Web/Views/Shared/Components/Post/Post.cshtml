@@ -20,7 +20,7 @@
         <a class="footer-link" href="javascript:void(0)">Reply</a>
         <a class="footer-link" href="#@Model.ID">@Model.ID</a>
         
-        @if (Model.CurrentUser.UserID == Model.Post.UserID)
+        @if (Model.CurrentUser?.UserID == Model.Post.UserID)
             {
                 if (Model.PostType == PostType.Comment)
                 {
@@ -37,7 +37,7 @@
                     </form>
                 }
             }
-            else if (Model.CurrentUser.Role == "Admin")
+            else if (Model.CurrentUser?.Role == "Admin")
             {
                 if (Model.PostType == PostType.Comment)
                 {
