@@ -25,4 +25,4 @@ This program is built using the following open source libraries and software
 ## Notes
 This version of the project was written for an extended college project, and thus some functions which are typically achieved with the use of libraries are implemented manually.
 
-This project is being rewritten to fix many of the flaws in the version, the new WIP version can be found [here](/tree/master).
+This project is being rewritten to fix many of the flaws in the version, the new WIP version can be found [here](https://github.com/An-Owlbear/SimpleForum/tree/v2).
